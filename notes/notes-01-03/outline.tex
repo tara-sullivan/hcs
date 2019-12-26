@@ -9,6 +9,11 @@
 \newcommand{\cc}{\mathbf{c}}
 \newcommand{\xx}{\mathbf{x}}
 
+\newcommand{\br}[1]{\left\{ #1 \right\}}
+\newcommand{\sbr}[1]{\left[ #1 \right]}
+\newcommand{\pr}[1]{\left( #1 \right)}
+\newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
+
 \addbibresource{../bibliography.bib}
 
 \begin{document}
@@ -26,9 +31,166 @@
 
 \begin{outline}
 
-\item \textcite{AF20}
+\item \nts{Motivating question} Debate surrounding affirmative action. Does not focus on endogenous group outcomes, cannot get data on that. 
+
+\item This paper presents a model of gradual human capital specialization, whereby existing group outcomes influence \textbf{something}.
+
+\item To accomplish this, I augment the model of human capital specialization developed in \textcite{AF20}. Their model of gradual specialization in human capital is used to study misallocation in U.S. education system. 
+
+% Another application: how do peopl specialize after recessions
 
 \end{outline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+Below is the general model from \textcite{AF20}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Preliminaries}
+
+\begin{tabular}{@{}lll}
+\textbf{General}  & \textbf{Description} \\
+\multicolumn{2}{@{}l}{\emph{Endowments}} \\
+$t$                                       & indivisible unit of time per period \\
+$h_0    = \{ h_{10} \dots h_{N0} \}$      & initial human capital \\
+$\theta = \{\theta_1, \dots, \theta_N \}$ & unkown abilities \\
+$P_{j0}$                                  & independent initial beliefs on $\theta_j$ \\
+\multicolumn{2}{@{}l}{\emph{Actions}} \\
+$s_t    = \{ s_{1t}, \dots, s_{Nt} \}$    & study time \\
+$\ell_t = \{ l_{1t}, \dots, \ell_{Nt} \}$ & work time \\
+\multicolumn{2}{@{}l}{\emph{Technology}} \\
+$a_{it}   \sim F_{\theta_i}$      & effective study time \\
+$h_{it+1} = H_i (h_{it}, a_{it})$ & accumulation by $t+1$ \\
+\multicolumn{2}{@{}l}{\emph{Beliefs}} \\
+$P_{it+1} = \Pi (P_{it}, a_{it})$ & evolution of beliefs over $\theta_i$
+\end{tabular}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Problem}
+
+A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes: \nts{Shouldn't I either index $\pi$ by $t$, or say that a policy at time $t$ is optimal? }
+\begin{align*}
+& \mathbb{E}^\pi \sbr{
+   \sum_{t=0}^\infty \delta^t 
+   \left. \pr{\sum_{i=1}^N \ell_{it} U_i(w_i, h_{it})} \right\vert
+   \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
+} \\
+\text{subject to} \quad& h_{it+1} = H_i (h_{it}, a_{it}), \quad \quad
+P_{it+1} = \Pi (P_{it}, a_{it}), 
+\quad \quad \text{if $i$ selected,} \\
+\quad& \sum_{i=1}^N (s_{it} + \ell_{it}) = 1, \quad \quad s_{it}, \ell_{it} \in \{0,1\}
+\end{align*}
+\nts{Shouldn't this be if $s_{it} = 1$, meaning that you study $i$ during period $t$, rather than ``if $i$ is selected?''. I'm pretty sure that, because you could choose to work in skill $i$, you need to specify if you're studying. Also, shouldn't the transition laws be $h_{it+1} = H_i (h_{it}, a_{it}, s_{it})$, since it depends on whether you study? This could also be fixed by chaning the ``if $i$ selected line.'' I would also call this transition law ``course outcome'' or ``studying outcome.''}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimal Policy}
+
+Let $\tau$ be an \textbf{optimal stopping rule} defined over $\{ a_{j1}, a_{j2}, \dots \}$. Skill $j$ index: \nts{expected payoff if you commit to $j$}
+\begin{equation*}
+\mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
+\ce{
+   \sum_{t=0}^\infty \delta^t U_j (w_j, h_{jt}) \ell_{jt}}
+   {(h_{j0}, P_{j0}) = (h_j, P_j))
+}
+\end{equation*}
+Graduation region of skill $j$: \nts{Is graduation region based on OSLA or initial conditions? I think that when I have some of my ECON200B notes around, I should think about how I could more cleanly write the optimal stopical rule. May it would be clearer to write $\tau_j$?}
+\begin{equation*}
+\mathcal{G}_j = \left\{\left. (h_j, P_j) \right\vert 
+   \arg \max_{\tau \geq 0} 
+   \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t U_j (w_j, h_j) \ell_{jt}}
+   {(h_j, P_j)} = 0
+   \right\}
+\end{equation*}
+% Theory is that existing distribution for a group impacts the underlying priors, probably just alpha_0 and beta_0
+Optimal Policy Theorem: The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal:
+\begin{enumerate}
+	\item At each $t \geq 0$, choose skill $j^* = \arg \max_{i \in N} \mathcal{I}_i$, breaking ties according to any rule
+	\item If $(h_{j^*}, P_{j^*}) \in \mathcal{G}_{j}$\nts{ (shouldn't it be $\mathcal{G}_{j^*}$?)}, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
+\end{enumerate}
+
+\subsubsection*{Math notes}
+Math theorem: If stopping time problem monotonic, then OSLA (one-step look-ahead) stopping rule optimal. 
+\begin{blist}
+
+\item Monotonic stopping time: If the optimal stopping rule for skill $j$ says stop today, then the optimal stopping rule would say stop tomorrow, regardless of the stochastic outcome. This would be built into the human capital problem. 
+
+\item Monoticity of the stopping problem means that stopping at $t$ implies stopping at $t+1$. Stopping at time $t$ implies: \nts{(I think)}
+\begin{equation*}
+ U_j(w_j, h_{jt}) > \delta \mathbb{E} U_j(w_j, h_{jt+1})
+\end{equation*}
+If the stoping problem is monotonic, then this means: 
+\begin{equation*}
+ U_j(w_j, h_{jt+1}) > \delta \mathbb{E} U_j(w_j, h_{jt+2})
+\end{equation*}
+This holds for all realizations of $a$. 
+This condition then implies the optimality of OSLA.
+\end{blist}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Beta-Bernoulli Model}
+
+\begin{outline}
+
+\hitem{Problem}
+
+A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes:
+\begin{align*}
+& \mathbb{E}^\pi \sbr{
+   \sum_{t=0}^\infty \delta^t 
+   \left. \pr{\sum_{i=1}^N \ell_{it} w_i h_{it}} \right\vert
+   \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
+} \\
+\text{subject to} \quad& h_{it+1} = h_{it}+ a_{it} s_{it}, \quad \quad a_{it} = 
+   \begin{cases} 
+      \nu_i, & \text{with prob. } \theta_i,  \\ 
+      0, & \text{with prob. } 1 - \theta_i,
+   \end{cases} 
+   \quad \quad h_{i0} = \alpha_{i0} \nu_i, \\
+\quad& P_{it+1} = \mathcal{B} (\alpha_{i,t+1}, \beta_{i,t+1}), 
+   \quad \quad \theta_i \sim P_{i,0} \equiv \mathcal{B} (\alpha_{i0}, \beta_{i0})
+   \quad \quad \text{if $i$ selected,} \\
+\quad& \sum_{i=1}^N (s_{it} + \ell_{it}) = 1, \quad \quad s_{it}, \ell_{it} \in \{0,1\}
+\end{align*}
+
+\hitem{Monotonicity of stopping problem}
+
+Given the utility function, if you are studying skill $j$, you would stop at time $t$ if:
+\begin{equation}
+h_{jt} > \delta \mathbb{E} \sbr{h_{jt+1}}
+\end{equation}
+The optimal stopping time is monotonic if the following holds for all $j$, for all realizations of $a_{jt}$:
+\begin{equation}
+h_{jt+1} > \delta \mathbb{E} \sbr{h_{jt+2}}
+\end{equation}
+Recall:
+\begin{align*}
+\mathbb{E} \sbr{h_{jt+1}} = \delta (h_{jt} + \mathbb{E} \sbr{a_{it}} s_{it})
+\end{align*}
+You stop studying skill $j$ at time $t$ ($s_{jt}=0$) if the utility associated with stopping is greater than the expected utility associated with studying ($s_{jt}=1$):
+\begin{align*}
+h_{jt} >& \delta \mathbb{E} \sbr{h_{jt+1}} \\
+=& \delta (h_{jt} + \mathbb{E} \sbr{a_{jt}} s_{jt}) \\
+=& \delta h_{jt} + \delta \pr{\nu_j \mathbb{E} \sbr{\theta_j} + 0 (1 - \mathbb{E} \sbr{\theta_j})} \\
+=& \delta h_{jt} + \delta \pr{\nu_j \frac{\alpha_{jt}}{\alpha_{jt} + \beta_{jt}}} \\
+\implies h_{jt} >& \frac{\delta}{1 - \delta} \pr{\frac{\nu_j \alpha_{jt}}{\alpha_{jt} + \beta_{jt}}}
+\end{align*}
+Using the fact that $h_{jt} = h_{j0} + \nu (\alpha_{jt} - \alpha_0)$ and the assumption that $h_{j0} = \alpha_{j0} h_{j0}$, the above implies:
+\begin{equation*}
+\nu \alpha_{jt} > \frac{\delta}{1 - \delta} \pr{\frac{\nu_j \alpha_{jt}}{\alpha_{jt} + \beta_{jt}}} \iff \frac{1-\delta}{\delta} > \alpha_{jt} + \beta_{jt}
+\end{equation*} 
+\nts{I'm not finishing this right now. But it's worth noting that, in the notes that Titan gave me, a sufficient condition for monotoncity in the beta-bernoulli problem is that $h_{j0} = \alpha_{j0} h_{j0}$. So I know that you can prove that, under this assumption, the problem is monotonic. I might need to relax that assumption for my model, but it doesn't need to be a problem.}
+
+Skill $j$ index given by: 
+\begin{equation*}
+\mathcal{I}_{it} (h_{it}, \alpha_{it}, \beta_{it})
+\end{equation*}
+
+\end{outline}
+
+
 
 \printbibliography
 
