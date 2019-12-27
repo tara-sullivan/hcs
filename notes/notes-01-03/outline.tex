@@ -48,7 +48,10 @@
 Below is the general model from \textcite{AF20}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Preliminaries}
+\subsection{Alon and Fershtman (2020)}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Preliminaries}
 
 \begin{tabular}{@{}lll}
 \textbf{General}  & \textbf{Description} \\
@@ -68,7 +71,7 @@ $P_{it+1} = \Pi (P_{it}, a_{it})$ & evolution of beliefs over $\theta_i$
 \end{tabular}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Problem}
+\subsubsection{Problem}
 
 A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes: \nts{Shouldn't I either index $\pi$ by $t$, or say that a policy at time $t$ is optimal? }
 \begin{align*}
@@ -85,7 +88,7 @@ P_{it+1} = \Pi (P_{it}, a_{it}),
 \nts{Shouldn't this be if $s_{it} = 1$, meaning that you study $i$ during period $t$, rather than ``if $i$ is selected?''. I'm pretty sure that, because you could choose to work in skill $i$, you need to specify if you're studying. Also, shouldn't the transition laws be $h_{it+1} = H_i (h_{it}, a_{it}, s_{it})$, since it depends on whether you study? This could also be fixed by chaning the ``if $i$ selected line.'' I would also call this transition law ``course outcome'' or ``studying outcome.''}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Optimal Policy}
+\subsubsection{Optimal Policy}
 
 Let $\tau$ be an \textbf{optimal stopping rule} defined over $\{ a_{j1}, a_{j2}, \dots \}$. Skill $j$ index: \nts{expected payoff if you commit to $j$}
 \begin{equation*}
@@ -189,6 +192,10 @@ Skill $j$ index given by:
 \end{equation*}
 
 \end{outline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Augmented model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 
