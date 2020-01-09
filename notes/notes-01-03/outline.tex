@@ -32,7 +32,18 @@
 \newcommand{\pr}[1]{\left( #1 \right)}
 \newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
 
+% Bibliography
+% Include introduction or not
+\usepackage[backend=biber,style=authoryear,citestyle=authoryear,maxcitenames=3,minbibnames=8,maxbibnames=15,uniquename=false]{biblatex}
 \addbibresource{../bibliography.bib}
+
+\newif\ifnobib
+\nobibtrue % uncomment to show 
+\ifnobib
+  \newcommand{\nobib}[1]{}
+\else
+  \newcommand{\nobib}[1]{#1}
+\fi
 
 \begin{document}
 \title{Notes on Human Capital Specialization}
@@ -137,7 +148,7 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Alon and Fershtman (2020)} \nocite{AF20}
+\subsection{Alon and Fershtman (2020)} \nobib{\nocite{AF20}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Preliminaries}
@@ -229,22 +240,6 @@ Define the graduation region of skill $j$ as:
    {(h_j, P_j)} = 0
    \right. \right\}
 \end{equation*}
-%%%%%%%%%%%%%%%%%%%
-% Parameterizations
-Given the parameterization of the problem, and letting $m_{jt} = \alpha_{jt} + \beta_{jt}$, these objects can be written as: 
-\begin{align*}
-\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = &
-\begin{cases}
-\frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
-\frac{h_{jt}}{1 - \delta} \sbr{
-   \frac{
-      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
-      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - m_{jt}}}
-   {m_{jt}}
-   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
-\end{cases} \\
-   \mathcal{G}_j = & \left\{ \alpha_{jt}, \beta_{jt} \left\vert m_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil \right. \right\}
-\end{align*}
 %%%%%%%%%%%%%%%%%%%%%%%%
 % Optimal policy theorem
 The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal: 
@@ -252,6 +247,29 @@ The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal:
 	\item At each $t \geq 0$, choose skill $j^* = \arg \max_{i \in N} \mathcal{I}_i$, breaking ties according to any rule
 	\item If $(h_{j^*}, P_{j^*}) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
 \end{enumerate}
+%%%%%%%%%%%%%%%%%%%
+% Parameterizations
+The current parameterization of the problem yields interesting analytical results. Letting $m_{jt}$ be the number of periods and individual spends studying $j$, the stopping condition in this problem simplifies to:
+\begin{equation*}
+	\frac{1- \delta}{\delta} \geq \frac{1}{m_j + \alpha_{j0} + \beta_{j0}}
+\end{equation*}
+This implies that the number of periods the individual spends studying skill $j$ before entering the labor market is deterministic: 
+\begin{equation}\label{bb-mj}
+	m_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+\end{equation}
+\begin{align*}
+\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = &
+\begin{cases}
+\frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+\frac{h_{jt}}{1 - \delta} \sbr{
+   \frac{
+      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - m_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {m_{jt} - \alpha_{j0} - \beta_{j0}}
+   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+\end{cases} \\
+   \mathcal{G}_j = & \left\{ \alpha_{jt}, \beta_{jt} \left\vert m_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
+\end{align*}
 
 % Notes/questions
 \nts{
@@ -332,21 +350,50 @@ This can be thought of the student's probability of success or failure in a part
 Thus, the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ represents a distribution of beliefs about probabilities.\footnote{For a nice, intuitive understanding of this, see \url{https://stats.stackexchange.com/q/47782}} 
 \item 
 Assume observed success rates in skill $j$ are equal for men and women:
-
-Suppose $\pr{\alpha_{j0}^g, \beta_{j0}^g}$ are formed based on previously observed data (i.e. existing group outcomes). 
-
 % https://www.users.csbsju.edu/~mgass/robert.pdf 
 % pg. 82 (70)
+A reasonable way to form a prior is to think of $\alpha$ and $\beta$ as previously observed data. The parameter $\alpha$ can be thought of previously observed ``successes'' (i.e. students of your group who did well), and $\alpha + \beta$ can be thought of as your previously observed sample size. 
+Specifically, assume that the average observed success rate is the same for the two groups:
+\begin{equation*}
+	\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
+	\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
+\end{equation*}
+However there are more observed cases of men than women:
+\begin{equation*}
+	\alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f
+\end{equation*}
 
-\item A reasonable way to form a prior is to think of $\alpha$ and $\beta$ as previously observed data.
+\item First note that, according to \eqref{bb-mj}, $m_j^{m*} \leq m_j^{w*}$. In words, if we suppose that a person ends up entering the labor market as a skill $j$ specialist, women will study more (they have more uncertainty about their underlying ability, and therefore need more information)
+
+\begin{blist}
+\item I have no idea if this is true, but I think this type of story could work given convergence in certain education outcomes. 
+
+\item The important intuitive note is that women need more certainty than men before entering the labor market in this field. 
+
+\item This makes sense though. We are defining the policy on $(\alpha_j, \beta_j)$. So if women have further to go to get to that same level of certainty, then they need to be in school for longer. 
+
+\item What's interesting for this case is the dynamics in the economy as a whole for this case. 
+
+\item Do we often see overeducated women? \nts{Could this feed into maternity outcomes? }
+\end{blist}
+
+\item Assuming a woman got to the same prior as a man, \nts{what happens? Is this interesting? }
+
+\item For the same $h_j$, men and women probably have different probabilities $P_j$. 
+The state of skill $j$ is summarized by $(m_j, h_j)$, but the parameterizations are different for men and women because of the different $\alpha$ and $\beta$.
+%Graduation region depends on $(h_{jt}, P_{jt})$.
+
+\item \nts{do a log transformation of the optimal stopping problem!}
 
 \end{blist}
+
+
 
 % bayes rule requires us to specify liklihood function. This is something i think we can connct to Loury
 
 
 % Rose talked about Texas A&M data on grades 
 
-\printbibliography
+\nobib{\printbibliography}
 
 \end{document}
