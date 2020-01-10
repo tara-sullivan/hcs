@@ -3,7 +3,7 @@
 \input{preamble.tex}
 
 \newif\ifnts
-\ntstrue % uncomment to show 
+%\ntstrue % uncomment to show 
 \input{preamble-outline.tex}
 
 % General problem, not bernoulli-beta example
@@ -22,6 +22,15 @@
   \newcommand{\intro}[1]{#1}
 \else
   \newcommand{\intro}[1]{}
+\fi
+
+% Include math notes or not
+\newif\ifmathnotes
+%\introtrue % uncomment to show 
+\ifmathnotes
+  \newcommand{\mathnotes}[1]{#1}
+\else
+  \newcommand{\mathnotes}[1]{}
 \fi
 
 \newcommand{\cc}{\mathbf{c}}
@@ -80,9 +89,6 @@
 
 \item Specifically consider choice of college major and the focus on student preparedness \textcite{AAH16} 
 
-
-
-
 \end{blist}
 
 \item Shortcomings of the literature I want to address: \nts{(still working through this)}
@@ -127,6 +133,9 @@
 % prior determined by existing outcomes
 % prior determined by statistical discrimination 
 % how you interpret shocks 
+
+
+% One nice thing about this being a partial equilibrium approach: human capital here is really just whether your investment in a class pays off in a higher wage in the future. There could still be frictions between your underlying ability and your wage. 
 
 \end{outline}
 
@@ -199,7 +208,8 @@ A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes:
       \nu_i, & \text{with prob. } \theta_i,  \\ 
       0, & \text{with prob. } 1 - \theta_i,
    \end{cases} 
-   \quad \quad h_{i0} = \alpha_{i0} \nu_i, \\
+   %\quad \quad h_{i0} = \alpha_{i0} \nu_i, 
+   \\
 \quad& P_{it+1} = \mathcal{B} (\alpha_{i,t+1}, \beta_{i,t+1}), 
    \quad \quad \theta_i \sim P_{i,0} \equiv \mathcal{B} (\alpha_{i0}, \beta_{i0})
    \quad \quad \text{if $i$ selected,} \\
@@ -223,40 +233,57 @@ Let $\tau$ be an optimal stopping rule defined over $\{ a_{j1}, a_{j2}, \dots \}
 % Skill j index
 Define the skill $j$ index as the expected payoff if you committed to studying $j$:
 %\gen{ 
-\begin{equation*}
+\begin{equation}\label{idx}
 \mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
 \ce{
    \sum_{t=0}^\infty \delta^t U_j (w_j, h_{jt}) \ell_{jt}}
    {(h_{j0}, P_{j0}) = (h_j, P_j))
 }
-\end{equation*}
+\end{equation}
 %%%%%%%%%%%%%%%%%%%
 % Graduation region
 Define the graduation region of skill $j$ as: 
-\begin{equation*}
+\begin{equation}\label{grad}
 \mathcal{G}_j = \left\{ (h_j, P_j) \left\vert
    \arg \max_{\tau \geq 0} 
    \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t U_j (w_j, h_j) \ell_{jt}}
    {(h_j, P_j)} = 0
    \right. \right\}
-\end{equation*}
+\end{equation}
 %%%%%%%%%%%%%%%%%%%%%%%%
 % Optimal policy theorem
 The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal: 
-\begin{enumerate}
+\begin{outline}
 	\item At each $t \geq 0$, choose skill $j^* = \arg \max_{i \in N} \mathcal{I}_i$, breaking ties according to any rule
 	\item If $(h_{j^*}, P_{j^*}) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
-\end{enumerate}
-%%%%%%%%%%%%%%%%%%%
-% Parameterizations
-The current parameterization of the problem yields interesting analytical results. Letting $m_{jt}$ be the number of periods and individual spends studying $j$, the stopping condition in this problem simplifies to:
+\end{outline}
+Assuming $h_{j0} \leq \nu \alpha_{j0}$ means that the stopping problem is monotonic.\nts{\footnote{I need better inutition about what this assumption means.}}
+The monotonicity of the stopping problem implies that one-step look-ahead is optimal.\nts{\footnote{
+	Should this statement go before or after the statement of the optimal policy? 
+	Is this statement fully correct? 
+}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Parameterizations}
+
+It is helpful to consider several types of parameterizations of this problem. 
+
+\begin{outline}
+
+%%%%%%%%%%%%%%%%%%%%%
+% Most tractable case
+
+\hitem{Assume $h_{j0} = \nu \alpha_{j0}$}
+
+Letting $c_{jt}$ be the number of periods and individual spends studying $j$, the stopping condition in this problem simplifies to:
 \begin{equation*}
-	\frac{1- \delta}{\delta} \geq \frac{1}{m_j + \alpha_{j0} + \beta_{j0}}
+	\frac{1- \delta}{\delta} \geq \frac{1}{c_{jt} + \alpha_{j0} + \beta_{j0}}
 \end{equation*}
 This implies that the number of periods the individual spends studying skill $j$ before entering the labor market is deterministic: 
 \begin{equation}\label{bb-mj}
-	m_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+	c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
 \end{equation}
+Under this assumption, the optimal policy can written analytically:
 \begin{align*}
 \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = &
 \begin{cases}
@@ -264,24 +291,40 @@ This implies that the number of periods the individual spends studying skill $j$
 \frac{h_{jt}}{1 - \delta} \sbr{
    \frac{
       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
-      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - m_{jt} - \alpha_{j0} - \beta_{j0}}}
-   {m_{jt} - \alpha_{j0} - \beta_{j0}}
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {c_{jt} - \alpha_{j0} - \beta_{j0}}
    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
 \end{cases} \\
-   \mathcal{G}_j = & \left\{ \alpha_{jt}, \beta_{jt} \left\vert m_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
+   \mathcal{G}_j = & \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
 \end{align*}
-
 % Notes/questions
 \nts{
-\begin{itemize}
+\begin{blist}
    \item Shouldn't it be $\mathcal{G}_{j^*}$?
    \item Shouldn't $\tau$ be indexed by $j$?
    \item Is graduation region based on OSLA or initial conditions? I think that when I have some of my ECON200B notes around, I should think about how I could more cleanly write the optimal stopping rule. May it would be clearer to write $\tau_j$?
-\end{itemize}
-
+\end{blist}
 }
 
+%%%%%%%%%%%%%%%%%%%%%
+% More reasonable case
+
+\hitem{Assume $h_{j0} \leq \nu \alpha_{j0}$}
+
+The stopping condition in this problem simplifies to:
+\begin{equation}\label{stop}
+	\frac{1- \delta}{\delta} \geq 
+	\frac{\nu \alpha_{j0} + h_{jt} - h_{j0}}{h_j(c_{jt} + \alpha_{j0} + \beta_{j0})}
+\end{equation}
+The index and graduation region are modified accordingly. 
+
+\end{outline}
+
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\mathnotes{
 \subsubsection*{Math notes}
 
 Math theorem: If stopping time problem monotonic, then OSLA (one-step look-ahead) stopping rule optimal. 
@@ -326,7 +369,7 @@ Using the fact that $h_{jt} = h_{j0} + \nu (\alpha_{jt} - \alpha_0)$ and the ass
 \end{equation*} 
 \nts{I'm not finishing this right now. But it's worth noting that, in the notes that Titan gave me, a sufficient condition for monotonicity in the beta-Bernoulli problem is that $h_{j0} = \alpha_{j0} h_{j0}$. So I know that you can prove that, under this assumption, the problem is monotonic. I might need to relax that assumption for my model, but it doesn't need to be a problem.}
 \end{blist}
-
+} % end of optional math notes section
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -334,20 +377,23 @@ Using the fact that $h_{jt} = h_{j0} + \nu (\alpha_{jt} - \alpha_0)$ and the ass
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\subsubsection{Preliminaries}
+\subsubsection{Preliminaries}
 
-I now consider how at student's membership in a particular group influences specialization decisions. 
+\begin{blist}
+
+
+
+\item I now consider how at student's membership in a particular group influences specialization decisions. 
 For example, let $g \in \{ m, f \}$ denote gender,\nts{\footnote{\nts{I think a cool thing to do would be to prove this for countably infinite types, and see what that means. That could provide ways of valuing diversity? Or something?}}}  
 and assume that the distributions of underlying abilities, $\theta_j$, are the same for men and women.
 However, initial beliefs about underlying abilities, $P_{j0}^g \equiv \mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ are different for men and women. 
 \nts{Be specific about what this will do.}
 
-\begin{blist}
-
 \item The parameter $\theta_j$ is the probability that a student successfully increases their human capital if they take a course. 
 This can be thought of the student's probability of success or failure in a particular field $j$.\footnote{
    It is worth highlighting that the following assumes that probability of success or failure is independent and stationary throughout time.}
 Thus, the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ represents a distribution of beliefs about probabilities.\footnote{For a nice, intuitive understanding of this, see \url{https://stats.stackexchange.com/q/47782}} 
+
 \item 
 Assume observed success rates in skill $j$ are equal for men and women:
 % https://www.users.csbsju.edu/~mgass/robert.pdf 
@@ -355,38 +401,81 @@ Assume observed success rates in skill $j$ are equal for men and women:
 A reasonable way to form a prior is to think of $\alpha$ and $\beta$ as previously observed data. The parameter $\alpha$ can be thought of previously observed ``successes'' (i.e. students of your group who did well), and $\alpha + \beta$ can be thought of as your previously observed sample size. 
 Specifically, assume that the average observed success rate is the same for the two groups:
 \begin{equation*}
+\mu_0 = 
 	\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
 	\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
 \end{equation*}
 However there are more observed cases of men than women:
 \begin{equation*}
-	\alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f
+	n_0^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_0^w
 \end{equation*}
+Note that the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can also be specified as $\mathcal{B} \pr{\mu_0 n_0^g, (1 - \mu_0) n_0^g}$.
 
-\item First note that, according to \eqref{bb-mj}, $m_j^{m*} \leq m_j^{w*}$. In words, if we suppose that a person ends up entering the labor market as a skill $j$ specialist, women will study more (they have more uncertainty about their underlying ability, and therefore need more information)
+
+\end{blist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Results}
+
+\begin{outline}
+
+%%%%%%%%%%%%%%%%%%%%%
+% Most tractable case
+
+\hitem{Assume $h_{j0} = \nu \alpha_{j0}$}
+
+This is a strong assumption, and one that I'm not particularly fond of because it implies that if $\alpha_{j0}^w < \alpha_{j0}^m$, then initial human capital starts out lower for women. 
+However, it provides a simplification that highlights useful features of the model. 
 
 \begin{blist}
-\item I have no idea if this is true, but I think this type of story could work given convergence in certain education outcomes. 
 
-\item The important intuitive note is that women need more certainty than men before entering the labor market in this field. 
+\item First note that, according to \eqref{bb-mj}, $c_j^{m*} \leq c_j^{w*}$. 
+In words, a woman entering the labor force as a skill $j$ specialist must study more than a man doing the same.  (they have more uncertainty about their underlying ability, and therefore need more information).
+In part, this is a mechanical result, since women are assumed to begin at lower levels of human capital than men in this scenario. 
+The important intuition is that women have more uncertainty than men with respect to their abilities.
+They therefore need to spend more time studying to build up certainty before entering the labor market in this field. \nts{Need to check this, but this feels pretty much correct.}
 
-\item This makes sense though. We are defining the policy on $(\alpha_j, \beta_j)$. So if women have further to go to get to that same level of certainty, then they need to be in school for longer. 
+% This is probably a no, but could this be helpful for understanding convergence in education outcomes? 
 
-\item What's interesting for this case is the dynamics in the economy as a whole for this case. 
+% What's interesting for this case is the dynamics in the economy as a whole for this case. 
 
-\item Do we often see overeducated women? \nts{Could this feed into maternity outcomes? }
+% Do we often see overeducated women? \nts{Could this feed into maternity outcomes? }
+
+\item The graduation region in \eqref{grad} can now be written as:
+\begin{equation*}
+	\mathcal{G}_j = \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq c_j^* \right. \right\}.
+\end{equation*}
+Because $c_j^{m*} \leq c_j^{w*}$, there are values of $(h_{jt}, c_{jt})$ such that men will not continue on, but women will. 
+
+\item Finally, I believe that, given $(h_{jt}, c_{jt})$, the continuation payoff of staying in $j$ is larger for men than for women. \nts{I do want to check my math on this. }
+
 \end{blist}
 
-\item Assuming a woman got to the same prior as a man, \nts{what happens? Is this interesting? }
+%%%%%%%%%%%%%%%%%%%%%
+% More reasonable case
 
-\item For the same $h_j$, men and women probably have different probabilities $P_j$. 
-The state of skill $j$ is summarized by $(m_j, h_j)$, but the parameterizations are different for men and women because of the different $\alpha$ and $\beta$.
-%Graduation region depends on $(h_{jt}, P_{jt})$.
+\hitem{Assume $h_{j0} \leq \nu \alpha_{j0}$}
 
-\item \nts{do a log transformation of the optimal stopping problem!}
+The stopping condition \eqref{stop} can be written using the alternative parameterization: 
+\begin{equation*}
+	\frac{1- \delta}{\delta} \geq 
+	\frac{\nu n_{j0} \mu_{j0} + h_{jt} - h_{j0}}{h_{jt}(c_{jt} + n_{j0})}
+\end{equation*}
+The left-hand side of this equation is decreasing in $n$ if $c_{jt} \mu < \frac{h_{jt} - h_{j0}}{\nu}$. 
+Thus, a small sample size leads to a broader graduation region if $c_{jt} \mu < \frac{h_{jt} - h_{j0}}{\nu}$.
+Intuitively, this condition means that the amount of time you expected to succeed in this many courses is less than the amount of time you actually succeeded. 
+This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, where as men will continue on. 
+%Intuitively, this means that your expected success rate conditional only on means is less than your observed success rate. Intuitively, marginal women who have been unlucky will exit, whereas men will continue on. 
 
-\end{blist}
+% Next: consider what this means for continuation values, if anything
+% Then: what does it mean in the context of affirmative action papers (maybe start with this first)
 
+\end{outline}
+
+
+% Next: what does this imply if you fail and you're a woman? What about if you fail and you're a man? 
+
+% Show that after failure, women might quit whereas men continue on
 
 
 % bayes rule requires us to specify liklihood function. This is something i think we can connct to Loury
