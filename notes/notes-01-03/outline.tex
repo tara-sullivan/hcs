@@ -3,7 +3,7 @@
 \input{preamble.tex}
 
 \newif\ifnts
-%\ntstrue % uncomment to show 
+\ntstrue % uncomment to show 
 \input{preamble-outline.tex}
 
 % General problem, not bernoulli-beta example
@@ -47,7 +47,7 @@
 \addbibresource{../bibliography.bib}
 
 \newif\ifnobib
-\nobibtrue % uncomment to show 
+%\nobibtrue % uncomment to show 
 \ifnobib
   \newcommand{\nobib}[1]{}
 \else
@@ -266,7 +266,7 @@ The monotonicity of the stopping problem implies that one-step look-ahead is opt
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Parameterizations}
 
-It is helpful to consider several types of parameterizations of this problem. 
+It is helpful to consider several typues of parameterizations of this problem. 
 
 \begin{outline}
 
@@ -401,15 +401,15 @@ Assume observed success rates in skill $j$ are equal for men and women:
 A reasonable way to form a prior is to think of $\alpha$ and $\beta$ as previously observed data. The parameter $\alpha$ can be thought of previously observed ``successes'' (i.e. students of your group who did well), and $\alpha + \beta$ can be thought of as your previously observed sample size. 
 Specifically, assume that the average observed success rate is the same for the two groups:
 \begin{equation*}
-\mu_0 = 
+\mu_{j0} = 
 	\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
 	\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
 \end{equation*}
 However there are more observed cases of men than women:
 \begin{equation*}
-	n_0^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_0^w
+	n_{j0}^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_{j0}^w
 \end{equation*}
-Note that the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can also be specified as $\mathcal{B} \pr{\mu_0 n_0^g, (1 - \mu_0) n_0^g}$.
+Note that the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can also be specified as $\mathcal{B} \pr{\mu_{j0} n_{j0}^g, (1 - \mu_{j0}) n_{j0}^g}$.
 
 
 \end{blist}
@@ -461,8 +461,8 @@ The stopping condition \eqref{stop} can be written using the alternative paramet
 	\frac{1- \delta}{\delta} \geq 
 	\frac{\nu n_{j0} \mu_{j0} + h_{jt} - h_{j0}}{h_{jt}(c_{jt} + n_{j0})}
 \end{equation*}
-The left-hand side of this equation is decreasing in $n$ if $c_{jt} \mu < \frac{h_{jt} - h_{j0}}{\nu}$. 
-Thus, a small sample size leads to a broader graduation region if $c_{jt} \mu < \frac{h_{jt} - h_{j0}}{\nu}$.
+The left-hand side of this equation is decreasing in $n$ if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$. 
+Thus, a small sample size leads to a broader graduation region if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$.
 Intuitively, this condition means that the amount of time you expected to succeed in this many courses is less than the amount of time you actually succeeded. 
 This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, where as men will continue on. 
 %Intuitively, this means that your expected success rate conditional only on means is less than your observed success rate. Intuitively, marginal women who have been unlucky will exit, whereas men will continue on. 
@@ -476,6 +476,49 @@ This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for w
 % Next: what does this imply if you fail and you're a woman? What about if you fail and you're a man? 
 
 % Show that after failure, women might quit whereas men continue on
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Aggregate}
+
+\begin{blist}
+
+\item What happens in aggregate? This is what I could use some help on. 
+
+\item Intuition: fewer women select into certain fields 
+
+\end{blist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Statistical discrimination}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{blist}
+
+\item Discrimination: women with identical abilities are treated less favorably than men in certain fields. 
+
+\item If fewer women select into field $j$ then men, then there could be a difference in means
+
+\end{blist}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Affirmative Action}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Key: how is prior formed}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\begin{blist}
+
+\item How prior formed is key, and consistent with a number of stories regarding discrimination
+
+\item One possible story: role model story. then this is consistent with some convergence results between men and women.
+
+\item However, doesn't explain everything. What if the prior is because of other factors?
+
+\end{blist}
+
 
 
 % bayes rule requires us to specify liklihood function. This is something i think we can connct to Loury
