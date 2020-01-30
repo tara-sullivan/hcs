@@ -19,6 +19,7 @@
 
 % Define fixw
 \newcommand{\fixw}{28pt}
+\newcommand{\fixwh}{14pt}
 
 % (C) Define colors
 \newcommand{\secc}[1]{{\color{DarkGreen}#1}} % section color
@@ -48,3 +49,15 @@
 \newlist{blist}{itemize}{2}
 \setlist[blist,1]{label=\textbullet,left=0pt .. \fixw}
 \setlist[blist,2]{label=\textendash,left=0pt .. \fixw}
+
+%%%%%%%%%%
+% Enumerate in footnote
+\newlist{footcount}{enumerate}{1}
+\setlist[footcount]{label=(\alph*),left=0pt .. \fixw}
+
+%%%%%%%%%%
+% No indent in footnotes
+\usepackage[flushmargin,hang]{footmisc}
+
+%\usepackage[marginal]{footmisc}
+%\setlength\footnotemargin{5pt}  % default value: 1.8em

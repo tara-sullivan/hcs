@@ -3,7 +3,7 @@
 \input{preamble.tex}
 
 \newif\ifnts
-\ntstrue % uncomment to show 
+%\ntstrue % uncomment to show 
 \input{preamble-outline.tex}
 
 % General problem, not bernoulli-beta example
@@ -54,7 +54,12 @@
   \newcommand{\nobib}[1]{#1}
 \fi
 
+% To find size of textwidth, part 1. 
+%\usepackage{layouts}
 \begin{document}
+% To find size of textwidth, part 2 (6.50127in)
+%\printinunitsof{in}\prntlen{\textwidth}
+
 \title{Notes on Human Capital Specialization}
 \author{Tara Sullivan}
 
@@ -73,6 +78,18 @@
 % priors informed by existin group outcomes
 % formalizes self-fulfiling prohpecies 
 % provides a framework for quantifiying the inefficiencies associated with human capital specialization 
+% 
+
+% uncertainty surrounding the returns to success. 
+
+% a bit of a jargon-y note: "role model" in an academic sense
+% Mayor Pete: there isn't someone who they know personally who estifies to the value of education
+% This is incorrect
+
+% what if you see that the employment rate is twice as high for white grads 
+
+% chance to fail 
+
 % 
 
 \begin{outline}
@@ -314,7 +331,7 @@ Under this assumption, the optimal policy can written analytically:
 The stopping condition in this problem simplifies to:
 \begin{equation}\label{stop}
 	\frac{1- \delta}{\delta} \geq 
-	\frac{\nu \alpha_{j0} + h_{jt} - h_{j0}}{h_j(c_{jt} + \alpha_{j0} + \beta_{j0})}
+	\frac{\nu \alpha_{j0} + h_{jt} - h_{j0}}{h_{jt}(c_{jt} + \alpha_{j0} + \beta_{j0})}
 \end{equation}
 The index and graduation region are modified accordingly. 
 
@@ -383,33 +400,74 @@ Using the fact that $h_{jt} = h_{j0} + \nu (\alpha_{jt} - \alpha_0)$ and the ass
 
 
 
-\item I now consider how at student's membership in a particular group influences specialization decisions. 
-For example, let $g \in \{ m, f \}$ denote gender,\nts{\footnote{\nts{I think a cool thing to do would be to prove this for countably infinite types, and see what that means. That could provide ways of valuing diversity? Or something?}}}  
-and assume that the distributions of underlying abilities, $\theta_j$, are the same for men and women.
-However, initial beliefs about underlying abilities, $P_{j0}^g \equiv \mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ are different for men and women. 
+\item I now consider how a student's human capital specialization decisions are affected by their group.
+This involves augmenting the above model so that each student has a group type, $g$.
+To keep things simple, assume there are only two groups, men and women ($g \in \{m, f\}$).\nts{\footnote{\nts{Possible extension: countably infinite types. What does this mean if you value diversity? Could you get results like diversity helps students who are not in the targeted group to assist?}}} 
+The distributions of underlying abilities, $\theta_j$, are the same for men and women.\nts{\footnote{\nts{
+  What is the maintained hypothesis in a Bayesian problem?
+  Am I assuming that $\theta_j$ is distributed 
+}}}
+However, initial beliefs about underlying abilities, $P_{j0}^g \equiv \mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$, are different for the two groups.
 \nts{Be specific about what this will do.}
 
-\item The parameter $\theta_j$ is the probability that a student successfully increases their human capital if they take a course. 
-This can be thought of the student's probability of success or failure in a particular field $j$.\footnote{
+\item 
+\nts{The following would maybe be in the initial model description:}
+The ability parameter $\theta_j$ is the probability that a student successfully improves their human capital in subject $j$ after studying it for one period.
+A student's decision to enter a particular field depends in part on how much human capital they can expect to successfully acquire, and therefore depends on $\theta_j$.
+It may be helpful to think of $\theta_j$ as the student's probability of success or failure in a particular course in field $j$.\footnote{
    It is worth highlighting that the following assumes that probability of success or failure is independent and stationary throughout time.}
-Thus, the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ represents a distribution of beliefs about probabilities.\footnote{For a nice, intuitive understanding of this, see \url{https://stats.stackexchange.com/q/47782}} 
+The distribution of beliefs about $\theta_j$ %, $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$, 
+is a distribution of beliefs about probabilities.\nts{\footnote{\nts{For a nice, intuitive understanding of this, see \url{https://stats.stackexchange.com/q/47782}}}}
+How these beliefs are formed is central to this paper.
 
 \item 
-Assume observed success rates in skill $j$ are equal for men and women:
+%A student may use previously observed success rates to their prior about their probability of success may use 
+A student may form their belief about their probability of success using existing outcomes for their group.
+For this example, suppose a type $g$ student's belief about their own $\theta_j^g$ is based on previously observed success rates for group $g$. 
+Let $\alpha_{j0}^g$ and $\beta_{j0}^g$ denote the number of type $g$ students who have succeeded and failed in field $j$ at time 0, respectively.\footnote{
+   I am being purposefully vague about what ``studying'' and ``succeeding'' represent.
+   For example, the number of ``successful'' students could be:
+   \begin{footcount}
+      \item The number of students who graduated into field $j$
+      \item The number of students who attain human capital $h_j$
+      \item Both (a) and (b)
+      \item The number of students who pass an initial course in field $j$
+    \end{footcount} 
+   Many other examples are possible. The total number of observed students who attempt success would need to account for those who tried going this route and failed. 
+  \nts{
+  This is tricky, and very important. 
+  How this endogenously responds is super key; I may run into complications here regarding how this belief updates. I'm assuming that you form your belief when you enter the field, and then that doesn't change at all. It doesn't allow for leaky pipelines to impact beliefs, but this could probably be changed.}
+}  
+Then the observed success rate, $\mu_{j}^g$, is given by:
+\begin{equation*}
+\mu_{j0}^g = 
+  \frac{\alpha_{j0}^m}{\alpha_{j0}^g + \beta_{j0}^g}.
+  %\mu_{j0} = 
+  %\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
+  %\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
+\end{equation*}
+This average is based on a sample of type $g$ students of size $n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g$.
+Note that the prior distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can now be specified using an alternative parameterization, $\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}$.
+
+\item
+Assume the sample size of men is larger than that of women, but the observed success rate is the same for the two groups:
+\begin{equation*}
+  n_{j0}^m > n_{j0}^f, \quad \quad \mu_{j0} = \mu_{j0}^m = \mu_{j0}^w.
+  %n_{j0}^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_{j0}^w
+\end{equation*}
+%Assuming the prior on $\theta_j$ follows a $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ distribution, this yields the following parameterization:
+This implies that women have more uncertainty regarding their underlying abilities than men. 
+\begin{figure}
+\begin{center}
+\input{img/beta/beta_example.pgf}
+\end{center}
+\end{figure}
+
 % https://www.users.csbsju.edu/~mgass/robert.pdf 
 % pg. 82 (70)
-A reasonable way to form a prior is to think of $\alpha$ and $\beta$ as previously observed data. The parameter $\alpha$ can be thought of previously observed ``successes'' (i.e. students of your group who did well), and $\alpha + \beta$ can be thought of as your previously observed sample size. 
-Specifically, assume that the average observed success rate is the same for the two groups:
-\begin{equation*}
-\mu_{j0} = 
-	\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
-	\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
-\end{equation*}
-However there are more observed cases of men than women:
-\begin{equation*}
-	n_{j0}^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_{j0}^w
-\end{equation*}
-Note that the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can also be specified as $\mathcal{B} \pr{\mu_{j0} n_{j0}^g, (1 - \mu_{j0}) n_{j0}^g}$.
+
+
+
 
 
 \end{blist}
@@ -424,16 +482,24 @@ Note that the beta distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ c
 
 \hitem{Assume $h_{j0} = \nu \alpha_{j0}$}
 
-This is a strong assumption, and one that I'm not particularly fond of because it implies that if $\alpha_{j0}^w < \alpha_{j0}^m$, then initial human capital starts out lower for women. 
-However, it provides a simplification that highlights useful features of the model. 
+This is a strong assumption, and one that I'm not particularly fond of; it implies that $h_{j0}^w < h_{j0}^m$, meaning initial human capital starts out lower for women. 
+However, it provides a simplification that highlights useful features of the model.\nts{\footnote{\nts{
+  This might not be that bad. Human capital $h$ is how much the market values your success in courses. 
+  If the market values women less, they might have more to prove. 
+  That view ignores the genuine returns to education, so it would be tricky to make that argument.
+}}} 
 
 \begin{blist}
 
 \item First note that, according to \eqref{bb-mj}, $c_j^{m*} \leq c_j^{w*}$. 
-In words, a woman entering the labor force as a skill $j$ specialist must study more than a man doing the same.  (they have more uncertainty about their underlying ability, and therefore need more information).
-In part, this is a mechanical result, since women are assumed to begin at lower levels of human capital than men in this scenario. 
+Intuitively, women who become $j$-specialists study more than men. 
+This is somewhat mechanical, because this assumption implies that women begin with lower levels of human capital.
+This is because women have more uncertainty regarding their underlying ability. 
+
+This is because women have more uncertainty about their underlying ability, and therefore need more information.
+This is a somewhat mechanical result, since women are assumed to begin at lower levels of human capital than men in this scenario. 
 The important intuition is that women have more uncertainty than men with respect to their abilities.
-They therefore need to spend more time studying to build up certainty before entering the labor market in this field. \nts{Need to check this, but this feels pretty much correct.}
+They therefore need to spend more time studying to build up certainty before entering the labor market in this field.
 
 % This is probably a no, but could this be helpful for understanding convergence in education outcomes? 
 
@@ -464,7 +530,7 @@ The stopping condition \eqref{stop} can be written using the alternative paramet
 The left-hand side of this equation is decreasing in $n$ if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$. 
 Thus, a small sample size leads to a broader graduation region if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$.
 Intuitively, this condition means that the amount of time you expected to succeed in this many courses is less than the amount of time you actually succeeded. 
-This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, where as men will continue on. 
+This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, whereas men will continue on. 
 %Intuitively, this means that your expected success rate conditional only on means is less than your observed success rate. Intuitively, marginal women who have been unlucky will exit, whereas men will continue on. 
 
 % Next: consider what this means for continuation values, if anything
@@ -510,6 +576,7 @@ This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for w
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \begin{blist}
+% Endogenously determined prior
 
 \item How prior formed is key, and consistent with a number of stories regarding discrimination
 
@@ -519,12 +586,19 @@ This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for w
 
 \end{blist}
 
-
+% human capital differentiates meaningful returns to labor. 
+% if you're uncertain about whether your efforts in school will meaningfully impact your wages, then you may not want to continue on a given path.
 
 % bayes rule requires us to specify liklihood function. This is something i think we can connct to Loury
 
 
 % Rose talked about Texas A&M data on grades 
+
+
+
+
+
+
 
 \nobib{\printbibliography}
 
