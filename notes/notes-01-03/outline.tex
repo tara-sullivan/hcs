@@ -54,11 +54,16 @@
   \newcommand{\nobib}[1]{#1}
 \fi
 
+% remove space 
+\usepackage[font=small,skip=0pt]{caption}
+
 % To find size of textwidth, part 1. 
 %\usepackage{layouts}
 \begin{document}
 % To find size of textwidth, part 2 (6.50127in)
 %\printinunitsof{in}\prntlen{\textwidth}
+
+
 
 \title{Notes on Human Capital Specialization}
 \author{Tara Sullivan}
@@ -309,7 +314,7 @@ Under this assumption, the optimal policy can written analytically:
    \frac{
       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
-   {c_{jt} - \alpha_{j0} - \beta_{j0}}
+   {c_{jt} + \alpha_{j0} + \beta_{j0}}
    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
 \end{cases} \\
    \mathcal{G}_j = & \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
@@ -423,7 +428,7 @@ How these beliefs are formed is central to this paper.
 \item 
 %A student may use previously observed success rates to their prior about their probability of success may use 
 A student may form their belief about their probability of success using existing outcomes for their group.
-For this example, suppose a type $g$ student's belief about their own $\theta_j^g$ is based on previously observed success rates for group $g$. 
+For this example, suppose a type $g$ student's belief about their own ability is based on previously observed success rates for group $g$. 
 Let $\alpha_{j0}^g$ and $\beta_{j0}^g$ denote the number of type $g$ students who have succeeded and failed in field $j$ at time 0, respectively.\footnote{
    I am being purposefully vague about what ``studying'' and ``succeeding'' represent.
    For example, the number of ``successful'' students could be:
@@ -447,7 +452,7 @@ Then the observed success rate, $\mu_{j}^g$, is given by:
   %\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
 \end{equation*}
 This average is based on a sample of type $g$ students of size $n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g$.
-Note that the prior distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can now be specified using an alternative parameterization, $\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}$.
+Note that the prior distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can now be specified using the alternative parameterization, $\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}$.
 
 \item
 Assume the sample size of men is larger than that of women, but the observed success rate is the same for the two groups:
@@ -456,12 +461,15 @@ Assume the sample size of men is larger than that of women, but the observed suc
   %n_{j0}^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_{j0}^w
 \end{equation*}
 %Assuming the prior on $\theta_j$ follows a $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ distribution, this yields the following parameterization:
-This implies that women have more uncertainty regarding their underlying abilities than men. 
-\begin{figure}
+This implies that women have more uncertainty regarding their underlying abilities than men.  
+\begin{figure}[htb]
 \begin{center}
 \input{img/beta/beta_example.pgf}
 \end{center}
+\caption{Example of Beta distribution}
+\label{beta_distribution}
 \end{figure}
+Figure \ref{beta_distribution} provides a numerical example for how these assumptions affect the priors of men and women. 
 
 % https://www.users.csbsju.edu/~mgass/robert.pdf 
 % pg. 82 (70)
@@ -493,27 +501,29 @@ However, it provides a simplification that highlights useful features of the mod
 
 \item First note that, according to \eqref{bb-mj}, $c_j^{m*} \leq c_j^{w*}$. 
 Intuitively, women who become $j$-specialists study more than men. 
-This is somewhat mechanical, because this assumption implies that women begin with lower levels of human capital.
-This is because women have more uncertainty regarding their underlying ability. 
+The key takeaway is that women have more uncertainty regarding their underlying abilities, and therefore need to spend more time studying to build up certainty before entering the labor market in this field.\footnote{
+   It is worth noting that this result is somewhat mechanical; assuming that $h_{j0} = \nu \alpha_{j0}$ implies that women begin with lower levels of human capital.
+   Greater uncertainty and lower human capital go hand in hand. 
+   Nevertheless, this provides a useful starting point.
 
-This is because women have more uncertainty about their underlying ability, and therefore need more information.
-This is a somewhat mechanical result, since women are assumed to begin at lower levels of human capital than men in this scenario. 
-The important intuition is that women have more uncertainty than men with respect to their abilities.
-They therefore need to spend more time studying to build up certainty before entering the labor market in this field.
-
+}   
 % This is probably a no, but could this be helpful for understanding convergence in education outcomes? 
-
 % What's interesting for this case is the dynamics in the economy as a whole for this case. 
-
 % Do we often see overeducated women? \nts{Could this feed into maternity outcomes? }
 
-\item The graduation region in \eqref{grad} can now be written as:
+
+\item The skill-$j$ graduation region in \eqref{grad} can now be written as:
 \begin{equation*}
-	\mathcal{G}_j = \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq c_j^* \right. \right\}.
+	\mathcal{G}_j^g = \left\{ \alpha_{jt}^g, \beta_{jt}^g \left\vert c_{jt} \geq c_j^* \right. \right\}.
 \end{equation*}
 Because $c_j^{m*} \leq c_j^{w*}$, there are values of $(h_{jt}, c_{jt})$ such that men will not continue on, but women will. 
 
-\item Finally, I believe that, given $(h_{jt}, c_{jt})$, the continuation payoff of staying in $j$ is larger for men than for women. \nts{I do want to check my math on this. }
+%\item Finally, I believe that, given $(h_{jt}, c_{jt})$, the continuation payoff of staying in $j$ is larger for men than for women. \nts{I do want to check my math on this. }
+
+%A man and woman with the same $(h_{jt}, c_{jt})$ got there because the woman succeeded more and/or the man failed more. 
+
+% Looking at python this seems wrong. Oops!
+
 
 \end{blist}
 
@@ -542,6 +552,8 @@ This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for w
 % Next: what does this imply if you fail and you're a woman? What about if you fail and you're a man? 
 
 % Show that after failure, women might quit whereas men continue on
+
+\nts{
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Aggregate}
@@ -597,7 +609,7 @@ This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for w
 
 
 
-
+} % end nts
 
 
 \nobib{\printbibliography}
