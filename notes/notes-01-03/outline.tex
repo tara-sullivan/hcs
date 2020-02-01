@@ -466,7 +466,7 @@ This implies that women have more uncertainty regarding their underlying abiliti
 \begin{center}
 \input{img/beta/beta_example.pgf}
 \end{center}
-\caption{Example of Beta distribution}
+\caption{Example of Beta distributions}
 \label{beta_distribution}
 \end{figure}
 Figure \ref{beta_distribution} provides a numerical example for how these assumptions affect the priors of men and women. 
@@ -535,12 +535,24 @@ Because $c_j^{m*} \leq c_j^{w*}$, there are values of $(h_{jt}, c_{jt})$ such th
 The stopping condition \eqref{stop} can be written using the alternative parameterization: 
 \begin{equation*}
 	\frac{1- \delta}{\delta} \geq 
-	\frac{\nu n_{j0} \mu_{j0} + h_{jt} - h_{j0}}{h_{jt}(c_{jt} + n_{j0})}
+	\frac{\nu n_{j0} \mu_{j0} + h_{jt} - h_{j0}}{h_{jt}(c_{jt} + n_{j0})} 
 \end{equation*}
-The left-hand side of this equation is decreasing in $n$ if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$. 
-Thus, a small sample size leads to a broader graduation region if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$.
+I am interested in cases where a women might quit field $j$ while a man might continue on. 
+The primary difference between men and women in this model is that men have a larger $n_{j0}^g$. 
+Therefore, I examine how this condition changes for men and women with the same values of $(h_{j0}, h_{jt}, c_{jt})$.
+
+\begin{blist}
+
+\item Consider the case where $c_{jt}^g \mu_{j0} < \frac{h_{jt}^g - h_{j0}^g}{\nu}$.
+The LHS of this inequality is the number of successes this student expected to have. 
+The RHS of this inequality are your realized human capital gains.
 Intuitively, this condition means that the amount of time you expected to succeed in this many courses is less than the amount of time you actually succeeded. 
-This means that there exist men and women with the same $(h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, whereas men will continue on. 
+
+\item The RHS of the stopping condition is decreasing in $n_{j0}^g$ if $c_{jt} \mu_{j0} < \frac{h_{jt} - h_{j0}}{\nu}$, and therefore is smaller for men than for women. 
+This means that there exist men and women with the same $(h_{j0}, h_{jt}, c_{jt})$ for whom the smaller sample size $n_{j0}^w$ will cause women to leave the field, whereas men will continue on. 
+
+\end{blist}
+
 %Intuitively, this means that your expected success rate conditional only on means is less than your observed success rate. Intuitively, marginal women who have been unlucky will exit, whereas men will continue on. 
 
 % Next: consider what this means for continuation values, if anything
