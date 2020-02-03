@@ -3,8 +3,15 @@ set more off
 set type double
 clear all
 
-cd "Z:\hcs"
+if "`c(os)'" == "MacOSX" {
+	cd "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/"
+}
+else {
+	cd "Z:\hcs"
+}
+
 *do Z:\hcs\code\ipeds\ipeds_clean.do
+*do "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/code/ipeds/ipeds_clean.do"
 
 local datapath "data/ipeds"
 
