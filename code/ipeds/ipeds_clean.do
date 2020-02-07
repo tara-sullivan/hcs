@@ -3,7 +3,7 @@ set more off
 set type double
 clear all
 
-local readdata 1
+local readdata 0
 local cipnames 0
 
 if "`c(os)'" == "MacOSX" {
@@ -128,8 +128,11 @@ if `cipnames' {
 * for blank names:
 * import excel "`datapath'/cip2000to2010.xls", clear sheet("CIP2000")
 
+
 ********************************************************************************
 * 1985 to 1990 concordance
+
+* Read in crosswalk
 import excel "`datapath'/cip1985to2000.xls", clear sheet("Crosswalk_CIP85toCIP90") firstrow
 
 * some edits and checks
@@ -140,7 +143,7 @@ replace cipcode1985 = strtrim(cipcode1985)
 replace cipcode1990 = strtrim(cipcode1990)
 
 gen ciplen = strlen(regexr(cipcode1985,"\.",""))
-assert ciplen == 0 | ciplen == 2 | ciplen == 4 | ciplen == 6
+assert ciplen == 6
 
 * keep concordance
 
@@ -293,11 +296,17 @@ tab _merge if (year < 1990) & cipcode != "99"
 *br if (year < 1990) & cipcode != "99" & _merge != 3
 tab year if (year < 1990) & cipcode != "99" & _merge != 3
 
- gen cipcode2000 = cipcode if (year >= 2000 & year < 2010)
- merge m:1 cipcode2000 using `cip2000to2010'
 
- tab _merge if (year >= 2000 & year < 2010) & cipcode != "99"
- * notice that 3.88% dont have a match
+*****************************
+* 2.C. Merge in 2010 CIP code
+
+gen cipcode2000 = cipcode if (year >= 2000 & year < 2010)
+merge m:1 cipcode2000 using `cip2000to2010'
+
+tab _merge if (year >= 2000 & year < 2010) & cipcode != "99"
+br if (year >= 2000 & year < 2010) & cipcode != "99" & _merge  != 3
+
+* notice that 3.88% dont have a match
 
 
 * generate two digit and four digit cip codes
