@@ -3,7 +3,8 @@ set more off
 set type double
 clear all
 
-local readdata 0
+local readdata 1
+* note: might want to remove cipnames local;
 local cipnames 0
 
 if "`c(os)'" == "MacOSX" {
