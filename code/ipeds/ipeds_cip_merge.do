@@ -13,37 +13,67 @@ else {
 	cd "Z:\hcs"
 }
 
+*global runit do Z:\hcs\code\ipeds\ipeds_cip_merge.do
 *do Z:\hcs\code\ipeds\ipeds_cip_merge.do
 *do "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/code/ipeds/ipeds_clean.do"
 
 local datapath "data/ipeds"
 
-*/*******************************************************************************
+/*******************************************************************************
 ** Missing from concordance
-*
-*Here I check which CIP codes are missing from the concordances. 
-*There are three concordances:
-*A. 1985 to 1990
-*B. 1990 to 2000
-*C. 2000 to 2010
-*
-*I also have lists of the CIP codes from the dictionaries here:
+
+I have data on completion rates of degree programs by institution and year. 
+My data comes from here:
 *https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx
-*
-*To find best cipcode for a particular year:
+Programs are identified by their CIP codes. 
+These CIP codes change over time. 
+Thus, to study how major composition changes over time,
+I need to appropriately update CIP codes. 
+
+There are four eras of CIP codes: 
+A. 1985 to 1990
+B. 1990 to 2000
+C. 2000 to 2010
+D. 2010 to 2020
+
+To create a concordance between the three files, I use three files for each year.
+
+1. The dictionary
+
+Each year has a data dictionary available at the same location as the data. 
+Sometimes this data is an excel file, sometimes it's an html page.
+If that is the case, I've copied and pasted it into a .txt file. 
+
+2. The crosswalk
+
+The concordance provided by IPEDS are called "crosswalks."
+Crosswalks are available here: 
+https://nces.ed.gov/ipeds/cipcode/resources.aspx?y=56
+
+3. The crosswalk dictionary
+
+The crosswalk files often have separate dictionary files. 
+The information here is largely the same as in the crosswalk file, but for one year.
+The advantage of using this resources is that it avoids confusion when translating
+between the dictionary file and the crosswalk file.
+It also provides another resource for chekcing for errors. 
+
+To find best cipcode for a particular year:
 *A. Save crosswalk files 
 *B. Read in dictionary of values
 *C. Determine which CIP codes are missing from the crosswalk
-*D. Manually update CIP codes
+*D. Manually update CIP codes (this step has some assumptions in it)
 *E. Save concordance
 *F. Check merge on 6 digit CIP
 *G. Check merge on 4 digit CIP
+
+
 *******************************************************************************/
 
 *************************
 * A. Save crosswalk files
 
-foreach yr of numlist 1985 1990 2000{
+foreach yr of numlist 1985 1990 2000 {
 if `yr' == 1985 {
 	local startyr = 1985
 	local endyr = 1990
@@ -97,7 +127,7 @@ rename `var_titleend' ciptitle`endyr'_cw
 qui replace cipcode`startyr' = strtrim(cipcode`startyr')
 qui replace cipcode`endyr' = strtrim(cipcode`endyr')
 
-if `yr' >= 1990 & `yr' < 2000 {
+if `yr' == 1990 {
 	gen cipdelete = (regexm(ciptitle2000_cw,"[D|d]elete") | regexm(cipcode2000,"[D|d]elete"))
 	* 02.: reported under 01. and 26. series
 	qui replace cipcode2000 = "" if cipcode1990 == "02." 
@@ -116,7 +146,7 @@ if `yr' >= 1990 & `yr' < 2000 {
 	qui drop if regexm(cipcode2000,"and")
 	qui drop if regexm(cipcode2000,"CHAPTER")
 }
-else if `yr' >= 2000 & `yr' < 2010 {
+else if `yr' == 2000 {
 	qui replace cipcode2010 = "" if Action == "Deleted"
 	gen cipdelete = (Action == "Deleted")
 }
@@ -270,26 +300,21 @@ di "ciplist" "`yr'"
 
 **********************************
 * B. Read in dictionary of values
+foreach yr of numlist 1990/2009 {
 
-foreach yr of numlist 1990/1999 {
 if `yr' == 1987 {
 	local startyr = 1985
 	local endyr = 1990
-	local crosswalk "Crosswalk_CIP85toCIP90"
-	local var_cipstart "CIP85"
-	local var_cipend "CIP90"
-	local var_titlestart "CIPTITLE85"
-	local var_titleend "CIPTITLE90"
 }
-if `yr' >= 1990 {
+if `yr' >= 1990 & `yr' < 2000 {
 	local startyr_m1 = 1985
 	local startyr = 1990
 	local endyr = 2000
-	local crosswalk "Crosswalk_CIP90toCIP2K"
-	local var_cipstart "CIPCODE90"
-	local var_cipend "CIPCODE2k"
-	local var_titlestart "CIPTEXT90"
-	local var_titleend "CIPTEXT2K"
+}
+if `yr' >= 2000 {
+	local startyr_m1 = 1990
+	local startyr = 2000
+	local endyr = 2010
 }
 
 
@@ -298,7 +323,41 @@ di "* `yr' *"
 di "********"
 
 * Read in official dictionary
-qui insheet using "`datapath'/`yr'/dict/cip`yr'.txt", clear nonames
+if `yr' <= 2001 {
+	qui insheet using "`datapath'/`yr'/dict/cip`yr'.txt", clear nonames
+}
+if `yr' == 2002 {
+	import excel using "`datapath'/`yr'/dict/c`yr'_a.xls", clear allstring sheet("Frequencies")
+	rename C v2
+	rename D v1
+	rename E v3
+	rename F v4
+	qui drop if B == "AWLEVEL" | B == "CIPCODE" | B == "MAJORNUM"
+	drop A B 
+
+}
+if `yr' >= 2003 & `yr' <= 2005 {
+	qui insheet using "`datapath'/`yr'/dict/c`yr'_a.txt", clear nonames
+}
+if `yr' >= 2006 & `yr' <= 2008 {
+	import excel using "`datapath'/`yr'/dict/c`yr'_a.xlsx", clear allstring sheet("Frequencies")
+	rename C v2
+	rename D v1
+	rename E v3
+	rename F v4
+	qui drop if B == "AWLEVEL" | B == "MAJORNUM"
+	drop A B 
+}
+if `yr' >= 2009 {
+	import excel using "`datapath'/`yr'/dict/c`yr'_a.xls", clear allstring sheet("FrequenciesRV")
+	rename C v2
+	rename D v1
+	rename E v3
+	rename F v4
+	qui drop if B == "AWLEVEL" | B == "MAJORNUM"
+	drop A B 
+}
+
 
 * Some necessary edits
 foreach var of varlist * {
@@ -318,7 +377,7 @@ gen temp = regexr(v4,"%","")
 qui destring(temp), gen(perc)
 drop temp v4
 
-qui drop if cipcode`startyr' == "99.0000" | cipcode`startyr' == "95.0000"
+qui drop if cipcode`startyr' == "99.0000" | cipcode`startyr' == "95.0000" | cipcode`startyr' == "99"
 
 *************************************************************
 * C. Determine which CIP codes are missing from the crosswalk
@@ -343,7 +402,7 @@ rename _merge merge`startyr_m1'
 * D. Manually update CIP codes
 
 * Compare merges in two years
-di "`yr' CIP codes in `startyr' and `startyr_m1' crosswalk"
+di "`yr' CIP codes in `startyr' and `startyr_m1' crosswalk dictionaries"
 tab merge`startyr' merge`startyr_m1' if dict == 1
 order cipcode* merge* ciptitle*
 
@@ -360,16 +419,33 @@ qui replace goodmerge = 1 if merge`startyr' == 3 & merge`startyr_m1' == 1 & dict
 * in startyr-1, not in startyr: definitely check
 * Occasionally there was a lag in adpoting older numbers. 
 * For instance, accounting had a CIP of 52.0301 in 1990. 
-* However, the Accounting line item in the data was 06.0201.
+* However, the Accounting line item in the data was 06.0201, the 1985 CIP
+* For these cases, we assume that they are using the older, minus 1 number (m1),
+* and that we need to update to the current, accurate CIP code. 
+* Therefore we need to update those CIP codes using the crosswalk files. 
 preserve
+* keep the obs. that use old, m1 CIP codes. 
 qui keep if merge`startyr' == 1 & merge`startyr_m1' == 3 & dict == 1
-drop cipcode`startyr' 
+drop cipcode`startyr'
+assert ciptitle`startyr'_cwd == ""
+drop ciptitle`startyr'_cwd
 order cipcode* ciptitle`startyr'_d ciptitle`startyr_m1'_cwd
-* check here that ciptitle match
+* check here that cip codes from the dictionary match the old cip codes
+* this means comparing the cip description from the dictionary in the current
+* year (ciptitle`startyr'_d) to the description from the previous year's 
+* crosswalk dictionary (ciptitle`startyr_m1'_cwd). 
+* Once your've checked that this is a reasonable assumption, we need to update
+* this old, m1 CIP code to the new current value. 
 qui merge 1:1 cipcode`startyr_m1' using `crosswalk`startyr_m1'to`startyr''
-qui replace cipcode`startyr' = cipcode`startyr'_d`yr' if _merge == 1
+* We don't care about observations from the using data
 qui drop if _merge == 2 
-qui gen update_flag = (_merge == 3)
+* Sometimes this process won't recover all codes. 
+* Check here if you're running into weird problems. 
+qui replace cipcode`startyr' = cipcode`startyr'_d`yr' if _merge == 1 & cipdelete != 1
+qui replace cipcode`startyr' = cipcode`startyr'_d`yr' if _merge == 3 & cipdelete == 1
+* We update the codes that match. Note that I updated cipcode`startyr' by 
+* dropping it above and merging in new cipcode`startyr' via the crosswalk.
+qui gen update_flag = (_merge == 3 & cipdelete != 1)
 keep cipcode`startyr'_d`yr' cipcode`startyr' ciptitle`startyr'_d perc freq dict merge`startyr' merge`startyr_m1' goodmerge update_flag
 qui replace goodmerge = 1 if update_flag == 1
 qui tempfile update_cipcodes
@@ -388,6 +464,10 @@ keep cipcode`startyr'_d`yr' cipcode`startyr' ciptitle`startyr'_d freq perc dict 
 *********************
 * E. Save concordance
 
+*preserve
+*drop freq perc dict goodmerge
+*save 
+
 *******************************
 * F. Check merge on 6 digit CIP
 
@@ -397,7 +477,13 @@ qui merge m:1 cipcode`startyr' using `crosswalk`startyr'to`endyr''
 * note: we only care about master (_merge 1 or 3))
 qui drop if _merge == 2
 
-qui egen tot_miss = total(perc) if _merge  == 1 
+* check what's happening in the data
+assert cipcode`endyr' == "" if _merge == 1
+assert cipcode`endyr' == "" if (_merge == 3 & cipdelete == 1)
+assert ((_merge == 1) | (_merge == 3 & cipdelete == 1)) if cipcode`endyr' == ""
+
+* type out the missing results
+qui egen tot_miss = total(perc) if ((_merge == 1) | (_merge == 3 & cipdelete == 1))
 qui summ tot_miss
 if `r(mean)' != . {
 	local percno = `r(mean)'
@@ -407,12 +493,9 @@ else {
 }
 qui count if cipcode`endyr' == ""
 local count_miss = `r(N)'
-di "Missing " %5.0fc `count_miss' " 6-digit CIP codes in `yr'; " %4.2fc `percno' "% of data."
+di "`yr' data missing " %5.0fc `count_miss' " 6-digit CIP codes in `endyr' crosswalk; " %4.2fc `percno' "% of data."
 drop tot_miss
 * Missing 34.78 percent of 6-digit CIP codes in 1990
-
-assert cipcode`endyr' == "" if _merge == 1
-assert ((_merge == 1 & cipdelete == .) | (_merge == 3 & cipdelete == 1)) if cipcode`endyr' == ""
 
 rename cipdelete cipdelete6
 drop _merge
@@ -426,9 +509,6 @@ gen cipcode`startyr'_4 = substr(cipcode`startyr',1,5)
 
 * merge on 4 digit from start year 
 qui merge m:1 cipcode`startyr'_4 using `crosswalk`startyr'to`endyr'_4'
-
-* delete this~
-drop *title*
 
 qui drop if _merge == 2
 
@@ -447,7 +527,5 @@ qui count if cipcode`endyr' == "" & cipcode`endyr'_4 != ""
 local found_count = `r(N)'
 di %5.0fc `found_count' " of " %5.0fc `count_miss' " missing 6-digit CIP codes have 4-digit CIP codes (" %4.2fc `percno' "% of data)"
 drop tot_found
-
-
 
 }
