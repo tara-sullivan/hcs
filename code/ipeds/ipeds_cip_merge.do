@@ -43,24 +43,42 @@ local datapath "data/ipeds"
 *************************
 * A. Save crosswalk files
 
-foreach yr of numlist 1985 1990 {
+foreach yr of numlist 1985 1990 2000{
 if `yr' == 1985 {
 	local startyr = 1985
 	local endyr = 1990
-	local crosswalk "Crosswalk_CIP85toCIP90"
+	local crosswalk_file "cip1985to2000.xls"
+	local crosswalk_sheet "Crosswalk_CIP85toCIP90"
 	local var_cipstart "CIP85"
 	local var_cipend "CIP90"
 	local var_titlestart "CIPTITLE85"
 	local var_titleend "CIPTITLE90"
+	local cw_dict_file "cip1985to2000.xls"
+	local cw_dict_sheet "CIP1985"
 }
 if `yr' == 1990 {
 	local startyr = 1990
 	local endyr = 2000
-	local crosswalk "Crosswalk_CIP90toCIP2K"
+	local crosswalk_file "cip1985to2000.xls"
+	local crosswalk_sheet "Crosswalk_CIP90toCIP2K"
 	local var_cipstart "CIPCODE90"
 	local var_cipend "CIPCODE2k"
 	local var_titlestart "CIPTEXT90"
 	local var_titleend "CIPTEXT2K"
+	local cw_dict_file "cip1985to2000.xls"
+	local cw_dict_sheet "CIP1990"
+}
+if `yr' == 2000 {
+	local startyr = 2000
+	local endyr = 2010
+	local crosswalk_file "cip2000to2010.xlsx"
+	local crosswalk_sheet "Crosswalk2000to2010"
+	local var_cipstart "CIPCode2000"
+	local var_cipend "CIPCode2010"
+	local var_titlestart "CIPTitle2000"
+	local var_titleend "CIPTitle2010"
+	local cw_dict_file "cip1985to2000.xls"
+	local cw_dict_sheet "CIP2000"
 }
 
 di "************************"
@@ -68,7 +86,7 @@ di "* `yr' crosswalk files *"
 di "************************"
 
 * Read in crosswalk
-qui import excel "`datapath'/cip1985to2000.xls", clear sheet("`crosswalk'") firstrow
+qui import excel "`datapath'/`crosswalk_file'", clear sheet("`crosswalk_sheet'") firstrow
 
 * some edits and checks
 rename `var_cipstart' cipcode`startyr'
@@ -97,6 +115,10 @@ if `yr' >= 1990 & `yr' < 2000 {
 	* Check the above and keep going!
 	qui drop if regexm(cipcode2000,"and")
 	qui drop if regexm(cipcode2000,"CHAPTER")
+}
+else if `yr' >= 2000 & `yr' < 2010 {
+	qui replace cipcode2010 = "" if Action == "Deleted"
+	gen cipdelete = (Action == "Deleted")
 }
 else {
 	gen cipdelete = 0
@@ -143,14 +165,100 @@ restore
 
 * Save crosswalk dictionaries
 
-qui import excel "`datapath'/cip1985to2000.xls", clear sheet("CIP`yr'") firstrow
-drop CIPFAMILY CIPNODOT
-capture drop CIPDESCR 
+qui import excel "`datapath'/`cw_dict_file'", clear sheet("`cw_dict_sheet'") firstrow
 
-local y : subinstr local yr "19" ""
-rename CIP`y' cipcode`yr'
+drop CIPFAMILY
+*capture drop CIPDESCR 
+capture drop CIPNODOT
+capture drop ID
+
+qui ds *, has(type string)
+foreach var of varlist `r(varlist)' {
+	qui replace `var' = strtrim(`var')
+	qui replace `var' = stritrim(`var')
+}
 
 rename CIPTITLE ciptitle`yr'_cwd
+
+if `yr' != 2000 {
+	local y : subinstr local yr "19" ""
+	rename CIP`y' cipcode`yr'
+}
+else if `yr' == 2000 {
+	* Note: spreadsheet contains 1990 cip codes that move in 2000, and doesn't differentiate those from 2000 cipcodes
+	rename CIPCode cipcode`yr'
+
+	qui drop if cipcode2000 == "01.11" & ACTIONCODE == "M"
+	qui drop if cipcode2000 == "01.1201" & ciptitle`yr'_cwd == "(Moved from 02."
+	qui drop if cipcode2000 == "21." & ciptitle`yr'_cwd == "Programs for Series 21."
+	qui drop if cipcode2000 == "28." & ciptitle`yr'_cwd == "Programs for Series 28."
+	qui drop if cipcode2000 == "53." & ciptitle`yr'_cwd == "Programs for Series 53."
+	qui drop if cipcode2000 == ""
+	qui replace ReportUnder = "" if cipcode`yr' == "11.02"
+	qui replace ReportUnder = "31.0301" if ReportUnder == "1. 0301"
+	qui replace ReportUnder = "26.04" if ReportUnder == "26.02" & CIPDESCR == "(Report under 26.04 Series)"
+	qui replace ReportUnder = "38.0206" if ReportUnder == "38.020" & CIPDESCR == "(Report under 38.0206"
+	qui replace ReportUnder = "52.09" if ReportUnder == "53.09" & CIPDESCR == "(Report under 52.09 Series)"
+	qui replace ReportUnder = "15.0611" if ReportUnder == "15.061" & CIPDESCR == "(Report under 15.0611"
+	qui replace ReportUnder = "" if ReportUnder == "52.1" & CIPDESCR == "(Report under appropriate code in 52.18 or 52.19 Series)"
+	qui replace ReportUnder = "51.15" if ReportUnder == "52.15" & CIPDESCR == "(Report under 51.15 Series)"
+	qui replace ReportUnder = "30.1601" if ReportUnder == "0.1601)"
+	qui replace ReportUnder = "16.03" if ReportUnder == "16.21"
+	qui replace ReportUnder = "16.11" if ReportUnder == "16.24"
+
+	qui drop if regexm(cipcode`yr',"^----") & ReportUnder == ""
+	qui drop if regexm(cipcode`yr',"[a-zA-Z]") 
+	qui drop if regexm(ReportUnder,"[a-zA-Z]")
+
+	qui drop if ACTIONCODE == "D"
+
+	* find all old 1990 cip codes that are reported under new 2000 values 
+	qui replace CIPDESCR = "(Report under 31.0301)" if CIPDESCR == "(Report under 31. 0301)"
+	qui replace CIPDESCR = "(Report under 16.1603)" if CIPDESCR == "1603)"
+	qui replace CIPDESCR = "(Report under 52.)" if CIPDESCR == "(Report under appropriate code in 52. Series)"
+	qui replace CIPDESCR = "(Report under 13.0202)" if CIPDESCR == "(Report under 13.0201 or 13.0202)"
+	qui replace CIPDESCR = "(Report under 19.0702)" if CIPDESCR == "0702)"
+	qui replace CIPDESCR = "(Report under 22.)" if CIPDESCR == "(Report under to 22. Series)"
+	qui replace CIPDESCR = "(Report under 51.0803)" if CIPDESCR == "(Report under to 51.0803)"
+	qui gen moveno = regexs(2) if regexm(CIPDESCR,"([R|r]eport under )([0-9][0-9]\.?[0-9]*)") 
+
+	* find 2000 cipcodes that certain line item move to
+	qui levelsof moveno if ACTIONCODE == "M", local(cip_move)
+	qui gen movematch = moveno if ACTIONCODE == "M" & moveno != ""
+	foreach cip in `cip_move' {
+		qui replace movematch = "`cip'" if cipcode2000 == "`cip'" & movematch == ""
+	}
+	* check that all of the moved cip codes are in the data twice
+	qui duplicates tag movematch, gen(dup)
+	assert dup == 1 if movematch != ""
+	* keep only the current cip code
+	qui drop if movematch != "" & (movematch != cipcode2000)
+	drop dup movematch
+
+	* find remaining cases where the moveno doesn't match reportunder
+	assert moveno == ReportUnder if (moveno != "16.21" & moveno != "16.24")
+	drop moveno
+
+	* assert everything in ReportUnder matches a cipcode, so we can drop all of those
+	qui levelsof ReportUnder, local(cip_move)
+	qui gen tempcode = ReportUnder if ReportUnder != ""
+	foreach cip in `cip_move' {
+		qui replace tempcode = "`cip'" if cipcode2000 == "`cip'"
+	}
+	qui levelsof tempcode, local(groups)
+	gen keepme = (tempcode == "")
+	foreach group in `groups' {
+		qui replace keepme = 1 if cipcode2000 == tempcode
+	}
+	* check that every group has at least only one item being kept
+	bys tempcode: egen max_keepme = max(keepme)
+	qui summ max_keepme
+	assert `r(min)' == `r(max)'
+	qui keep if keepme == 1
+	drop ACTIONCODE ReportUnder tempcode keepme max_keepme
+}
+
+capture drop CIPDESCR
 
 gen year = `yr'
 
