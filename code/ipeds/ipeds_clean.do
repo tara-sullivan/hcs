@@ -17,31 +17,30 @@ else {
 *do Z:\hcs\code\ipeds\ipeds_clean.do
 *do "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/code/ipeds/ipeds_clean.do"
 
-local datapath "data/ipeds"
+local datapath "data/ipeds/raw"
+local cippath "data/ipeds/cip_edit"
+local savepath "data/ipeds"
 
-*insheet using C:\Users\tasulliv.AD\Downloads\C2018_A\c2018_a.csv, clear
 *insheet using Z:\hcs\data\ipeds\2005\c2005_a_data_stata.csv, clear nonames
 
 if `readdata' {
 
-*insheet using "`datapath'/1984/c1984_cip_data_stata.csv", clear nonames
-** this is a work around to keep leading zeros
-*ds *
-*foreach var of varlist `r(varlist)' {
-	*local varname : di `var'
-	*rename `var' `varname'
-*}
-*drop in 1
-*rename *, lower
-*
-*rename crace15 ctotalm
-*rename crace16 ctotalw
-*gen year = 1984
-*
-*save "`datapath'/ipeds_c_all.dta", replace
-
 local i = 1
-forvalues yr = 1984/2018 {
+forvalues yr = 1990/2018 {
+	* for cip codes
+	if `yr' < 1990 {
+	local startyr = 1985
+	local endyr = 1990		
+	}
+	else if `yr' >= 1990 & `yr' < 2000 {
+	local startyr = 1990
+	local endyr = 2000		
+	}
+	else if `yr' >= 2000 & `yr' < 2010 {
+	local startyr = 2000
+	local endyr = 2010	
+	}
+
 	* Adjust for file names
 	if (`yr' <= 1994 & `yr' != 1990) {
 		*local fyr = "c`yr'_cip_data_stata"
@@ -104,6 +103,17 @@ forvalues yr = 1984/2018 {
 	keep unitid cipcode awlevel `keepvars'
 	gen year = `yr'
 
+	rename cipcode cipcode`startyr'
+	* merge in the updated cipcode for years before 2010 (will need to repeat this)
+	* start here!
+	*if `yr' < 2010 {
+		*gen cipcode`startyr'_d`yr' = cipcode
+		*merge m:1 cipcode`startyr'_d`yr' using "`cippath'/cip`yr'"
+		*assert _merge != 2
+		*assert (cipcode == "99.0000" | cipcode == "95.0000" | cipcode == "99") if _merge == 1 
+		*drop _merge
+	*}
+
 	if `i' > 1 {
 		tempfile yrfile
 		qui save `yrfile', replace
@@ -112,7 +122,7 @@ forvalues yr = 1984/2018 {
 		append using `yrfile'
 	}
 	
-	qui save "`datapath'/ipeds_c_all.dta", replace
+	qui save "`savepath'/ipeds_c_all.dta", replace
 
 	local i = `i' + 1
 }
@@ -120,7 +130,7 @@ forvalues yr = 1984/2018 {
 } // end readdata local
 
 else{
-	use "`datapath'/ipeds_c_all.dta", clear
+	use "`savepath'/ipeds_c_all.dta", clear
 
 }
 
@@ -134,7 +144,7 @@ if `cipnames' {
 * 1985 to 1990 concordance
 
 * Read in crosswalk
-import excel "`datapath'/cip1985to2000.xls", clear sheet("Crosswalk_CIP85toCIP90") firstrow
+import excel "`savepath'/cip1985to2000.xls", clear sheet("Crosswalk_CIP85toCIP90") firstrow
 
 * some edits and checks
 rename CIP85 cipcode1985

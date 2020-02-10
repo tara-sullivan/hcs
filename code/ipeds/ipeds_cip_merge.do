@@ -11,13 +11,16 @@ if "`c(os)'" == "MacOSX" {
 }
 else {
 	cd "Z:\hcs"
+
 }
 
 *global runit do Z:\hcs\code\ipeds\ipeds_cip_merge.do
 *do Z:\hcs\code\ipeds\ipeds_cip_merge.do
 *do "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/code/ipeds/ipeds_clean.do"
 
-local datapath "data/ipeds"
+local datapath "data/ipeds/raw"
+local savepath "data/ipeds/cip_edit"
+
 
 /*******************************************************************************
 ** Missing from concordance
@@ -165,9 +168,7 @@ preserve
 qui keep if ciplen == 6
 drop ciplen
 
-qui tempfile crosswalk`startyr'to`endyr'
-qui save `crosswalk`startyr'to`endyr'', replace
-di "crosswalk" "`startyr'" "to" "`endyr'"
+save "`savepath'/crosswalk`startyr'to`endyr'", replace
 restore
 
 * 4-digit cip concordance
@@ -177,9 +178,7 @@ rename cipcode`startyr' cipcode`startyr'_4
 rename cipcode`endyr' cipcode`endyr'_4
 drop ciplen
 
-qui tempfile crosswalk`startyr'to`endyr'_4
-qui save `crosswalk`startyr'to`endyr'_4', replace
-di "crosswalk" "`startyr'" "to" "`endyr'" "_4"
+save "`savepath'/crosswalk`startyr'to`endyr'_4", replace
 restore
 
 * 2-digit concordance
@@ -188,9 +187,7 @@ qui keep if ciplen == 2
 rename cipcode`startyr' cipcode`startyr'_2
 rename cipcode`endyr' cipcode`endyr'_2
 drop ciplen
-qui tempfile crosswalk`startyr'to`endyr'_2
-qui save `crosswalk`startyr'to`endyr'_2', replace
-di "crosswalk" "`startyr'" "to" "`endyr'" "_2"
+save "`savepath'/crosswalk`startyr'to`endyr'_2", replace
 restore
 
 * Save crosswalk dictionaries
@@ -292,9 +289,7 @@ capture drop CIPDESCR
 
 gen year = `yr'
 
-qui tempfile ciplist`yr'
-qui save "`ciplist`yr''", replace
-di "ciplist" "`yr'"
+save "`savepath'/ciplist`yr'", replace
 
 }
 
@@ -388,14 +383,14 @@ gen cipcode`startyr'_d`yr' = cipcode`startyr'
 order cipcode`startyr'_d`yr'
 
 * Merge in startyr data
-qui merge 1:1 cipcode`startyr' using `ciplist`startyr''
+qui merge 1:1 cipcode`startyr' using "`savepath'/ciplist`startyr'"
 rename _merge merge`startyr'
 
 * Merge in startyr-1 data
 drop year
 qui gen year = `startyr_m1' if dict == 1
 gen cipcode`startyr_m1' = cipcode`startyr' 
-qui merge 1:1 year cipcode`startyr_m1' using `ciplist`startyr_m1''
+qui merge 1:1 year cipcode`startyr_m1' using "`savepath'/ciplist`startyr_m1'"
 rename _merge merge`startyr_m1'
 
 ******************************
@@ -436,7 +431,7 @@ order cipcode* ciptitle`startyr'_d ciptitle`startyr_m1'_cwd
 * crosswalk dictionary (ciptitle`startyr_m1'_cwd). 
 * Once your've checked that this is a reasonable assumption, we need to update
 * this old, m1 CIP code to the new current value. 
-qui merge 1:1 cipcode`startyr_m1' using `crosswalk`startyr_m1'to`startyr''
+qui merge 1:1 cipcode`startyr_m1' using "`savepath'/crosswalk`startyr_m1'to`startyr'"
 * We don't care about observations from the using data
 qui drop if _merge == 2 
 * Sometimes this process won't recover all codes. 
@@ -462,17 +457,19 @@ sort cipcode`startyr'
 qui keep if dict == 1
 keep cipcode`startyr'_d`yr' cipcode`startyr' ciptitle`startyr'_d freq perc dict goodmerge update_flag
 *********************
-* E. Save concordance
+* E. Save updated cip codes
 
-*preserve
-*drop freq perc dict goodmerge
-*save 
+preserve
+drop freq perc dict goodmerge
+save "`savepath'/cip`yr'.dta", replace
+restore
+
 
 *******************************
 * F. Check merge on 6 digit CIP
 
 * note m:1 because, when you update cip codes you may have duplicates
-qui merge m:1 cipcode`startyr' using `crosswalk`startyr'to`endyr''
+qui merge m:1 cipcode`startyr' using "`savepath'/crosswalk`startyr'to`endyr'"
 
 * note: we only care about master (_merge 1 or 3))
 qui drop if _merge == 2
@@ -508,7 +505,7 @@ drop _merge
 gen cipcode`startyr'_4 = substr(cipcode`startyr',1,5) 
 
 * merge on 4 digit from start year 
-qui merge m:1 cipcode`startyr'_4 using `crosswalk`startyr'to`endyr'_4'
+qui merge m:1 cipcode`startyr'_4 using "`savepath'/crosswalk`startyr'to`endyr'_4"
 
 qui drop if _merge == 2
 
