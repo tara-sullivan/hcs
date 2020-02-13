@@ -28,3 +28,14 @@ local datapath "data/ipeds"
 
 use "`datapath'/ipeds_c_all.dta", clear
 
+* keep only bachelor's degrees
+keep if awlevel == 5
+drop awlevel
+
+* keep only full time series
+drop if cipcode2010 == ""
+
+* find out if there are any duplicates in bachelor degrees
+duplicates tag unitid cipcode year, gen(dup)
+duplicates tag unitid cipcode2010 year, gen(dup2)
+assert dup2 == 1 if dup == 1
