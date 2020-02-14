@@ -114,6 +114,7 @@ if `yr' == 2000 {
 	local cw_dict_sheet "CIP2000"
 }
 
+
 di "************************"
 di "* `yr' crosswalk files *"
 di "************************"
@@ -190,9 +191,13 @@ drop ciplen
 save "`savepath'/crosswalk`startyr'to`endyr'_2", replace
 restore
 
+
 * Save crosswalk dictionaries
 
+
 qui import excel "`datapath'/`cw_dict_file'", clear sheet("`cw_dict_sheet'") firstrow
+
+
 
 drop CIPFAMILY
 *capture drop CIPDESCR 
@@ -292,6 +297,51 @@ gen year = `yr'
 save "`savepath'/ciplist`yr'", replace
 
 }
+
+************************
+* 2010 dictionary titles
+
+di "********"
+di "* 2010 *"
+di "********"
+
+qui import delimited "`datapath'/CIP2010", clear varnames(nonames)
+
+* Some necessary edits
+foreach var of varlist * {
+	qui replace `var' = strtrim(`var')
+}
+
+rename v2 cipcode2010
+rename v3 action
+rename v5 ciptitle2010
+
+qui drop in 1
+
+drop if action == "Deleted" | action == "Moved to"
+drop v1 action v4 v6 v7 v8
+
+gen ciplen = strlen(regexr(cipcode2010,"\.",""))
+foreach d of numlist 2 4 {
+	preserve
+	qui keep if ciplen == `d'
+
+	drop ciplen
+
+	qui replace ciptitle2010 = strtrim(ciptitle2010)
+	qui replace ciptitle2010 = stritrim(ciptitle2010)
+
+	qui compress
+
+	rename cipcode2010 cip`d'
+	save "`savepath'/cip`d'names", replace
+
+	restore
+}
+
+
+
+
 
 **********************************
 * B. Read in dictionary of values

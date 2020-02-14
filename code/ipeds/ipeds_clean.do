@@ -81,7 +81,7 @@ forvalues yr = 1990/2018 {
 	}
 
 	* keep extra variables in years after 2007
-	if `yr' <= 2001 {
+	if `yr' < 2001 {
 		local keepvars ctotalm ctotalw
 	}
 	else {
@@ -106,11 +106,6 @@ forvalues yr = 1990/2018 {
 	 	rename crace16 ctotalw
 	}
 
-	keep unitid cipcode awlevel `keepvars'
-	gen year = `yr'
-	qui destring awlevel, replace
-	capture destring majornum, replace
-
 	* if there's no dot in the cip code, create a dot. also trim values
 	qui replace cipcode = strtrim(cipcode)
 	gen ciplen = strlen(cipcode)
@@ -119,6 +114,14 @@ forvalues yr = 1990/2018 {
 		qui replace cipcode = substr(cipcode,1,2) + "." + substr(cipcode,3,.)
 	}
 	drop ciplen
+	
+
+	keep unitid cipcode awlevel `keepvars'
+	gen year = `yr'
+	qui destring awlevel, replace
+	capture destring majornum, replace
+
+	
 
 	* locals to flag all aggregate cips 
 	local agg_cips (cipcode == "99.0000" | cipcode == "95.0000" | cipcode == "95.9500" | cipcode == "99." | cipcode == "99")
