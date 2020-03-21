@@ -1,0 +1,148 @@
+\documentclass[compress, 8pt]{beamer}
+%\documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+\input{preambleB}
+
+\usepackage[default]{cantarell}
+%\usepackage{psfrag}
+%\usepackage{longtable}
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+\usepackage{xparse} %NewDocumentCommand
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+%\showcommentstrue % uncomment to show
+\ifshowcomments
+    \newcommand{\nts}[2][DarkGray]{\setbeamercolor{taras comment}{fg=#1}{\usebeamercolor[fg]{taras comment}\setbeamercolor{item}{fg = taras comment.fg}\emph{#2}}}
+\else 
+    \newcommand{\nts}[2][DarkGray]{}
+\fi
+\newcommand{\nn}[2][DarkGray]{{\small \color{#1} #2}}
+
+% Color highlights
+\newcommand{\blue}[1]{\textbf{\color{MainBlue}#1}}
+\newcommand{\green}[1]{\textbf{\color{Green}#1}}
+\newcommand{\orange}[1]{\textbf{\color{Orange}#1}}
+\newcommand{\gold}[1]{\textbf{\color{Gold}#1}}
+
+\newcommand{\cc}{\mathbf{c}}
+\newcommand{\xx}{\mathbf{x}}
+\newcommand{\bfe}{\beta_{FE}}
+\newcommand{\bld}{\beta_{LD}}
+
+\newcommand{\ww}{\pmb{\color{Green}w}}
+\newcommand{\pp}{\pmb{\color{Green}p}}
+\newcommand{\hh}{\pmb{\color{MainBlue}h}}
+\newcommand{\xt}{\pmb{\color{Purple}x_t}}
+\newcommand{\Mt}{\pmb{\color{Purple}M_t}}
+
+\NewDocumentCommand{\EE}{ O{} O{} m }{\mathbb{E}_{#1} #2 \left[ #3 \right]}
+\newcommand{\llog}[1]{\log \left( #1 \right)}
+\newcommand{\Cov}[1]{\text{Cov} \left( #1 \right)}
+
+%Information to be included in the title page:
+\title{Title line 1: 
+\\
+Title line 2}
+\author[]{Tara Sullivan (2020)}
+\institute{
+	Macro Lunch Presentation \\
+	Tara Sullivan \\
+    \textit{tasulliv@ucsd.edu}
+}
+\date{
+    \today
+    \nts{\\
+        \medskip
+        Notes/comments are in gray and will be excluded from the presentation.
+    }
+}
+
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+\usepackage{ifthen}
+\usepackage{xifthen}% provides \isempty test
+
+\usepackage{amsbsy}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% from johannes:
+
+% identification: what moments are important for identification; justify importance of paper (instead of indfference graph)
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Introduction]{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Overview} 
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Model]{Model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Life-cycle earnings growth}\label{model}
+
+
+%\begin{tikzpicture}[remember picture, overlay]
+%\node[shift={(-1.3cm,0.5cm)}]() at (current page.south east){%
+%\hyperlink{wage_determination}{\beamergotobutton{Wage determination}}
+%};        
+%\end{tikzpicture}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\begin{frame}{}
+%
+%\begin{figure}
+%\centering
+%\includegraphics[width=\textwidth]{img/fig5.pdf}
+%\end{figure}
+%
+%\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section[Results]{Results}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix
+\miniframesoff
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}[noframenumbering]
+\begin{beamercolorbox}[sep=11pt,center]{title}
+    Appendix
+\end{beamercolorbox}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\end{document}

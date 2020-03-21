@@ -1,0 +1,155 @@
+% Outer theme
+\useoutertheme[subsection=false]{miniframes}
+% Fix to display navigational dots; dots only shown for subsections
+% Can comment out to have no dots in presentation
+\AtBeginSection[]{\subsection{}}
+
+
+% Colors
+\usepackage{xcolor}
+% UCSD color palette: http://ucpa.ucsd.edu/brand/elements/color-palette/
+\definecolor{DarkBlue}{RGB}{24, 43, 73}
+\definecolor{MainBlue}{RGB}{0, 106, 150}
+\definecolor{LightBlue}{RGB}{0, 198, 215}
+\definecolor{Green}{RGB}{110 150 59}
+\definecolor{Yellow}{RGB}{255 205 0}
+\definecolor{LightYellow}{RGB}{243 29 0}
+\definecolor{Gold}{RGB}{198 146 20}
+\definecolor{Orange}{RGB}{252 137 0}
+\definecolor{LightGrey}{RGB}{182, 177, 169}
+\definecolor{DarkGray}{RGB}{116 118 120}
+\definecolor{Metallic}{RGB}{132 117 78}
+%\definecolor{Harvest}{RGB}{202 92 13}
+\definecolor{Harvest}{RGB}{132 117 78}
+%\definecolor{Growing}{RGB}{246 185 173}
+\definecolor{Growing}{RGB}{198 146 20}
+%\definecolor{Growing}{RGB}{110 150 59}
+\definecolor{DarkPurple}{RGB}{25 0 51}
+\definecolor{Purple}{RGB}{55 24 81}
+\definecolor{Maroon}{HTML}{6A123D}
+
+
+
+% Learned using: https://ramblingacademic.com/2015/12/how-to-quickly-overhaul-beamer-colors/
+% To change additional sections: http://www.cpt.univ-mrs.fr/~masson/latex/Beamer-appearance-cheat-sheet.pdf
+\setbeamercolor{palette primary}{bg=DarkBlue,fg=white}
+\setbeamercolor{palette secondary}{bg=DarkBlue,fg=white}
+\setbeamercolor{palette tertiary}{bg=DarkBlue,fg=white}
+\setbeamercolor{palette quaternary}{bg=DarkBlue,fg=white}
+\setbeamercolor{structure}{fg=DarkBlue} % itemize, enumerate, etc
+\setbeamercolor{section in toc}{fg=DarkBlue} % TOC sections
+\setbeamercolor{section in head/foot}{bg=DarkBlue,fg=LightGrey}
+%\setbeamercolor{navigation symbols}{bg=Gold, fg=Gold}
+\setbeamercolor{alerted text}{fg=Gold}
+\beamertemplatenavigationsymbolsempty
+%tem
+%\setbeamertemplate{itemize items}
+
+
+% Standard packages
+\usepackage{hyperref}
+\usepackage{amsthm, amsmath, mathtools}
+\usepackage{appendixnumberbeamer}
+
+
+% Figures and tikz
+\usepackage{pgfplots} % maybe for tikz axes?
+\usepackage{graphicx} % Include figures
+\usepackage{tikz} % Draw figures with tikz
+\usetikzlibrary{positioning} % to use right=of <node> syntax
+\usetikzlibrary{shapes} % for other node shapes; see http://www.texample.net/tikz/examples/node-shapes/
+\usetikzlibrary{shapes.multipart} % multiline nodes in tikz
+\usetikzlibrary{shapes.arrows} % arrow nodes in tikz
+\usetikzlibrary{shapes.misc} % miscellaneous nodes in tikz; for rounded rectangles
+\usetikzlibrary{shapes.geometric} % geometric nodes in tikz; fortriangles
+
+% To avoid a warning
+\pgfplotsset{compat=1.7}
+
+% Hyperlink colors
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = Maroon, %Colour for external hyperlinks
+  linkcolor    = DarkGray, %Colour of internal links
+  citecolor   = MainBlue %Colour of citations
+}
+
+% Insert table of contents at beginning of sections
+%\AtBeginSection[]
+%{
+%\begin{frame}
+%	\tableofcontents[currentsection]
+%\end{frame}
+%}
+
+% To remove sections from appendix
+% source: https://tex.stackexchange.com/questions/37127/how-to-remove-some-pages-from-the-navigation-bullets-in-beamer
+\makeatletter
+\let\beamer@writeslidentry@miniframeson=\beamer@writeslidentry
+\def\beamer@writeslidentry@miniframesoff{%
+  \expandafter\beamer@ifempty\expandafter{\beamer@framestartpage}{}% does not happen normally
+  {%else
+    % removed \addtocontents commands
+    \clearpage\beamer@notesactions%
+  }
+}
+\newcommand*{\miniframeson}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframeson}
+\newcommand*{\miniframesoff}{\let\beamer@writeslidentry=\beamer@writeslidentry@miniframesoff}
+\makeatother
+
+% Presentation specific tikz
+%\usetikzlibrary{tikzmark} % to use tikzmarkto add braces to itemize
+\usetikzlibrary{calc} % for widthof
+\tikzset{
+    above label/.style={
+        above = 5pt,
+        %font=\footnotesize,
+        text height = 1.5ex,
+        text depth = 1ex,
+    },
+    below label/.style={  
+        below=4pt,
+        %font=\footnotesize,
+        text height = 1.5ex,
+        text depth = 1ex
+    },
+    brace label/.style={
+        below = 4pt,
+        font=\footnotesize,
+        text height = 1.5ex,
+        text depth = 1ex
+    },
+    brace/.style={
+        decoration={brace, mirror},
+        decorate
+    }
+}
+
+% For every picture that defines or uses external nodes, you'll have to
+% apply the 'remember picture' style. To avoid some typing, we'll apply
+% the style to all pictures.
+%\tikzstyle{every picture}+=[remember picture]
+
+% change slide width on a single slide
+% source: https://tex.stackexchange.com/questions/160825/modifying-margins-for-one-slide/242073
+\newcommand\Wider[2][3em]{%
+\makebox[\linewidth][c]{%
+  \begin{minipage}{\dimexpr\textwidth+#1\relax}
+  \raggedright#2
+  \end{minipage}%
+  }%
+}
+
+% More control over local line spacing: http://felix11h.github.io/blog/line-spacing-beamer
+\usepackage{setspace}
+
+% Make bullet size smaller
+\setbeamertemplate{itemize item}{\tiny\raise1.4pt\hbox{$\blacktriangleright$}}
+\setbeamertemplate{itemize subitem}{--}
+% make bullet closer to the text
+\setlength{\labelsep}{.8ex}
+
+% Multi=row and column
+\usepackage{multirow,multicol}
+% multiline columns
+\usepackage{tabularx}
