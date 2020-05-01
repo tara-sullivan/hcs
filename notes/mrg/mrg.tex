@@ -7,6 +7,7 @@
 \usepackage[default]{cantarell}
 %\usepackage{psfrag}
 %\usepackage{longtable}
+\usepackage{pdfpages}
 
 % Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
 % \usepackage{etex}
@@ -19,9 +20,9 @@
 \newif\ifshowcomments
 %\showcommentstrue % uncomment to show
 \ifshowcomments
-    \newcommand{\nts}[2][DarkGray]{\setbeamercolor{taras comment}{fg=#1}{\usebeamercolor[fg]{taras comment}\setbeamercolor{item}{fg = taras comment.fg}\emph{#2}}}
+\newcommand{\nts}[2][DarkGray]{\setbeamercolor{taras comment}{fg=#1}{\usebeamercolor[fg]{taras comment}\setbeamercolor{item}{fg = taras comment.fg}\emph{#2}}}
 \else 
-    \newcommand{\nts}[2][DarkGray]{}
+\newcommand{\nts}[2][DarkGray]{}
 \fi
 \newcommand{\nn}[2][DarkGray]{{\small \color{#1} #2}}
 
@@ -46,22 +47,27 @@
 \newcommand{\llog}[1]{\log \left( #1 \right)}
 \newcommand{\Cov}[1]{\text{Cov} \left( #1 \right)}
 
+\newcommand{\br}[1]{\left\{ #1 \right\}}
+\newcommand{\sbr}[1]{\left[ #1 \right]}
+\newcommand{\pr}[1]{\left( #1 \right)}
+\newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
+
 %Information to be included in the title page:
 \title{Title line 1: 
 \\
 Title line 2}
-\author[]{Tara Sullivan (2020)}
+\author[]{Tara Sullivan}
 \institute{
-	Macro Lunch Presentation \\
-	Tara Sullivan \\
-    \textit{tasulliv@ucsd.edu}
+Macro Lunch Presentation \\
+Tara Sullivan \\
+\textit{tasulliv@ucsd.edu}
 }
 \date{
-    \today
-    \nts{\\
-        \medskip
-        Notes/comments are in gray and will be excluded from the presentation.
-    }
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
 }
 
 \setbeamertemplate{caption}{\raggedright\insertcaption\par}
@@ -71,7 +77,67 @@ Title line 2}
 
 \usepackage{amsbsy}
 
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    % every axis/.append style={
+    %     % remove comma separator from all numbers
+    %     /pgf/number format/1000 sep={},
+    % },
+    % The following works to append stype to groups
+    % group/every plot/.append style = {
+    %     height=\axisdefaultheight, 
+    %     width = 0.5\textwidth,
+    % }, 
+    % groupplot/.
+    % group/every plot/.append style = {
+    %     height=\axisdefaultheight, 
+    %     width = 0.5\textwidth,
+    % },
+    % group/every plot/.append style = {
+    %     group style={group size=2 by 1}
+    %     height=\axisdefaultheight, 
+    %     width = 0.5\textwidth,   
+    % }
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+    },
+    % every axis x label/.style={
+    %     at={(ticklabel* cs:1.00)},
+    %     anchor=west,
+    % },
+    % every axis y label/.style={
+    %     at={(ticklabel* cs:1.00)},
+    %     anchor=south,
+    %     set thousands separator={},
+    % },
+    % every x tick label/.append style={set thousands separator={},},
+    % every axis x tick label/.style={
+    %     /pgf/number format/.cd,%
+    %     scaled x ticks = false,
+    %     set thousands separator={},∫
+    %     fixed
+    % },%
+}
+\tikzset{
+    semithick/.style={line width=0.8pt},
+}
 
+\makeatletter
+\def\input@path{{../../img/}}
+\makeatother
+
+\usepackage{caption}
+\captionsetup{%
+    labelformat=empty,
+   font=small,
+   singlelinecheck=false,
+   % tableposition=top
+}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}    
 %\beamertemplatenavigationsymbolsempty
@@ -79,7 +145,7 @@ Title line 2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}
-  \titlepage
+\titlepage
 \end{frame}
 
 % from johannes:
@@ -92,27 +158,279 @@ Title line 2}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Overview} 
+\begin{frame}{Increased attainment of Bachelor's degrees} 
 
+
+\begin{figure}
+% \input{../../img/n_degrees.tex}
+\input{n_degrees.tex}
+\caption{Source: IPEDS}
+\end{figure}
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Historically male-dominated fields}
+
+\begin{figure}
+% \input{../../img/n_degrees.tex}
+\input{male_dom.tex}
+\caption{Source: IPEDS}
+\end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Social Sciences}
+
+\begin{figure}
+% \input{../../img/n_degrees.tex}
+\input{cip42_rat.tex}
+\caption{Source: IPEDS}
+\end{figure}
+
+\end{frame}
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section[Model]{Model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+% begin with an Alon-Fershtman slide; review as quicly as possible ``because many people here are familar with this paper, I'll try to keep this short'' Maybe check with david that this is a good idea
+% Then jump into my key contribution: how do we think about the priors
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Life-cycle earnings growth}\label{model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Student specialization decision}
+
+% Human capital specialization process follows AF20
+% Individuals allocate indivisble unit of time to either:
+% \begin{itemize}
+	% \item Study $s_t = (s_{1t}, \dots, s_{Jt})$
+	% \item Work $\ell_t = (\ell_{1t}, \dots, \ell_{Jt})$
+% \end{itemize}
+
+% Individuals choose to work ($\ell_{jt}$) or study ($s_{jt}$) in skill-$j$ to maximize expected earnings:
+% \begin{equation*}
+% 	% 	\mathbb{E} \sbr{
+% 	%    \sum_{t=0}^\infty \delta^t 
+% 	%    \left. \pr{\sum_{i=1}^N \ell_{it} w_i h_{it}} \right\vert
+% 	%    \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
+% 	% }
+% 	\sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}
+% \end{equation*}
+% There's heterogenous skills;
+Individuals endowed with: %For skills $j=0,\dots,J$ at time $t=0$
+\begin{itemize}
+	\item [$h_{j0}$:] Skill-$j$ specific human capital
+	\item [$\theta_j$:] Unknown ability in $j$
+	\item [$P_{j0}$:] Prior distribution over $\theta_j$
+\end{itemize}
+
+\vspace{2ex}
+Individuals studying skill $j$ at time $t$:
+\begin{itemize} 
+	\item Human capital accumulation depends on whether the student passes the course:
+	\begin{align*}
+	h_{jt+1} =& H(h_{kt}, a_{kt}), \quad \quad
+	a_{jt} \sim F_{\theta_j}
+	\end{align*}
+	\item Belifs about ability $\theta_j$ evolves according to:
+	\begin{equation*}
+		P_{j,t+1} = \Pi_j (P_{jt},a_{jt})
+	\end{equation*}
+\end{itemize}
+
+% why is it a_kt and not theta? 
+
+\vspace{2ex}
+% Endogenously enter labor market in skill $j$ to maximize expected lifetime earnings: 
+Enter labor market at time $t$ as a skill-$j$ specialist to maximize expected lifetime payoff:
+\begin{equation*}
+	\frac{\delta^t}{1 - \delta} U_j (w_{j}, h_{jt})
+\end{equation*}
 
 
-%\begin{tikzpicture}[remember picture, overlay]
-%\node[shift={(-1.3cm,0.5cm)}]() at (current page.south east){%
-%\hyperlink{wage_determination}{\beamergotobutton{Wage determination}}
-%};        
-%\end{tikzpicture}
+% Human capital accumulation
+
+\textbf{Key:} How do we determine priors $P_{j}$?
+% key for this model is uncertainty about underlying abilities
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Group-based beliefs about abilities}
+
+This paper:
+\begin{itemize}
+	\item Each individual has a group type: $g \in \{m, f\}$
+
+	\item Students form belefs, $P_{j0}$, based on previously observed group successes
+\end{itemize}
+
+\vspace{2ex}
+Simple parameterization:
+\begin{itemize}
+	\item [$\alpha_{j0}^g$: ] Number of type-$g$ students who have suceeded in $j$ 
+	\item [$\beta_{j0}^g$: ] Number of type-$g$ students who have failed in $j$
+
+	\item [$\implies$] Observed success rate:
+	\begin{equation*}
+	\mu_{j0}^g = 
+	  \frac{\alpha_{j0}^g}{\alpha_{j0}^g + \beta_{j0}^g}.
+\end{equation*}
+This average is based on a sample size of type $g$ students:
+\begin{equation*}
+ 	n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g
+ \end{equation*}
+\end{itemize}
+
+\vspace{2ex}
+Group-based prior beliefs about probability of success in skill-$j$ courses, $\theta_j$:
+\begin{equation*}
+	\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g} \quad \implies \quad
+	\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}
+\end{equation*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+% Suppose sample size of men is larger than that of women, but the observed success rate is the same for the two groups:
+Suppose there are more men then women in field $j$: 
+\begin{equation*}
+  n_{j0}^m > n_{j0}^f
+\end{equation*}
+But the observed success rate is the same for the two groups:
+\begin{equation*}
+	\mu_{j0} = \mu_{j0}^m = \mu_{j0}^w
+\end{equation*}
+
+\nts{Include figure showing what this means for a beta distribution}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \nts{Frame remaining simple parameterization}
+\begin{frame}{Individual problem}
+
+\nts{Need to adjust to include gender?}
+
+A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes:
+\begin{align*}
+& \mathbb{E}^\pi \sbr{
+   \sum_{t=0}^\infty \delta^t 
+   \left. \pr{\sum_{i=1}^N \ell_{it} w_i h_{it}} \right\vert
+   \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
+} \\
+\text{subject to} \quad& h_{it+1} = h_{it}+ a_{it} s_{it}, \quad \quad a_{it} = 
+   \begin{cases} 
+      \nu_i, & \text{with prob. } \theta_i,  \\ 
+      0, & \text{with prob. } 1 - \theta_i,
+   \end{cases} 
+   %\quad \quad h_{i0} = \alpha_{i0} \nu_i, 
+   \\
+\quad& P_{it+1} = \mathcal{B} (\alpha_{i,t+1}, \beta_{i,t+1}), 
+   \quad \quad \theta_i \sim P_{i,0} \equiv \mathcal{B} (\alpha_{i0}, \beta_{i0})
+   \quad \quad \text{if $i$ selected,} \\
+\quad& \sum_{i=1}^N (s_{it} + \ell_{it}) = 1, \quad \quad s_{it}, \ell_{it} \in \{0,1\} \\
+   & h_{j0} = \nu \alpha_{j0}
+\end{align*}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Optimal policy theorem}
+
+Define the skill $j$ index as the expected payoff if you committed to studying $j$:
+%\gen{ 
+\begin{equation*}
+\mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
+\ce{
+   \sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
+   {(h_{j0}, P_{j0}) = (h_j, P_j)
+}
+% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+% \begin{cases}
+% \frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+% \frac{h_{jt}}{1 - \delta} \sbr{
+%    \frac{
+%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
+%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+% \end{cases}
+\end{equation*}
+
+Define the graduation region of skill $j$ as: 
+\begin{equation*}
+% \mathcal{G}_j =  \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
+\mathcal{G}_j = \left\{ (h_j, P_j) \left\vert
+   \arg \max_{\tau \geq 0} 
+   \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
+   {(h_j, P_j)} = 0
+   \right. \right\}
+\end{equation*}
+
+The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal: 
+\begin{enumerate}
+	\item At each $t \geq 0$, choose skill $j^* = \arg \max_{i \in N} \mathcal{I}_i$, breaking ties according to any rule
+	\item If $(h_{j^*}, P_{j^*}) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
+\end{enumerate}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Index}
+
+Even better parameterization:
+\begin{equation*}
+\mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
+\ce{
+   \sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
+   {(h_{j0}, P_{j0}) = (h_j, P_j)
+}
+\end{equation*}
+Stopping problem monotone if: 
+\begin{equation*}
+    \nu \alpha_{j0} \geq h_{j0}
+\end{equation*}
+This implies optimality of the OSLA condition; optimal policy implies:
 
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+{
+\setbeamercolor{background canvas}{bg=}
+\includepdf[pages={1}]{img/Written-index.pdf}
+}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}
+
+Show timeline for a man and a woman:
+
+Show how outcomes can be different
+
+% call jupyter class for man example and woman example
+% show course history
+
+\end{frame}
+
+
+
+
+
+
+
+
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %\begin{frame}{}
@@ -127,7 +445,7 @@ Title line 2}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section[Results]{Results}
+% \section[Results]{Results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -136,13 +454,13 @@ Title line 2}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendix
-\miniframesoff
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}[noframenumbering]
-\begin{beamercolorbox}[sep=11pt,center]{title}
-    Appendix
-\end{beamercolorbox}
-\end{frame}
+% \miniframesoff
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}[noframenumbering]
+% \begin{beamercolorbox}[sep=11pt,center]{title}
+% Appendix
+% \end{beamercolorbox}
+% \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \end{document}
