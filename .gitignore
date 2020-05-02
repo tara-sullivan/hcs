@@ -3,7 +3,8 @@
 # !/edf/*/img/*/*.pdf
 # !/notes/*/img/*/*.pdf
 
-data/ipeds/*
+ipeds/data/*
+ipeds/archive/*
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
