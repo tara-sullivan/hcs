@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 
+import pdb
 
 class AgentHistory:
     '''
@@ -9,11 +10,18 @@ class AgentHistory:
     def __init__(self,
                  ab_0,        # initial human capital levels
                  delta=0.96,  # discount rate
-                 v=1,         # human capital update amount
+                 # v=1,         # human capital update amount
+                 v=None,
                  wages=None,  # default sector-specific wages
                  ):
-        self.delta, self.v = delta, v
+        self.delta = delta
         self.ab_0 = ab_0
+        if v is None:
+            self.v = np.ones(np.size(ab_0, 0))
+        elif np.size(ab_0, 0) == np.size(v, 0):
+            self.v = v
+        else:
+            print('ERROR: v size mis-match.')
         if wages is None:
             self.w = np.ones(np.size(ab_0, 0))
         elif np.size(ab_0, 0) == np.size(wages, 0):
@@ -34,10 +42,12 @@ class AgentHistory:
         G_idx = np.argwhere(np.sum(ab_t, axis=1) >= dd)
         # Augment index if graduating
         I_t[G_idx] = ((ab_t[:, 0] * v) / (1 - delta))[G_idx]
+        # Rounding to get occasional equals
+        I_t = np.round(I_t, 8)
 
         return I_t
 
-    def history_i(self, true_theta, fail_first=0):
+    def history_i(self, true_theta, fail_first=0, choose_first=-1):
         "Determine the education decision of agent i"
         # simplify terms
         delta, ab_0 = self.delta, self.ab_0
@@ -55,10 +65,15 @@ class AgentHistory:
         # Find full course history
         keep_studying = 1
         while keep_studying == 1:
-            # Find the largest indices (there may be more than one)
-            max_j = np.reshape(np.argwhere(I_t == np.max(I_t)), (-1,))
-            # Randomly choose largest index
-            choose_j = np.random.choice(max_j)
+            # If no first course is specified, pick a random one
+            if choose_first == -1:
+                # Find the largest indices (there may be more than one)
+                max_j = np.reshape(np.argwhere(I_t == np.max(I_t)), (-1,))
+                # Randomly choose largest index
+                choose_j = np.random.choice(max_j)
+            # Otherwise specify which course comes first
+            else:
+                choose_j = choose_first
 
             if np.sum(ab_t[choose_j, :]) >= dd:
                 chosen_field = choose_j
@@ -91,46 +106,47 @@ class AgentHistory:
             self.field_state = field_state
             self.c_outcome = c_outcome
 
+if __name__ == '__main__':
 
-# Playing around with this class!
-np.random.seed(10)
-N = 4
-# Initial human capital levels
-ab_0 = np.array([[3, 2], [4, 3]])
+    # Playing around with this class!
+    np.random.seed(10)
+    N = 4
+    # Initial human capital levels
+    ab_0 = np.array([[3, 2], [4, 3]])
 
-# Number of fields
-N_j = np.size(ab_0, axis=0)
+    # Number of fields
+    N_j = np.size(ab_0, axis=0)
 
-# call instance of AFModel
-afm = AgentHistory(ab_0, wages=np.array([2, 1]))
+    # call instance of AFModel
+    afm = AgentHistory(ab_0, wages=np.array([2, 1]))
 
-# true abilities for all people
-true_ability = np.random.beta(ab_0[:, 0], ab_0[:, 1], size=(N, N_j))
+    # true abilities for all people
+    true_ability = np.random.beta(ab_0[:, 0], ab_0[:, 1], size=(N, N_j))
 
-chosen_field = np.empty(N, dtype=int)
-field_state = np.empty((N, 2))
-course_history_list = []
+    chosen_field = np.empty(N, dtype=int)
+    field_state = np.empty((N, 2))
+    course_history_list = []
 
-for i in range(N):
-    history = afm.history_i(true_ability[i], fail_first=0)
+    for i in range(N):
+        history = afm.history_i(true_ability[i], fail_first=0)
 
-    chosen_field[i] = history.chosen_field
-    field_state[i] = history.field_state
-    course_history_list.append(pd.DataFrame(list(zip(history.c_t,
-                                                     history.c_outcome)),
-                                            columns=['subject', 'outcome']))
+        chosen_field[i] = history.chosen_field
+        field_state[i] = history.field_state
+        course_history_list.append(pd.DataFrame(list(zip(history.c_t,
+                                                         history.c_outcome)),
+                                                columns=['subject', 'outcome']))
 
-course_history = pd.concat(course_history_list,
-                           keys=range(N),
-                           names=['student', 't'])
-
-
-def print_i(idx):
-    print('True ability: ' + str(true_ability[idx]))
-    print('Course History: ')
-    print(course_history.loc[idx])
-    print(np.unique(course_history.loc[idx, 'subject'], return_counts=True))
-    print('Final state: ' + str(field_state[idx]))
+    course_history = pd.concat(course_history_list,
+                               keys=range(N),
+                               names=['student', 't'])
 
 
-print_i(1)
+    def print_i(idx):
+        print('True ability: ' + str(true_ability[idx]))
+        print('Course History: ')
+        print(course_history.loc[idx])
+        print(np.unique(course_history.loc[idx, 'subject'], return_counts=True))
+        print('Final state: ' + str(field_state[idx]))
+
+
+    print_i(1)

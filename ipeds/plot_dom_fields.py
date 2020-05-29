@@ -31,7 +31,7 @@ def find_dom():
 def main():
 
     # List of male (and female) dominated fields
-    male_dom = ['14', '11', '40', '45', '27', '52']
+    male_dom = ['14', '11', '40', '45', '27', '52', '26']
     # female_dom = ['51', '50', '42', '16', '13']
 
     # top 12 cip codes, aggregated
@@ -53,7 +53,7 @@ def main():
     # cols = male_dom
     col_labels = {key: cip2labels_short[key] for key in male_dom}
     title_str = 'Ratio of women to men'
-    label_edit = {'11': -.02, '40': -.02}
+    label_edit = {'11': -.04, '40': -.04}
 
     plot_df(df=cip2rate, cols=male_dom, col_labels=col_labels,
             title=title_str, label_edit=label_edit, x_lim=2030)

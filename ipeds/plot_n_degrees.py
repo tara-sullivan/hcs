@@ -12,6 +12,7 @@ imgpath = os.path.join(os.path.dirname(os.getcwd()), 'img/')
 
 
 def main():
+    # Define dataframe
     cipdf = (df.groupby(['year']).aggregate('sum')
              .transform(lambda x: x / 1e6))
     cols = ['ctotalm', 'ctotalw']

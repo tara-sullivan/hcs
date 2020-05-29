@@ -14,36 +14,29 @@
 % Avoid a warning
 \let\Tiny=\tiny
 
+\usepackage{bbm}
+
 \usepackage{xparse} %NewDocumentCommand
 
 % Notes to self: \nts[color option]{text that is a note}
 \newif\ifshowcomments
-%\showcommentstrue % uncomment to show
+% \showcommentstrue % uncomment to show
 \ifshowcomments
 \newcommand{\nts}[2][DarkGray]{\setbeamercolor{taras comment}{fg=#1}{\usebeamercolor[fg]{taras comment}\setbeamercolor{item}{fg = taras comment.fg}\emph{#2}}}
 \else 
 \newcommand{\nts}[2][DarkGray]{}
 \fi
-\newcommand{\nn}[2][DarkGray]{{\small \color{#1} #2}}
 
 % Color highlights
-\newcommand{\blue}[1]{\textbf{\color{MainBlue}#1}}
-\newcommand{\green}[1]{\textbf{\color{Green}#1}}
+\newcommand<>{\blue}[1]{\textbf{\color#2{MainBlue}#1}}
+\newcommand<>{\mblue}[1]{{\color#2{MainBlue}#1}}
+\newcommand<>{\green}[1]{\textbf{\color#2{Green}#1}}
+\newcommand<>{\mgreen}[1]{{\color#2{Green}#1}}
 \newcommand{\orange}[1]{\textbf{\color{Orange}#1}}
 \newcommand{\gold}[1]{\textbf{\color{Gold}#1}}
 
-\newcommand{\cc}{\mathbf{c}}
-\newcommand{\xx}{\mathbf{x}}
-\newcommand{\bfe}{\beta_{FE}}
-\newcommand{\bld}{\beta_{LD}}
-
-\newcommand{\ww}{\pmb{\color{Green}w}}
-\newcommand{\pp}{\pmb{\color{Green}p}}
-\newcommand{\hh}{\pmb{\color{MainBlue}h}}
-\newcommand{\xt}{\pmb{\color{Purple}x_t}}
-\newcommand{\Mt}{\pmb{\color{Purple}M_t}}
-
-\NewDocumentCommand{\EE}{ O{} O{} m }{\mathbb{E}_{#1} #2 \left[ #3 \right]}
+\newcommand{\EE}[1]{\mathbb{E} \left[ #1 \right]}
+% \NewDocumentCommand{\EE}{ O{} O{} m }{\mathbb{E}_{#1} #2 \left[ #3 \right]}
 \newcommand{\llog}[1]{\log \left( #1 \right)}
 \newcommand{\Cov}[1]{\text{Cov} \left( #1 \right)}
 
@@ -52,10 +45,25 @@
 \newcommand{\pr}[1]{\left( #1 \right)}
 \newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
 
+% Beamer buttons
+% bottom buttom: \bbutton{name_of_link}{Text to print}
+\newcommand{\bbutton}[2]{
+    \begin{tikzpicture}[remember picture, overlay]
+    \node[shift={(-1.4cm,0.5cm)}]() at (current page.south east){%
+    \hyperlink{#1}{\beamergotobutton{#2}}};    
+    \end{tikzpicture}
+}    
+% here button
+\newcommand{\hbutton}[2]{
+    \hyperlink{#1}{\beamergotobutton{#2}}
+}
+% Cite command: cc
+\newcommand{\nn}[2][DarkGray]{{\small \color{#1} #2}}
+\newcommand{\ccdoi}[2]{\href{https://doi.org/#1}{\nn{#2}}}
+
+
 %Information to be included in the title page:
-\title{Title line 1: 
-\\
-Title line 2}
+\title{Group-based beliefs and human capital specialization}
 \author[]{Tara Sullivan}
 \institute{
 Macro Lunch Presentation \\
@@ -83,48 +91,14 @@ Notes/comments are in gray and will be excluded from the presentation.
 \usepgfplotslibrary{groupplots}
 \usepgfplotslibrary{dateplot}
 \pgfplotsset{compat=newest,
-    % every axis/.append style={
-    %     % remove comma separator from all numbers
-    %     /pgf/number format/1000 sep={},
-    % },
-    % The following works to append stype to groups
-    % group/every plot/.append style = {
-    %     height=\axisdefaultheight, 
-    %     width = 0.5\textwidth,
-    % }, 
-    % groupplot/.
-    % group/every plot/.append style = {
-    %     height=\axisdefaultheight, 
-    %     width = 0.5\textwidth,
-    % },
-    % group/every plot/.append style = {
-    %     group style={group size=2 by 1}
-    %     height=\axisdefaultheight, 
-    %     width = 0.5\textwidth,   
-    % }
     every axis/.style={
         axis y line*=left,
         axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
     },
-    % every axis x label/.style={
-    %     at={(ticklabel* cs:1.00)},
-    %     anchor=west,
-    % },
-    % every axis y label/.style={
-    %     at={(ticklabel* cs:1.00)},
-    %     anchor=south,
-    %     set thousands separator={},
-    % },
-    % every x tick label/.append style={set thousands separator={},},
-    % every axis x tick label/.style={
-    %     /pgf/number format/.cd,%
-    %     scaled x ticks = false,
-    %     set thousands separator={},∫
-    %     fixed
-    % },%
-}
-\tikzset{
-    semithick/.style={line width=0.8pt},
 }
 
 \makeatletter
@@ -138,6 +112,9 @@ Notes/comments are in gray and will be excluded from the presentation.
    singlelinecheck=false,
    % tableposition=top
 }
+
+\usetikzlibrary{external}
+\tikzexternalize[prefix=img/]
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}    
 %\beamertemplatenavigationsymbolsempty
@@ -160,6 +137,9 @@ Notes/comments are in gray and will be excluded from the presentation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Increased attainment of Bachelor's degrees} 
 
+% Women are more educated; but what they are studying matters
+% 450,000 men earned bachelor's degrees in 1970, compared to 340,000 women
+% Highlight that we are discussing convergence in specific majors since the 1990s.}
 
 \begin{figure}
 % \input{../../img/n_degrees.tex}
@@ -172,11 +152,14 @@ Notes/comments are in gray and will be excluded from the presentation.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{Historically male-dominated fields}
 
+% When we consider gender convergence across different fields
+
 \begin{figure}
 % \input{../../img/n_degrees.tex}
 \input{male_dom.tex}
 \caption{Source: IPEDS}
 \end{figure}
+% In 1970, females were 30% of biology majors
 
 \end{frame}
 
@@ -191,241 +174,333 @@ Notes/comments are in gray and will be excluded from the presentation.
 
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Gender convergence across fields}
+
+Why has gender convergence been different across fields?
+\begin{itemize}
+    \item Differences in preferences or abilities
+
+    \item Misallocation of talent; may impact aggregate productivity growth
+    \ccdoi{10.3982/ECTA11427}{(Hsieh, Hurst, Jones, and Klenow 2019)} 
+
+    % \item College major choice matters for future income \ccdoi{10.1146/annurev-economics-080511-110908}{(Altonji, Blom, and Meghir 2012)}
+\end{itemize}
+
+% \vspace{2ex}
+% Common explanations for why convergence might not occur:
+% \begin{itemize}
+%     \item Preferences
+%     \item Abilities
+%     \item Discrimination in labor market
+%     \item <2-> Beliefs
+% \end{itemize}
+
+\pause
+\vspace{2ex} 
+\textbf{This paper:} attempts to answer this question using a model of human capital specialization:
+\begin{itemize}
+    \item Agents with unknown heterogeneous abilities
+    \item Fields of study with heterogeneous wages
+    \item Use courses to learn about underlying abilities
+\end{itemize}
+% present a model of human capital and learning ability
+% beliefs result in different course taking characterisitcs
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Limited Literature Review}
 
 
+1. Human capital specialization
+\begin{itemize}
+    \item Build on model of gradual specialization from Alon and Fershtman (2019)
+\end{itemize}
+
+\vspace{4ex}
+2. Gender gaps in college choice
+\begin{itemize}
+    \item Empirically motivated by Sloan, Hurst, and Black (2019)  % pre-labor market human capital specialization
+%     % Use newly expanded ACS data that asks about major choice for college educated individuals
+%     % Women choose college majors associated with lower potential wages than men
+%     % Need to understand this better!!
+% Gender gap in schooling and experience has shrunk
+\end{itemize}
+
+\vspace{4ex}
+3. Beliefs and specialization decisions
+\begin{itemize}
+    \item Theoretically similar to Arcidiacono et al. (2015)
+\end{itemize}
+
+\vspace{3ex}
+
+
+
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}{Outline}
+    \tableofcontents
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section[Model]{Model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-% begin with an Alon-Fershtman slide; review as quicly as possible ``because many people here are familar with this paper, I'll try to keep this short'' Maybe check with david that this is a good idea
-% Then jump into my key contribution: how do we think about the priors
+\input{02-model}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\section[Simulations]{Model Simulations}
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Student specialization decision}
+\begin{frame}{Simulate agent behavior}\label{simulate}
 
-% Human capital specialization process follows AF20
-% Individuals allocate indivisble unit of time to either:
-% \begin{itemize}
-	% \item Study $s_t = (s_{1t}, \dots, s_{Jt})$
-	% \item Work $\ell_t = (\ell_{1t}, \dots, \ell_{Jt})$
-% \end{itemize}
+% To consider how my model can explain human capital sepcialization decisions
 
-% Individuals choose to work ($\ell_{jt}$) or study ($s_{jt}$) in skill-$j$ to maximize expected earnings:
-% \begin{equation*}
-% 	% 	\mathbb{E} \sbr{
-% 	%    \sum_{t=0}^\infty \delta^t 
-% 	%    \left. \pr{\sum_{i=1}^N \ell_{it} w_i h_{it}} \right\vert
-% 	%    \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
-% 	% }
-% 	\sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}
-% \end{equation*}
-% There's heterogenous skills;
-Individuals endowed with: %For skills $j=0,\dots,J$ at time $t=0$
+How can the model explain different specialization outcomes?
+
+\vspace{3ex}
+Consider a world with two fields, X and Y
 \begin{itemize}
-	\item [$h_{j0}$:] Skill-$j$ specific human capital
-	\item [$\theta_j$:] Unknown ability in $j$
-	\item [$P_{j0}$:] Prior distribution over $\theta_j$
+    \item Wages are equal: $w_X = w_Y$
+    \item The agent's probabilities of success are equal: $\theta_X = \theta_Y$
+    \item Initial beliefs are equal to the uninformative prior: \hyperlink{model_beta_11}{\beamerbutton{PDF of beliefs}}
+    \begin{equation*}
+        (\alpha_{X0}, \beta_{X0}) = (\alpha_{Y0}, \beta_{Y0}) = (1, 1)
+    \end{equation*}
 \end{itemize}
 
-\vspace{2ex}
-Individuals studying skill $j$ at time $t$:
-\begin{itemize} 
-	\item Human capital accumulation depends on whether the student passes the course:
-	\begin{align*}
-	h_{jt+1} =& H(h_{kt}, a_{kt}), \quad \quad
-	a_{jt} \sim F_{\theta_j}
-	\end{align*}
-	\item Belifs about ability $\theta_j$ evolves according to:
-	\begin{equation*}
-		P_{j,t+1} = \Pi_j (P_{jt},a_{jt})
-	\end{equation*}
-\end{itemize}
-
-% why is it a_kt and not theta? 
-
-\vspace{2ex}
-% Endogenously enter labor market in skill $j$ to maximize expected lifetime earnings: 
-Enter labor market at time $t$ as a skill-$j$ specialist to maximize expected lifetime payoff:
-\begin{equation*}
-	\frac{\delta^t}{1 - \delta} U_j (w_{j}, h_{jt})
-\end{equation*}
-
-
-% Human capital accumulation
-
-\textbf{Key:} How do we determine priors $P_{j}$?
-% key for this model is uncertainty about underlying abilities
-
-\end{frame}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Group-based beliefs about abilities}
-
-This paper:
+\vspace{3ex}
+Simulate agent's specialization decisions when choosing between X and Y
 \begin{itemize}
-	\item Each individual has a group type: $g \in \{m, f\}$
-
-	\item Students form belefs, $P_{j0}$, based on previously observed group successes
+    \item Model fraction of simulated agents choosing X or Y at time $t$ 
+    \item Assume $h_{j0} = \nu \alpha_{j0}$ \hyperlink{sim_parameterization}{\beamerbutton{Details}}
 \end{itemize}
 
-\vspace{2ex}
-Simple parameterization:
-\begin{itemize}
-	\item [$\alpha_{j0}^g$: ] Number of type-$g$ students who have suceeded in $j$ 
-	\item [$\beta_{j0}^g$: ] Number of type-$g$ students who have failed in $j$
-
-	\item [$\implies$] Observed success rate:
-	\begin{equation*}
-	\mu_{j0}^g = 
-	  \frac{\alpha_{j0}^g}{\alpha_{j0}^g + \beta_{j0}^g}.
-\end{equation*}
-This average is based on a sample size of type $g$ students:
-\begin{equation*}
- 	n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g
- \end{equation*}
-\end{itemize}
-
-\vspace{2ex}
-Group-based prior beliefs about probability of success in skill-$j$ courses, $\theta_j$:
-\begin{equation*}
-	\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g} \quad \implies \quad
-	\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}
-\end{equation*}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Default parameterization}\label{sim_default}
 
-% Suppose sample size of men is larger than that of women, but the observed success rate is the same for the two groups:
-Suppose there are more men then women in field $j$: 
-\begin{equation*}
-  n_{j0}^m > n_{j0}^f
-\end{equation*}
-But the observed success rate is the same for the two groups:
-\begin{equation*}
-	\mu_{j0} = \mu_{j0}^m = \mu_{j0}^w
-\end{equation*}
+% 
+\begin{figure}
+\centering
+\input{simulation_1000.tex}
+\end{figure}
 
-\nts{Include figure showing what this means for a beta distribution}
+\hyperlink{model_beta_11}{\beamerbutton{PDF of beliefs}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Zooming in}
+
+% should be symmetric
+
+\begin{figure}
+\centering
+\input{simulation_50.tex}
+\end{figure}
+
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Wage effects}
 
-% \nts{Frame remaining simple parameterization}
-\begin{frame}{Individual problem}
+% 
 
-\nts{Need to adjust to include gender?}
-
-A policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal if it maximizes:
-\begin{align*}
-& \mathbb{E}^\pi \sbr{
-   \sum_{t=0}^\infty \delta^t 
-   \left. \pr{\sum_{i=1}^N \ell_{it} w_i h_{it}} \right\vert
-   \pr{(h_{10}, P_{10}), \dots, (h_{10}, P_{N0})}
-} \\
-\text{subject to} \quad& h_{it+1} = h_{it}+ a_{it} s_{it}, \quad \quad a_{it} = 
-   \begin{cases} 
-      \nu_i, & \text{with prob. } \theta_i,  \\ 
-      0, & \text{with prob. } 1 - \theta_i,
-   \end{cases} 
-   %\quad \quad h_{i0} = \alpha_{i0} \nu_i, 
-   \\
-\quad& P_{it+1} = \mathcal{B} (\alpha_{i,t+1}, \beta_{i,t+1}), 
-   \quad \quad \theta_i \sim P_{i,0} \equiv \mathcal{B} (\alpha_{i0}, \beta_{i0})
-   \quad \quad \text{if $i$ selected,} \\
-\quad& \sum_{i=1}^N (s_{it} + \ell_{it}) = 1, \quad \quad s_{it}, \ell_{it} \in \{0,1\} \\
-   & h_{j0} = \nu \alpha_{j0}
-\end{align*}
+\begin{figure}
+\centering
+\input{wage_effect.tex}
+\end{figure}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Optimal policy theorem}
+\begin{frame}{Belief effects}\label{sim_beliefs}
 
-Define the skill $j$ index as the expected payoff if you committed to studying $j$:
-%\gen{ 
-\begin{equation*}
-\mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
-\ce{
-   \sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
-   {(h_{j0}, P_{j0}) = (h_j, P_j)
-}
-% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
-% \begin{cases}
-% \frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
-% \frac{h_{jt}}{1 - \delta} \sbr{
-%    \frac{
-%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
-%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
-%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
-%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
-% \end{cases}
-\end{equation*}
+% risk aspect is on human capital accumulation
+% your expected probability of gaining human capital is the same in both of these
+% there's risk in timing - risk aversion over time; probably from discounting with linear utility function
 
-Define the graduation region of skill $j$ as: 
-\begin{equation*}
-% \mathcal{G}_j =  \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
-\mathcal{G}_j = \left\{ (h_j, P_j) \left\vert
-   \arg \max_{\tau \geq 0} 
-   \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
-   {(h_j, P_j)} = 0
-   \right. \right\}
-\end{equation*}
+%%%%%%%%%%%%
+% Start going into y because you have more information
+% more quickly will converge into what you go at 
 
-The following policy $\pi: (h_t, P_t) \to (s_t, \ell_t)$ is optimal: 
-\begin{enumerate}
-	\item At each $t \geq 0$, choose skill $j^* = \arg \max_{i \in N} \mathcal{I}_i$, breaking ties according to any rule
-	\item If $(h_{j^*}, P_{j^*}) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
-\end{enumerate}
+% If you'er going to switch, you know sooner
+
+% In expectation 
+% What drives length to degree?
+% AFter two periods you have sunk benefit
+
+
+% Inforamtion value outweight human capital
+% risk neutral is human capital 
+
+% spend more in uncertain major 
+
+% benefit 
+
+% why do you spend less time studying when you  have more certainty
+
+% if distribution is tighter, initial 
+
+% any signal makes you more likely to switch if you start in more dispersed prior
+% swtiching is bad; want to minimize time you spend in school
+% go with option for which you 
+
+% c_j depends on alpha0 and beta0
+
+% poteriro vs posterior predictive
+
+% Y provides more 
+% you want to accumulate the most human capital in the shortest amount of time
+% want to choose the field to get you to 10 suc
+
+\begin{figure}
+\centering
+\input{belief_effect.tex}
+\end{figure}
+\hyperlink{model_beta_22}{\beamerbutton{PDF of beliefs}}
+\hyperlink{sim_parameterization}{\beamerbutton{Parameterization}}
+\hyperlink{app_ability_v_effect}{\beamerbutton{
+    Let $\alpha_{X0} \nu_X = \alpha_{Y0} \nu_Y$
+}}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Index}
+\begin{frame}{Ability to succeed}\label{sim_ability}
 
-Even better parameterization:
-\begin{equation*}
-\mathcal{I}_j (h_j, P_j) = \sup_{\tau \geq 0} \mathbb{E}^\tau
-\ce{
-   \sum_{t=0}^\infty \delta^t \pr{\ell_{jt} w_j h_{jt}}}
-   {(h_{j0}, P_{j0}) = (h_j, P_j)
-}
-\end{equation*}
-Stopping problem monotone if: 
-\begin{equation*}
-    \nu \alpha_{j0} \geq h_{j0}
-\end{equation*}
-This implies optimality of the OSLA condition; optimal policy implies:
-
+\begin{figure}
+\centering
+\input{ability_effect.tex}
+\end{figure}
+\hyperlink{app_v_effects}{\beamerbutton{$\nu$ simulation}}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-{
-\setbeamercolor{background canvas}{bg=}
-\includepdf[pages={1}]{img/Written-index.pdf}
-}
-
-
+\miniframesoff
+%\section[Measurement]{Literature Review: measuring adaptation}
+\section[Next steps]{Next Steps}
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{}
+\begin{frame}{Identification}
 
-Show timeline for a man and a woman:
+\nts{This is just a sketch of what this slide will look like}
 
-Show how outcomes can be different
+Identification:
+\begin{itemize}
+    \item $w$: Average expected lifetime wages by gender and field (ACS data)
+    % \item $\theta:$ Underlying probability of success: I will make an assumption to make this simplify, but not sure if I want to:
+    % \begin{itemize}
+    %     \item Assume equal
+    %     \item Assume matches aggregate beliefs (this is what I'm leaning towards)
+    %     \item Assume matches group beliefs
+    % \end{itemize} 
+    \item $\nu$: Mincerian returns to education (ACS data) 
+\end{itemize}
+Initial beliefs:  
+\begin{itemize}
+    \item NCES Transcript study to estimate $\mu$
+    \item IPEDS data for $\alpha_{j0}$
+\end{itemize}
 
-% call jupyter class for man example and woman example
-% show course history
+\vspace{2ex}
+Note: assuming genders have the same ability and same success rates reduces the parameters I need to estimate
+% Initial human capital....?
+
+\vspace{4ex}
+\pause
+Important to consider how discrimination can impact model through:
+\begin{itemize}
+    \item Wages
+    \item Probability of success
+\end{itemize}
+In general, worth considering how this model connects to statistical discrimination
 
 \end{frame}
 
 
 
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Calibration}
+
+% American Community Survey
+% \begin{itemize}
+%     \item Mincerian returns to education
+
+%     \item 
+% \end{itemize}
+
+% HEGIS/IPEDs
+
+% \end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{}
+
+% \nts{Placeholder: will be expanding on this}
+
+% Calibrate model 
+
+% \vspace{3ex}
+% Expand upon analytical results
+% \begin{itemize}
+%     \item I assume initial beliefs are distributed as:
+%     \begin{equation*}
+%     \mathcal{B} \pr{\mu_{j0} n_{j0}^g, (1 - \mu_{j0}) n_{j0}^g} 
+% \end{equation*}
+%     Assuming men and women share a common beliefs about mean abilities ($\mu_{j0}$) allows for some interesting analytical results
+% \end{itemize}
+
+% \end{frame}
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Further extensions}
+
+% \nts{Placeholder: will be expanding on this}
+
+% \vspace{3ex}
+% Efficiency losses from talent mis-match
+
+% \vspace{3ex}
+% Adjsuted gender wage gap
+
+% \vspace{3ex}
+% Connection to statistical discrimination
+
+% \vspace{3ex}
+% Affirmative action
+
+% % unexplained part of gap might understate discrimination
+
+% % think about this in terms of oaxaca decomposition
+
+% \end{frame}
+
+% When we look at gender wage gap, we see that 
+% If we assumet this is true, selection into certain occupations is not exogenous; can possibly create adjusted gender-wage gap
 
 
 
@@ -454,13 +529,132 @@ Show how outcomes can be different
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Appendix
-% \miniframesoff
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \begin{frame}[noframenumbering]
-% \begin{beamercolorbox}[sep=11pt,center]{title}
-% Appendix
-% \end{beamercolorbox}
-% \end{frame}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}[noframenumbering]
+\begin{beamercolorbox}[sep=11pt,center]{title}
+Appendix
+\end{beamercolorbox}
+\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Parametric example}\label{app_parameterization}
+
+% Assuming $h_{j0} = \nu_j \alpha_{j0}$ and letting $c_{jt}$ be the number of periods and individual spends studying $j$, the stopping condition in this problem simplifies to:
+% \begin{equation*}
+%     \frac{1- \delta}{\delta} \geq \frac{1}{c_{jt} + \alpha_{j0} + \beta_{j0}} \implies 
+%     c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+% \end{equation*}
+% This yields the index function:
+% \begin{align*}
+% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+% \begin{cases}
+% \frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+% \frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+%    \frac{
+%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
+%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+% \end{cases}
+% \end{align*}
+% And graduation region:
+% \begin{equation*}
+%    \mathcal{G}_j =  \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
+% \end{equation*}
+
+% % \hyperlink{simulate}{\beamergotobutton{Return: Simulation}} 
+% \bbutton{simulate}{Return: Simulation}
+
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Parametric example}\label{sim_parameterization}
+
+% Monotonicity of stopping problem (ensured by $h_{j0} \leq \nu \alpha_{j0}$) 
+% \begin{itemize}
+%     \item [$\implies$] Optimality of one-step-look-ahead, i.e. comparing
+%     \begin{enumerate}
+%         \item Value of entering labor market as skill $j$ specialist today, to
+%         \item Value of entering labor market as a skill $j$ specialist tomorrow
+%     \end{enumerate}
+% \end{itemize}
+Assuming $h_{j0} = \nu \alpha_{j0}$ and letting $c_{jt}$ be time spent studying $j$:
+\begin{itemize}
+    \item [$\implies$] Deterministic stopping function
+\end{itemize}
+\begin{equation*}
+    \frac{1- \delta}{\delta} \geq \frac{1}{c_{jt} + \alpha_{j0} + \beta_{j0}} \implies 
+    c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+\end{equation*}
+Graduation regions given by:
+\begin{equation*}
+    \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
+        \alpha_{jt}, \beta_{jt} 
+        \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
+    \right.\right\}
+\end{equation*}
+
+In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$:
+    % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
+    % \begin{cases}
+    %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
+    %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
+    %     \frac{w_{jt}}{1 - \delta} 
+    %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
+    % \end{cases}
+\begin{align*}
+\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+\begin{cases}
+\frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+\frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+   \frac{
+      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {c_{jt} + \alpha_{j0} + \beta_{j0}}
+   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+\end{cases}
+\end{align*}
+
+\hyperlink{simulate}{\beamergotobutton{Return: simulation set-up}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}\label{app_ability_v_effect}
+
+If 
+$\nu_X = 
+\frac{\alpha_{X0} + \beta_{X0}}{\alpha_{Y0} + \beta_{Y0}} 
+\cdot \frac{\alpha_{Y0}}{\alpha_{X0}}
+\cdot \delta^{\alpha_{X0} + \beta_{X0} - \alpha_{Y0} - \beta_{Y0}}$, then:
+\begin{itemize}
+     \item $h_{X0} = h_{Y0}$, and
+     \item Agents randomly choose between fields $X$ and $Y$ at $t=0$
+ \end{itemize}  
+\begin{figure}
+\centering
+\input{belief_adj_effect.tex}
+\end{figure}
+\hyperlink{app_v_effects}{\beamerbutton{$\nu$ effects}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{$\nu$ effects}\label{app_v_effects}
+
+\begin{figure}
+\centering
+\input{v_effect.tex}
+\end{figure}
+\hyperlink{app_ability_v_effect}{\beamerbutton{Return: $\alpha_{X0} \nu_X = \alpha_{Y0} \nu_Y$}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: ability simulation}}
+
+\end{frame}
 
 \end{document}
