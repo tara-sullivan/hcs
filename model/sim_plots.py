@@ -12,131 +12,118 @@ from quantecon.util import timing
 # from importlib import reload
 
 # from other programs
-import AFModel
+import sim_agents
 # import plot_line_labels
-AgentHistory = AFModel.AgentHistory
+SimulateAgents = sim_agents.SimulateAgents
 # plot_df = plot_line_labels.plot_df
 
-# imgpath = os.path.join(os.path.dirname(os.getcwd()), 'img/')
 
-sim_num_default = 100
-ab_0_default = np.array([[1, 1], [1, 1]])
-w_default = np.array([1, 1])
-v_default = np.array([1, 1])
-ability_default = np.array([0.5, 0.5])
+# class SimulateAgents:
+#     '''
+#     Simulates agent's course history, given prior ab_0
 
-# # This is used for an 0-1, 1-b concordacne, but ill make it general
-# # alph_list = list(string.ascii_uppercase)
-# alph_list = ['X', 'Y']
-# alph_dict = {key: alph_list[key] for key in range(len(alph_list))}
+#     Optional arguments:
+#         * ab_0:     Initial human capital levels
+#         * w:        Wages for each skill
+#         * v:        Human capital update amount
+#         * ability:  True ability of agents in population
+#         * sim_num:  Number of simulations
+#     '''
+#     def __init__(self,
+#                  ab_0_arg=None,     # initial human capital levels
+#                  w_arg=None,        # default sector-specific wages
+#                  v_arg=None,        # human capital update amount
+#                  ability_arg=None,  # true ability
+#                  sim_num_arg=None   # number of simuations to run
+#                  ):
+#         # Use default values if no argument called
+#         if ab_0_arg is not None:
+#             self.ab_0 = ab_0_arg
+#         else:
+#             self.ab_0 = ab_0_default
 
+#         if w_arg is not None:
+#             self.w = w_arg
+#         else:
+#             self.w = w_default
 
-class SimulateAgents:
-    '''
-    Simulates agent's course history, given prior ab_0
+#         if v_arg is not None:
+#             self.v = v_arg
+#         else:
+#             self.v = v_default
 
-    Optional arguments:
-        * ab_0:     Initial human capital levels
-        * w:        Wages for each skill
-        * v:        Human capital update amount
-        * ability:  True ability of agents in population
-        * sim_num:  Number of simulations
-    '''
-    def __init__(self,
-                 ab_0_arg=None,     # initial human capital levels
-                 w_arg=None,        # default sector-specific wages
-                 v_arg=None,        # human capital update amount
-                 ability_arg=None,  # true ability
-                 sim_num_arg=None   # number of simuations to run
-                 ):
-        # Use default values if no argument called
-        if ab_0_arg is not None:
-            self.ab_0 = ab_0_arg
-        else:
-            self.ab_0 = ab_0_default
+#         if sim_num_arg is not None:
+#             self.sim_num = sim_num_arg
+#         else:
+#             self.sim_num = sim_num_default
 
-        if w_arg is not None:
-            self.w = w_arg
-        else:
-            self.w = w_default
+#         # Ability default takes a couple more arguments
+#         # Number of courses
+#         self.N_j = np.size(self.ab_0, axis=0)
+#         if ability_arg is not None:
+#             # pass the whole population of abilities
+#             if ability_arg.shape == (self.sim_num, self.N_j):
+#                 self.ability = ability_arg
+#             # otherwise you need to broadcast given ability to population
+#             else:
+#                 self.ability = np.broadcast_to(ability_arg,
+#                                                (self.sim_num, self.N_j))
+#         # If no ability arg given, broadcast default ability to population
+#         else:
+#             self.ability = np.broadcast_to(ability_default,
+#                                            (self.sim_num, self.N_j))
 
-        if v_arg is not None:
-            self.v = v_arg
-        else:
-            self.v = v_default
+#         # Call instance of AFModel
+#         self.afm = AgentHistory(ab_0=self.ab_0,
+#                                 wages=self.w,
+#                                 v=self.v)
 
-        if sim_num_arg is not None:
-            self.sim_num = sim_num_arg
-        else:
-            self.sim_num = sim_num_default
+#         # Run simulatiofn
+#         outcome = self.run_sim()
+#         self.course_history = outcome.course_history
+#         self.chosen_field = outcome.chosen_field
+#         self.field_state = outcome.field_state
 
-        # Ability default takes a couple more arguments
-        # Number of courses
-        self.N_j = np.size(self.ab_0, axis=0)
-        if ability_arg is not None:
-            # pass the whole population of abilities
-            if ability_arg.shape == (self.sim_num, self.N_j):
-                self.ability = ability_arg
-            # otherwise you need to broadcast given ability to population
-            else:
-                self.ability = np.broadcast_to(ability_arg,
-                                               (self.sim_num, self.N_j))
-        # If no ability arg given, broadcast default ability to population
-        else:
-            self.ability = np.broadcast_to(ability_default,
-                                           (self.sim_num, self.N_j))
+#     def run_sim(self):
+#         '''
+#         Simulate agents using afm model
+#         '''
+#         # simplify notation
+#         sim_num = self.sim_num
+#         ability = self.ability
+#         afm = self.afm
+#         # initialize arrays
+#         chosen_field = np.empty(sim_num, dtype=int)
+#         field_state = np.empty((sim_num, 2))
+#         course_history_list = []
 
-        # Call instance of AFModel
-        self.afm = AgentHistory(ab_0=self.ab_0,
-                                wages=self.w,
-                                v=self.v)
+#         print('Running...')
+#         timing.tic()
+#         for i in range(sim_num):
+#             # Create agent's history
+#             # Optional arguments include fail_first, choose_first
+#             history = afm.history_i(ability[i])
 
-        # Run simulatiofn
-        outcome = self.run_sim()
-        self.course_history = outcome.course_history
-        self.chosen_field = outcome.chosen_field
-        self.field_state = outcome.field_state
+#             # Fill in result arrays
+#             chosen_field[i] = history.chosen_field
+#             field_state[i] = history.field_state
+#             # Create a list of dataframes; quicker to concatenate later
+#             course_history_list.append(
+#                 pd.DataFrame(list(zip(history.c_t, history.c_outcome)),
+#                              columns=['subject', 'outcome']))
+#         timing.toc()
+#         # concatenate dataframes for full course history
+#         course_history = pd.concat(course_history_list,
+#                                    keys=range(sim_num),
+#                                    names=['student', 't'])
+#         return self.return_sim(chosen_field, field_state, course_history)
 
-    def run_sim(self):
-        '''
-        Simulate agents using afm model
-        '''
-        # simplify notation
-        sim_num = self.sim_num
-        ability = self.ability
-        afm = self.afm
-        # initialize arrays
-        chosen_field = np.empty(sim_num, dtype=int)
-        field_state = np.empty((sim_num, 2))
-        course_history_list = []
-
-        print('Running...')
-        timing.tic()
-        for i in range(sim_num):
-            # Create agent's history
-            # Optional arguments include fail_first, choose_first
-            history = afm.history_i(ability[i])
-
-            # Fill in result arrays
-            chosen_field[i] = history.chosen_field
-            field_state[i] = history.field_state
-            # Create a list of dataframes; quicker to concatenate later
-            course_history_list.append(
-                pd.DataFrame(list(zip(history.c_t, history.c_outcome)),
-                             columns=['subject', 'outcome']))
-        timing.toc()
-        # concatenate dataframes for full course history
-        course_history = pd.concat(course_history_list,
-                                   keys=range(sim_num),
-                                   names=['student', 't'])
-        return self.return_sim(chosen_field, field_state, course_history)
-
-    # return nicely formated results from simulation
-    class return_sim:
-        def __init__(self, chosen_field, field_state, course_history):
-            self.chosen_field = chosen_field
-            self.field_state = field_state
-            self.course_history = course_history
+#     # return nicely formated results from simulation
+#     class return_sim:
+#         def __init__(self, chosen_field, field_state, course_history):
+#             self.chosen_field = chosen_field
+#             self.field_state = field_state
+#             self.course_history = course_history
 
 
 # def course_history_df(course_history):
@@ -197,7 +184,7 @@ class SimulateAgents:
 #     return str_all
 
 
-if __name__ == '__main__':
+# if __name__ == '__main__':
 
     # # Simulate agent behavior - 100 times
     # np.random.seed(125)
@@ -295,23 +282,23 @@ if __name__ == '__main__':
 
 
 
-    # Initial human capital
-    # Create simulation and dataframe
-    np.random.seed(29)
-    sim = SimulateAgents(v_arg=v)
-    df = course_history_df(sim.course_history)
-    # arguments for plotting
-    title_str = 'Field selection and human capital updating \\\\ ' \
-                + print_v(v)
-    label_edit = {'j0': .03, 'j1': .03}
-    add_text = {'add_loc': (15, .03),
-                'add_str': 'N simulations = ' + str(sim.sim_num)}
-    plot_df(df=df,
-            cols=list(df.columns), col_labels=col_dict(df),
-            title=title_str,
-            label_edit=label_edit,
-            add_text=add_text)
-    # Save figure using tikzplotlib
-    tikz_save('v_effect')
+    # # Initial human capital
+    # # Create simulation and dataframe
+    # np.random.seed(29)
+    # sim = SimulateAgents(v_arg=v)
+    # df = course_history_df(sim.course_history)
+    # # arguments for plotting
+    # title_str = 'Field selection and human capital updating \\\\ ' \
+    #             + print_v(v)
+    # label_edit = {'j0': .03, 'j1': .03}
+    # add_text = {'add_loc': (15, .03),
+    #             'add_str': 'N simulations = ' + str(sim.sim_num)}
+    # plot_df(df=df,
+    #         cols=list(df.columns), col_labels=col_dict(df),
+    #         title=title_str,
+    #         label_edit=label_edit,
+    #         add_text=add_text)
+    # # Save figure using tikzplotlib
+    # tikz_save('v_effect')
 
-    plt.show()
+    # plt.show()

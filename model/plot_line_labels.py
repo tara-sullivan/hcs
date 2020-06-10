@@ -6,7 +6,8 @@ import tol_colors
 from itertools import cycle
 import math
 
-import pdb
+# Useful tools
+# import pdb
 
 def plot_df(df, cols=None, col_labels=None, title='',
             label_edit={}, x_lim=None,
@@ -113,18 +114,18 @@ def plot_df(df, cols=None, col_labels=None, title='',
     # if xticks is not None:
     # Set ticks
 
-
     # Remove axes
     ax.spines['right'].set_visible(False)
     ax.spines['left'].set_visible(False)
     ax.spines['top'].set_visible(False)
     ax.spines['bottom'].set_visible(False)
 
+
 if __name__ == '__main__':
 
-    import simulate_timeline
+    import sim_agents
     import plot_simulations
-    SimulateAgents = simulate_timeline.SimulateAgents
+    SimulateAgents = sim_agents.SimulateAgents
     course_history_df = plot_simulations.course_history_df
 
     sim = SimulateAgents()
