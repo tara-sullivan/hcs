@@ -3,19 +3,22 @@
 # !/edf/*/img/*/*.pdf
 # !/notes/*/img/*/*.pdf
 
+hcs/model/from_titan/*
+
 ipeds/data/*
 ipeds/archive/*
+
+hcs/ipeds/data/*
+hcs/ipeds/archive/*
 
 .ipynb_checkpoints
 */.ipynb_checkpoints/*
 
 *.gdoc
+*.gsheet
 
 temp/
 
-# code/*/dynare/*macroexp.mod
-# !code/*/dynare/*/*.mod
-# code/*/dynare/*
 
 
 ## Sublime text [https://github.com/github/gitignore/blob/master/Global/SublimeText.gitignore]
