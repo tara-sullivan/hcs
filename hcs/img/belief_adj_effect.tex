@@ -1,89 +1,82 @@
-% This file was created by tikzplotlib v0.9.1.
+% This file was created by tikzplotlib v0.9.2.
 \begin{tikzpicture}
 
 \definecolor{color0}{rgb}{0.266666666666667,0.466666666666667,0.666666666666667}
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
 \begin{axis}[
-height=150pt,
+height=5.101085673964669cm,
 tick align=outside,
 tick pos=left,
 title={Field X: \(\displaystyle \nu=1.09\); Field Y: \(\displaystyle \nu=1.0\) \\ Field X: \(\displaystyle (\alpha_0, \beta_0)=(1, 1)\); Field Y: \(\displaystyle (\alpha_0, \beta_0)=(2, 2)\)},
-width=210pt,
+width=8.25373cm,
 x grid style={white!69.0196078431373!black},
-xlabel={\(\displaystyle t\)},
-xmin=-0.95, xmax=25,
+xmin=-0.95, xmax=23.75,
 xtick style={color=black},
-xtick={0,5,10,15,20},
-xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
-ylabel={Fraction students enrolled in field},
+xtick={0,5,10,15},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\)},
 ymajorgrids,
 ymin=0, ymax=1,
 ytick style={color=black},
 ytick={0,0.2,0.4,0.6,0.8,1},
 yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
 ]
-\addplot [semithick, color0, mark=x, mark size=3, mark options={solid}]
+\addplot [semithick, color0]
 table {%
-0 0.56
-1 0.46
-2 0.35
-3 0.38
-4 0.45
-5 0.41
-6 0.33
-7 0.37
-8 0.36
-9 0.35
-10 0.35
-11 0.35
-12 0.35
-13 0.35
-14 0.35
-15 0.35
-16 0.35
-17 0.35
-18 0.35
-19 0.35
+0 0.495
+1 0.509
+2 0.368
+3 0.364
+4 0.432
+5 0.376
+6 0.36
+7 0.379
+8 0.369
+9 0.362
+10 0.368
+11 0.367
+12 0.367
+13 0.37
+14 0.367
+15 0.368
+16 0.368
+17 0.368
+18 0.368
+19 0.369
 };
-\addplot [semithick, color1, mark=x, mark size=3, mark options={solid}]
+\addplot [semithick, color1]
 table {%
-0 0.44
-1 0.54
-2 0.65
-3 0.62
-4 0.55
-5 0.59
-6 0.67
-7 0.63
-8 0.64
-9 0.65
-10 0.65
-11 0.65
-12 0.65
-13 0.65
-14 0.65
-15 0.65
-16 0.65
-17 0.65
-18 0.65
-19 0.65
+0 0.505
+1 0.491
+2 0.632
+3 0.636
+4 0.568
+5 0.624
+6 0.64
+7 0.621
+8 0.631
+9 0.638
+10 0.632
+11 0.633
+12 0.633
+13 0.63
+14 0.633
+15 0.632
+16 0.632
+17 0.632
+18 0.632
+19 0.631
 };
-\draw (axis cs:20.5,0.35) node[
+\draw (axis cs:19.5,0.369) node[
   anchor=base west,
   text=color0,
   rotate=0.0
 ]{Field X};
-\draw (axis cs:20.5,0.65) node[
+\draw (axis cs:19.5,0.631) node[
   anchor=base west,
   text=color1,
   rotate=0.0
 ]{Field Y};
-\draw (axis cs:13,0.03) node[
-  anchor=base west,
-  text=black,
-  rotate=0.0
-]{N simulations = 100};
 \end{axis}
 
 \end{tikzpicture}

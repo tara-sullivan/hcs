@@ -3,12 +3,12 @@
 \input{preamble.tex}
 
 \newif\ifnts
-%\ntstrue % uncomment to show 
+\ntstrue % uncomment to show 
 \input{preamble-outline.tex}
 
 % General problem, not bernoulli-beta example
 \newif\ifgen
-%\gentrue % uncomment to show 
+% \gentrue % uncomment to show 
 \ifgen
   \newcommand{\gen}[1]{#1}
 \else
@@ -17,7 +17,7 @@
 
 % Include introduction or not
 \newif\ifintro
-%\introtrue % uncomment to show 
+\introtrue % uncomment to show 
 \ifintro
   \newcommand{\intro}[1]{#1}
 \else
@@ -26,7 +26,7 @@
 
 % Include math notes or not
 \newif\ifmathnotes
-%\introtrue % uncomment to show 
+\mathnotestrue % uncomment to show 
 \ifmathnotes
   \newcommand{\mathnotes}[1]{#1}
 \else

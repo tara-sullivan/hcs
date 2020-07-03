@@ -1,0 +1,141 @@
+\documentclass[compress, 8pt]{beamer}
+%\documentclass[handout, 8pt]{beamer}
+\usepackage[utf8]{inputenc}
+
+% Notes to self: \nts[color option]{text that is a note}
+\newif\ifshowcomments
+% \showcommentstrue % uncomment to show
+\input{preambleB}
+
+
+
+% Avoid a warning on mac; can introduce a warning (and maybe a break) on windows
+% \usepackage{etex}
+% Avoid a warning
+\let\Tiny=\tiny
+
+%Information to be included in the title page:
+\title{Group-based beliefs and human capital specialization}
+\author[]{Tara Sullivan}
+\institute{
+Macro Lunch Presentation \\
+Tara Sullivan \\
+\textit{tasulliv@ucsd.edu}
+}
+\date{
+\today
+\nts{\\
+\medskip
+Notes/comments are in gray and will be excluded from the presentation.
+}
+}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% path to tex images
+\makeatletter
+\def\input@path{{../../img/}}
+\makeatother
+
+% Externalize pgf plots
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{document}    
+%\beamertemplatenavigationsymbolsempty
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}
+\titlepage
+\tikzset{external/figure name={intro_}}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Increased attainment of Bachelor's degrees} 
+
+% Women are more educated; but what they are studying matters
+% 450,000 men earned bachelor's degrees in 1970, compared to 340,000 women
+% Highlight that we are discussing convergence in specific majors since the 1990s.}
+
+\begin{figure}
+% \input{../../img/n_degrees.tex}
+\input{n_degrees.tex}
+\end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Historically male-dominated fields}
+
+% When we consider gender convergence across different fields
+
+\begin{figure}
+% \input{../../img/n_degrees.tex}
+\input{male_dom.tex}
+\end{figure}
+% In 1970, females were 30% of biology majors
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Social Sciences}\label{intro_social_science_ratio}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{social_science_rat.tex}
+\end{figure}
+
+\hyperlink{app_social_science_num}{\beamerbutton{Number degrees completed}}
+\hyperlink{app_social_science_cip}{\beamerbutton{Social Science CIP}}
+\hyperlink{app_engineering}{\beamerbutton{Engineering}}
+\hyperlink{app_business}{\beamerbutton{Business}}
+\hyperlink{app_computer_science}{\beamerbutton{Computer Science}}
+\hyperlink{app_education}{\beamerbutton{Education}}
+\hyperlink{app_science_math}{\beamerbutton{Science and math}}
+
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{s}
+%\begin{frame}
+%   \tableofcontents[currentsection]
+%\end{frame}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\begin{frame}[noframenumbering]
+\begin{beamercolorbox}[sep=11pt,center]{title}
+Appendix
+\end{beamercolorbox}
+\end{frame}
+\tikzset{external/figure name={appendix_}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{appendix}
+
+\end{document}

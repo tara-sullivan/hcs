@@ -4,9 +4,10 @@
 # !/notes/*/img/*/*.pdf
 
 hcs/model/from_titan/*
+hcs/model/archive/*
 
-ipeds/data/*
-ipeds/archive/*
+# ipeds/data/*
+# ipeds/archive/*
 
 hcs/ipeds/data/*
 hcs/ipeds/archive/*

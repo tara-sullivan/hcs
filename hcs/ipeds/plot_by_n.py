@@ -1,17 +1,25 @@
 # Male dominated fields in IPEDS
-
 import matplotlib.pyplot as plt
-import tikzplotlib
-import os
 
-from make_df import df
-import plot_line_labels
+import os
+import sys
+import inspect
+
+try:
+    currpath = os.path.abspath(__file__)
+except NameError:
+    currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+rootdir = os.path.dirname(os.path.dirname(currpath))
+sys.path.append(rootdir)
+
+from ipeds.make_df import df
+from img.code import plot_line_labels
 plot_df = plot_line_labels.plot_df
 
-imgpath = os.path.join(os.path.dirname(os.getcwd()), 'img/')
+imgpath = rootdir + '/img/'
 
 
-def main():
+def plot_n_degrees():
     # Define dataframe
     cipdf = (df.groupby(['year']).aggregate('sum')
              .transform(lambda x: x / 1e6))
@@ -24,10 +32,6 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
-    tikzplotlib.clean_figure()
-    # default tikz (width, height) = (240pt, 207pt) (manual 4.10.01)
-    tikzplotlib.save(imgpath + 'n_degrees' + '.tex',
-                     axis_height='207pt', axis_width='260pt')
 
+    plot_n_degrees()
     plt.show()

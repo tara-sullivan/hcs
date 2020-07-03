@@ -1,0 +1,342 @@
+\documentclass[10 pt]{article}
+
+\input{preamble.tex}
+
+\newif\ifnts
+\ntstrue % uncomment to show 
+\input{preamble-outline.tex}
+
+% Bibliography
+\usepackage[authordate,backend=biber]{biblatex-chicago}
+\addbibresource{../bibliography.bib}
+
+% remove space 
+% \usepackage[font=small,skip=0pt]{caption}
+
+% To edit
+\newif\iftoedit
+\toedittrue % uncomment to show
+\iftoedit 
+  \newcommand{\toedit}[1]{{\color{gray}#1}}
+\else
+  \newcommand{\toedit}[1]{#1}
+\fi
+
+\newcommand{\citeposs}[1]{{\citeauthor{#1}'s (\citeyear{#1})}}
+
+\newcommand{\br}[1]{\left\{ #1 \right\}}
+\newcommand{\sbr}[1]{\left[ #1 \right]}
+\newcommand{\pr}[1]{\left( #1 \right)}
+\newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
+
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% path to tex images
+\makeatletter
+\def\input@path{{../../img/}}
+\makeatother
+
+% Externalize pgf plots
+% \usetikzlibrary{external}
+% \tikzexternalize[prefix=figures/]
+
+% Find text width; comment out when not using to avoid warning
+% \usepackage{layouts}
+
+\begin{document}
+
+% Find text width
+% textwidth in cm: \printinunitsof{cm}\prntlen{\textwidth}. 
+% textheight in cm: \printinunitsof{cm}\prntlen{\textheight}
+% outcome: 6.50127in, 16.50746cm, 469.75502pt
+
+\title{Group-based beliefs and human capital specialization}
+\author{Tara Sullivan%\footnote{
+    %Thanks to Remy Levin, Daniela Vidart
+}
+%}
+
+\maketitle
+\onehalfspacing
+
+\noindent\nts{Please note that gray text are notes/comments}
+
+\begin{abstract}
+The gender gap in postsecondary degree attainment has disappeared in the US over the past forty years; in fact, the overall gap has reversed, as women now earn more Bachelor's degrees than men, and at an increasing rate. 
+However, significant heterogeneity persists in terms of which fields men and women choose to study. 
+In this paper, I consider the role of group-based beliefs in explaining differential convergence rates for groups across fields. 
+I assume a student will form their initial belief about their probability of success in a particular field based on past outcomes for their group type. 
+I then incorporate group-based beliefs into the model of gradual human capital specialization from \textcite{AF20} to show how these differences in priors can drive human capital specialization decisions amongst otherwise similar agents. 
+%I plan to calibrate this model to match parameters of the US postsecondary education system in order to separately identify the impact of expected lifetime wages and underlying beliefs on specialization decisions.
+\end{abstract}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\nts{
+\begin{blist}
+
+\item Allow for ability to be correlated
+
+\end{blist}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Literature}
+
+\begin{outline}
+
+\item Human capital specialization 
+
+\item Gender gaps in college major choice
+
+\item Beliefs and specialization decisions
+
+\begin{blist}
+
+\item \textcite{AAMR16-wp} build a dynamic model of school and work decisions with imperfect information. 
+The authors assume students are uncertain about their underlying abilities, and can update these beliefs over time. 
+\toedit{However, \textcite{AAMR16-wp} focuses on attrition; as such, major choice is broadly characterized as a choice between STEM and non-STEM.}
+
+\end{blist}
+
+\item Statistical discrimination
+
+\end{outline}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Empirical motivation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Data sources}
+
+Characteristics of postsecondary institutions can be found in the Integrated Postsecondary Education Data System (IPEDS) data.
+These data are collected annually by the National Center for Educational Statistics and describe the universe of institutions that participate in federal student financial aid programs. 
+The empirical motivation relies on the IPEDS Completion Surveys, which describe all degrees and certificates awarded at postsecondary institutions by field of study, gender, and race. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Model of human capital specialization}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section outlines my model of group-based beliefs and human capital specialization.
+% In this model, infinitely-lived agents with unknown, heterogeneous abilities choose between working and studying in each discrete time period. 
+% Individuals belong to different groups, and form beliefs about their own abilities based on previously observed group outcomes.
+% Individuals who study accumulate both human capital \toedit{(stochastically)} and information about their underlying abilities.
+Individual's specialization decision and subsequent decision rule follows \citeposs{AF20} model of gradual human capital specialization. 
+I refer to the reader to their original paper for a more detailed treatment of the underlying model. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Specialization decision}
+
+In this model, infinitely lived agents in discrete time choose whether to study or work within $j\in \{1, \dots, J\}$ fields.
+In each period $t$, agents choose between either field-specific postsecondary education ($u_{jt}$) or field-specific labor ($\ell_{jt}$).
+The variable $u_{jt}$ is equal to one if the individual studies field $j$ at time $t$, and otherwise equals zero. 
+Likewise, $\ell_{jt}$ is an indicator for whether agents work in field $j$ at time $t$. 
+Agents can only choose to study or work in a single field at each time period; for example, if $u_{jt} = 1$, $u_{it} = 0$ for all $i \neq j$, and $\ell_{jt} = 0$ for all $j$. 
+Therefore, each individual's time is constrained as follows: 
+\begin{equation*}
+    \sum_{j=1}^J \pr{u_{jt} + \ell_{jt}} = 1,
+\end{equation*}
+
+
+Individuals aim to maximize expected lifetime utility.
+%\footnote{\toedit{More general utility forms are possible.}}
+The amount an agent earns in field $j$ at time $t$ is a function of the field-specific wage, $w_j$, and their field-specific human capital, $h_{jt}$.
+Define expected lifetime utility associated with specializing in field $j$ as $U_j (w_j, h_{jt})$.
+We can write the lifetime maximization problem as:
+\begin{equation}\label{max_utility}
+    \sum_{t=0}^\infty \delta^t \sum_{j=1}^J U_{j} (w_j, h_{j, t}) \ell_{j, t}
+    % \max_{j \in {1, \dots, J}}
+    % \sum_{t=0}^\infty \delta^t U_j (w_j, h_{jt}) \ell_{jt}
+\end{equation}
+% Agents aim to specialize in the field that yields the highest expected lifetime utility.
+% Agents will specialize in the field $j$ that yields the highest expected lifetime earnings.
+\nts{Possibly elaborate on why we know they need to specialize; where in the model does it become clear that agents will only work in one field. }
+
+Agents are initially endowed with field-$j$ human capital $h_{j0}$, and can stochastically accumulate field-$j$ human capital by studying.
+\toedit{This means that} if a student takes a course in field $j$, they only accumulate human capital if they pass the course.
+Further, whether a student passes a course is random; high ability students are more likely to pass courses, but may still occasionally fail. 
+To make things concrete, recall that if $u_{jt}=1$, an agent is using time period $t$ to take a course in field $j$. 
+Let $s_{jt}$ denote whether an agent studying skill $j$ at time $t$ passes ($s_{jt} = 1$) or fails ($s_{jt} = 0$).
+I assume a student passes a field-$j$ course with probability $\theta_j$. 
+Therefore, $s_{jt}$ is a Bernoulli random variable with parameter $\theta_j$.
+A student only accumulates human capital if they pass the course; thus, an agent's human capital evolves according to:
+\begin{equation*}
+    h_{j,t+1} = h_{j,t} + \nu_j u_{j,t},
+\end{equation*}
+where $\nu_j$ is the gain to human capital associated with passing the course; \toedit{this can be considered akin to Mincerian returns to a particular course}.\footnote{\toedit{Maybe elaborate about the parameter space $\nu$ here.}}
+
+A student's probability of success in a field-$j$ course, $\theta_j$, can be though of as an unknown ability parameter; students with high values of $\theta_j$ are more likely to pass any given class in field-$j$, whereas students with low values of $\theta_j$ are more likely to fail. \nts{This ties in with the statistics discrimination literature in some way.}
+I assume that $\theta_j$ is assigned to students at time $t=0$ for all $j$ fields, and does not change over time.\footnote{
+   It is worth highlighting that the following assumes that probability of success or failure is independent and stationary throughout time. \toedit{I do need to discuss what happens when the probability of success is correlated across fields. Also need to consider if these initial values are correlated across groups.}}
+Although $\theta_j$ is unknown, student have initial beliefs about what their value of $\theta_j$ might be; this is represented by the initial distribution $P_{j0}$. 
+As students take courses in field-$j$, they update their belief about what their value of $\theta_j$ may be, depending on their course outcome and initial belief 
+\toedit{This can be summarized by the updating rule $\Pi_j$:}\footnote{\nts{What rules do I need on the decisoin rule to ensure that my results hold?}}
+\begin{equation*}
+    P_{j,t+1} = \Pi_j (P_{j,t}, u_{j,t})
+\end{equation*}
+I assume the initial prior is drawn from a Beta distribution with parameters $(\alpha_{j0}, \beta_{j0})$, so that $P_{j0} = \mathcal{B} (\alpha_{j0}, \beta_{j0})$. 
+Additionally, I assume priors are updated according to Bayes rule, which implies that the posterior is also drawn from a Beta distribution: 
+\begin{equation*}
+    P_{j,t+1} = \mathcal{B} (\alpha_{j,t+1}, \beta_{j,t+1}), \quad \quad 
+    (\alpha_{j,t+1}, \beta_{j,t+1}) = 
+    \begin{cases} 
+        (\alpha_{jt} + 1, \beta_{jt}) &\text{ if } s_{jt} = 1 \\
+        (\alpha_{jt}, \beta_{jt} + 1) &\text{ if } s_{jt} = 0
+    \end{cases}
+\end{equation*}
+
+\nts{Need to edit all of this.} 
+Agents have two incentives for studying a field $j$: (1) to potentially accumulate field-$j$ specific human capital, and  (2) to reveal underlying information about their ability in that skill. 
+\toedit{Recall the lifetime maximization condition, \eqref{max_utility}, and that field-specific wages are known at $t=0$.}\footnote{\toedit{
+    Perhaps it is more accurate to say that agents make their decisions using the assumption of field-specific wages, and those assumptions do not change. 
+}} 
+Then the stochasticity in the specialization decision comes from expected human capital accumulation; thus, how agents update their beliefs and form their expectation is key to the specialization decision.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Group-based beliefs}
+
+I now consider how a student's human capital specialization decisions are affected by their group.
+This involves augmenting the above model so that each student has a group type, $g$.
+To keep things simple, assume there are only two groups, men and women ($g \in \{m, f\}$).\nts{\footnote{\nts{Possible extension: countably infinite types. What does this mean if you value diversity? Could you get results like diversity helps students who are not in the targeted group to assist?}}} 
+The distributions of underlying abilities, $\theta_j$, are the same for men and women.\nts{\footnote{\nts{
+    I think I also need to say that distribution of underlying abilities is conditionally independent of group type, right? 
+  What is the maintained hypothesis in a Bayesian problem?
+  Am I assuming that $\theta_j$ is distributed 
+}}}
+However, initial beliefs about underlying abilities, 
+% $P_{j0}^g$,
+$P_{j0}^g \equiv \mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$, 
+are different for the two groups.
+\nts{Be specific about what this will do.}
+
+I assume that a student may form their belief about their probability of success using existing outcomes for their group.
+As an example, suppose a type $g$ student's belief about their own ability is based on previously observed success rates for their group, $g$. 
+Let $\alpha_{j0}^g$ and $\beta_{j0}^g$ denote the number of type $g$ students who have succeeded and failed in field $j$ at time 0, respectively.\footnote{
+   I am being purposefully vague about what ``studying'' and ``succeeding'' represent.
+   For example, the number of ``successful'' students could be:
+   \begin{footcount}
+      \item The number of students who graduated into field $j$
+      \item The number of students who attain human capital $h_j$
+      \item Both (a) and (b)
+      \item The number of students who pass an initial course in field $j$
+    \end{footcount} 
+   Many other examples are possible. The total number of observed students who attempt success would need to account for those who tried going this route and failed. 
+  \nts{
+  This is tricky, and very important. 
+  How this endogenously responds is super key; I may run into complications here regarding how this belief updates. I'm assuming that you form your belief when you enter the field, and then that doesn't change at all. It doesn't allow for leaky pipelines to impact beliefs, but this could probably be changed.}
+}  
+Then the observed success rate, $\mu_{j}^g$, is given by:
+\begin{equation*}
+\mu_{j0}^g = 
+  \frac{\alpha_{j0}^g}{\alpha_{j0}^g + \beta_{j0}^g}.
+  %\mu_{j0} = 
+  %\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
+  %\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
+\end{equation*}
+This average is based on a sample of type $g$ students of size $n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g$.
+Note that the prior distribution $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ can now be specified using the alternative parameterization, $\mathcal{B} \pr{\mu_{j0}^g n_{j0}^g, (1 - \mu_{j0}^g) n_{j0}^g}$.
+
+Assume the sample size of men is larger than that of women, but the observed success rate is the same for the two groups:
+\begin{equation*}
+  n_{j0}^m > n_{j0}^f, \quad \quad \mu_{j0} = \mu_{j0}^m = \mu_{j0}^w.
+  %n_{j0}^m = \alpha_{j0}^m + \beta_{j0}^m > \alpha_{j0}^f + \beta_{j0}^f = n_{j0}^w
+\end{equation*}
+%Assuming the prior on $\theta_j$ follows a $\mathcal{B} \pr{\alpha_{j0}^g, \beta_{j0}^g}$ distribution, this yields the following parameterization:
+This implies that women have more uncertainty regarding their underlying abilities than men.  
+\begin{figure}
+\centering
+\input{beta_example_gender.tex}
+\caption{}
+\label{beta_distribution}
+\end{figure}
+Figure \ref{beta_distribution} provides a numerical example for how these assumptions affect the priors of men and women. 
+\nts{Elaborate on what this means from the perspective of what beta distributions do.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Optimal policy}
+
+A policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal if it maximizes:
+\begin{align*}
+& \mathbb{E}^\pi \sbr{
+   \sum_{t=0}^\infty \delta^t 
+   \left. \pr{\sum_{j=1}^J h_{jt} w_j \ell_{jt} } \right\vert
+   \pr{(h_{10}, P_{10}^g), \dots, (h_{10}, P_{J0}^g)}
+} \\
+\text{subject to} \quad& h_{jt+1} = h_{jt}+ a_{jt} s_{jt}, \quad \quad a_{jt} = 
+   \begin{cases} 
+      \nu_j, & \text{with prob. } \theta_j,  \\ 
+      0, & \text{with prob. } 1 - \theta_j,
+   \end{cases} 
+   %\quad \quad h_{j0} = \alpha_{j0} \nu_j, 
+   \\
+\quad& P_{jt+1}^g = 
+  \mathcal{B} (\alpha_{j,t+1}^g, \beta_{j,t+1}^g), 
+  \quad \quad \theta_j \sim P_{j,0}^g \equiv \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g)
+  \quad \quad \text{if $j$ selected,} \\
+\quad& \sum_{j=1}^J (s_{jt} + \ell_{jt}) = 1, \quad \quad s_{jt}, \ell_{jt} \in \{0,1\} \\
+   & h_{j0} \leq \nu \alpha_{j0}
+\end{align*}
+
+Define the skill $j$ index as the expected payoff if you committed to studying $j$:
+%\gen{ 
+\begin{equation*}
+\mathcal{I}_j (h_j, P_j^g) = \sup_{\tau \geq 0} \mathbb{E}^\tau
+\ce{
+   \sum_{t=0}^\infty \delta^t \pr{h_{jt} w_j \ell_{jt} }}
+   {(h_{j0}, P_{j0}^g) = (h_j, P_j^g)
+}
+% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+% \begin{cases}
+% \frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+% \frac{h_{jt}}{1 - \delta} \sbr{
+%    \frac{
+%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
+%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+% \end{cases}
+\end{equation*}
+
+Define the graduation region of skill $j$ as: 
+\begin{equation*}
+% \mathcal{G}_j =  \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
+\mathcal{G}_j = \left\{ (h_j, P_j^g) \left\vert
+   \arg \max_{\tau \geq 0} 
+   \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t \pr{h_{jt} w_j \ell_{jt} }}
+   {(h_j, P_j^g)} = 0
+   \right. \right\}
+\end{equation*}
+
+The following policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal: 
+\begin{enumerate}
+    \item At each $t \geq 0$, choose skill $j^* = \arg \max_{j \in J} \mathcal{I}_j$, breaking ties according to any rule
+    \item If $(h_{j^*}, P_{j^*}^g) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
+\end{enumerate}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Implications of model}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+
+\printbibliography
+
+\end{document}

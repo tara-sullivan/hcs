@@ -7,6 +7,20 @@
 import pandas as pd
 from quantecon.util import timing
 
+import os
+import sys
+import inspect
+
+try:
+    currpath = os.path.abspath(__file__)
+except NameError:
+    currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+rootdir = os.path.dirname(os.path.dirname(currpath))
+sys.path.append(rootdir)
+
+datapath = rootdir + '/ipeds/data/'
+cippath = rootdir + '/ipeds/data/cip_edit/'
+
 
 class ReadData:
     '''
@@ -21,7 +35,7 @@ class ReadData:
         # read in raw data
         print('reading...')
         timing.tic()
-        df = pd.read_stata('data/ipeds_c_all.dta')
+        df = pd.read_stata(datapath + 'ipeds_c_all.dta')
         timing.toc()
 
         # remove rows with missing cipcode in 2010
@@ -99,7 +113,7 @@ class MakeDict:
 
     def make_cip2labels(self):
         # Read in variable names
-        df = pd.read_stata('data/cip_edit/cip2names.dta')
+        df = pd.read_stata(cippath + 'cip2names.dta')
 
         # set index
         df = df.set_index('cip2')
@@ -142,7 +156,7 @@ class MakeDict:
 
     def make_cip4labels(self):
         # Read in variable names
-        df = pd.read_stata('data/cip_edit/cip4names.dta')
+        df = pd.read_stata(cippath + 'cip4names.dta')
 
         # create 2-digit CIP code
         df['cip2'] = df['cip4'].str[:2]

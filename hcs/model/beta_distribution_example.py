@@ -1,16 +1,29 @@
 import pandas as pd
 import numpy as np
-import os
-
 import matplotlib.pyplot as plt
 import tikzplotlib
-import tol_colors
+
+import os
+import sys
+import inspect
+
+try:
+    currpath = os.path.abspath(__file__)
+except NameError:
+    currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+rootdir = os.path.dirname(os.path.dirname(currpath))
+sys.path.append(rootdir)
 
 from scipy.stats import beta
 
-imgpath = os.path.join(os.path.dirname(os.path.dirname(os.getcwd())),
-                       'img/')
+imgpath = rootdir + '/img/'
+# Set color map
+from img.code import tol_colors
 color_list = list(tol_colors.tol_cset('bright'))
+# get figure heigth and width
+from img.code.figsize import ArticleSize
+size = ArticleSize()
+
 
 def beta_example_gender():
     '''
@@ -44,8 +57,6 @@ def beta_example_gender():
     ax.plot(x, beta.pdf(x, a_f, b_f),
             label=label_str('Women', mu_f, n_f),
             color=color_list[1])
-
-
 
     ax.legend(loc='upper left',
               handlelength=0.5,
@@ -111,7 +122,7 @@ def beta_example_main(ab0, history):
     ax.set_title(title_str)
 
     tikz_save('beta_example0')
-    plt.show()
+    # plt.show()
 
     # plot t=1 distribution
     fig, ax = plt.subplots()
@@ -129,7 +140,7 @@ def beta_example_main(ab0, history):
     ax.set_title(title_str)
 
     tikz_save('beta_example1')
-    plt.show()
+    # plt.show()
 
     # plot t=2 distribution
     fig, ax = plt.subplots()
@@ -137,7 +148,6 @@ def beta_example_main(ab0, history):
     ax.plot(x_range, y0, 'k', alpha=0.3)
     ax.plot(x_range, y1, 'k', alpha=0.5)
     ax.plot(x_range, y2, linewidth=3)
-
 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 2.25)
@@ -149,7 +159,7 @@ def beta_example_main(ab0, history):
     ax.set_title(title_str)
 
     tikz_save('beta_example2')
-    plt.show()
+    # plt.show()
 
     # plot t=3 distribution
     fig, ax = plt.subplots()
@@ -158,7 +168,6 @@ def beta_example_main(ab0, history):
     ax.plot(x_range, y1, 'k', alpha=0.3)
     ax.plot(x_range, y2, 'k', alpha=0.5)
     ax.plot(x_range, y3, linewidth=3)
-
 
     ax.set_xlim(0, 1)
     ax.set_ylim(0, 2.25)
@@ -170,17 +179,23 @@ def beta_example_main(ab0, history):
     ax.set_title(title_str)
 
     tikz_save('beta_example3')
-    plt.show()  
+    # plt.show()
+
 
 if __name__ == '__main__':
-    
+    plt.close('all')
+
     beta_example_gender()
 
     tikzplotlib.clean_figure()
-    # default tikz (width, height) = (240pt, 207pt) (manual 4.10.01)
-    tikzplotlib.save(imgpath + 'beta_example_gender' + '.tex',
+
+    tikzplotlib.save(imgpath + 'beta_example_gender.tex',
+                     axis_width=size.w(1.25),
+                     axis_height=size.h(1.25))
+
+    tikzplotlib.save(imgpath + 'beta_example_gender_slide.tex',
                      axis_height='150pt', axis_width='250pt')
-    # plt.show()
+    plt.show()
 
     beta_example_main((1, 1), [1, 0, 1])
 

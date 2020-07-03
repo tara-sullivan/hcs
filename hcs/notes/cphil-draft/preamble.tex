@@ -1,0 +1,68 @@
+
+% Format
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[margin=1in]{geometry} % 1-inch margins
+\usepackage[english]{babel} % English hyphenation, etc.	
+\usepackage{setspace} % Set spacing 
+%\usepackage{enumerate} % Use different types of enumerate options
+\usepackage{enumitem}
+\usepackage{csquotes} % Block quotes
+\usepackage[dvipsnames]{xcolor} % colors: https://en.wikibooks.org/wiki/LaTeX/Colors#The_68_standard_colors_known_to_dvips
+% Math
+\usepackage{amsmath, mathrsfs, amsfonts, amssymb, amsthm}
+% Figures
+\usepackage{graphicx} % Include figures
+\usepackage{float} % Improved control over floats
+\usepackage{tikz} % Draw figures with tikz
+
+% get rid of 'Figure: ' in caption
+\usepackage{caption}
+\captionsetup[table]{labelsep=space}
+
+% Colors
+\definecolor{Indigo}{HTML}{3C6478}
+\definecolor{DarkBrown}{HTML}{45281B}
+\definecolor{Brown}{HTML}{161402}
+\definecolor{DarkGreen}{HTML}{325101}
+\definecolor{LeafGreen}{HTML}{4A6F01}
+\definecolor{DarkAlice}{HTML}{107896}
+\definecolor{Alice}{HTML}{1496BB}
+\definecolor{DarkGray}{RGB}{116 118 120}
+\definecolor{DarkBlue}{HTML}{022C36}
+\definecolor{MainBlue}{HTML}{132881}
+\definecolor{Maroon}{HTML}{6A123D}
+\definecolor{DarkPurple}{HTML}{2C033A}
+\definecolor{Orange}{HTML}{F18312}
+
+% Hyperlinks
+\usepackage{hyperref} % Include hyperlinks
+\hypersetup{
+  colorlinks   = true, %Colours links instead of ugly boxes
+  urlcolor     = Maroon, %Colour for external hyperlinks
+  linkcolor    = DarkGray, %Colour of internal links
+  citecolor   = MainBlue %Colour of citations
+}
+
+% Macro Shortcuts
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\EE}{\text{E}}
+\newcommand{\PP}{\mathbb{P}}
+\newcommand{\BB}{\mathscr{B}}
+\newcommand{\e}{\text{e}}
+\newcommand{\dd}{\text{d}}
+
+
+% Theorems
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{thm}{Theorem}
+\theoremstyle{remark}
+\newtheorem{claim}{Claim}[section]
+\newtheorem{remark}{Remark}
+\theoremstyle{definition}
+\newtheorem{defn}{Definition}[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{ass}{Assumption}

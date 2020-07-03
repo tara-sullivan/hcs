@@ -1,0 +1,63 @@
+% Notes to self 
+\ifnts
+  \newcommand{\nts}[1]{{\color{gray}#1}}
+\else
+  \newcommand{\nts}[1]{}
+\fi
+
+%%%%%%%%%%
+% Sections that have:
+%   (A) Roman numerals 
+%   (B) fixed width = fixw
+%   (C) coloring
+
+% (A) Roman numeral for section and subsection
+% \renewcommand{\thesection}{\Roman{section}} 
+% \renewcommand{\thesubsection}{\roman{subsection}}
+
+% (B) Each section has fixed width = fixw 
+
+% Define fixw
+\newcommand{\fixw}{28pt}
+\newcommand{\fixwh}{14pt}
+
+% (C) Define colors
+\newcommand{\secc}[1]{{\color{DarkGreen}#1}} % section color
+\newcommand{\sectc}{DarkGreen} % section text color
+\newcommand{\subsecc}[1]{{\color{LeafGreen}#1}} % subsection color
+\newcommand{\subsectc}{LeafGreen} % subsection text color
+\newcommand{\numc}{DarkAlice}
+
+% Set each section width and color
+\usepackage{titlesec}
+\titleformat{\section}{\normalfont\Large\bfseries\color{\sectc}}
+	{\makebox[\fixw][l]{\secc{\thesection.}}}{0pt}{} 
+\titleformat{\subsection}{\normalfont\large\bfseries\color{\subsectc}}
+	{\makebox[{\fixw}][l]{\subsecc{\thesubsection.}}}{0pt}{} 
+\titleformat{\subsubsection}{\normalfont\bfseries}
+	{}{0pt}{} %{\makebox[{\fixw}][l]{}}{0pt}{} 
+
+% Highlight certain items
+\newcommand{\hitem}[2][DarkAlice]{\color{#1} \item #2 \color{black}}
+
+%%%%%%%%%%
+% Lists that start at fixw (see section above)
+\newlist{outline}{enumerate}{2}
+\setlist[outline,1]{label=\arabic*.,left=0pt .. \fixw}
+\setlist[outline,2]{label=\alph*.,left=0pt .. \fixw}
+
+\newlist{blist}{itemize}{2}
+\setlist[blist,1]{label=\textbullet,left=0pt .. \fixw}
+\setlist[blist,2]{label=\textendash,left=0pt .. \fixw}
+
+%%%%%%%%%%
+% Enumerate in footnote
+\newlist{footcount}{enumerate}{1}
+\setlist[footcount]{label=(\alph*),left=0pt .. \fixw}
+
+%%%%%%%%%%
+% No indent in footnotes
+\usepackage[flushmargin,hang]{footmisc}
+
+%\usepackage[marginal]{footmisc}
+%\setlength\footnotemargin{5pt}  % default value: 1.8em

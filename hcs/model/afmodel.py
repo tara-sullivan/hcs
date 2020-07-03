@@ -6,7 +6,6 @@ import numba as nb
 # import pdb
 from quantecon.util import timing
 
-
 init_spec = [
     ('ab_0', nb.float64[:, :]),
     ('delta', nb.float64),
@@ -50,7 +49,7 @@ history_spec = init_spec + [
 ]
 
 
-# @nb.jitclass(history_spec)
+# @nb.experimental.jitclass(history_spec)
 class AgentHistory(ModelParams):
     '''
     Simulates agent's course history, given prior ab_0
@@ -87,7 +86,7 @@ class AgentHistory(ModelParams):
 
     def find_history_i(self, true_theta, fail_first=0, choose_first=-1):
         '''
-        Find course history of agent i
+        Find course history of agen i
         '''
         # simplify terms
         delta, ab_0 = self.delta, self.ab_0

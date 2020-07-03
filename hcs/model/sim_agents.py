@@ -9,8 +9,8 @@ from quantecon.util import timing
 # from importlib import reload
 
 # from other programs
-import AFModel
-AgentHistory = AFModel.AgentHistory
+import afmodel
+AgentHistory = afmodel.AgentHistory
 
 
 sim_num_default = 1000
@@ -123,3 +123,7 @@ class SimulateAgents:
 if __name__ == '__main__':
 
     SimulateAgents()
+
+    np.random.seed(125)
+    sim = SimulateAgents(sim_num=10)
+    print(sim.chosen_field)
