@@ -330,11 +330,26 @@ The following policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal:
     \item If $(h_{j^*}, P_{j^*}^g) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
 \end{enumerate}
 
+% At some point I need to highlight exactly where specialization is occuring. 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implications of model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\toedit{To understand the implications of this model, we now consider a simplified version of the model where a student chooses between two fields that are completely symmetric.}
+Wages in fields X and Y are equal ($w_X = w_Y$) and will be normalized to 1. 
+I assume the student's underlying abilities in the two fields, $\theta_X$ and $\theta_Y$, are both equal to 0.5. Therefore, the student has a 50\% chance of passing a given field X or field Y course.{}
+The student's beliefs about their own abilities in field X and Y are equal to the uninformative prior: \nts{Need to discuss what this means somewhere}
+\begin{equation*}
+    P_{X,0} = \mathcal{B}(\alpha_{X, 0}, \beta_{X, 0}) = \mathcal{B} (1, 1), 
+    \quad \quad 
+    P_{Y,0} = \mathcal{B}(\alpha_{Y, 0}, \beta_{Y, 0}) = \mathcal{B} (1, 1), 
+\end{equation*}
 
+\begin{figure}[ht!]
+\centering
+\input{sim_plots.tex}
+\end{figure}
 
 
 \printbibliography

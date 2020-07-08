@@ -5,16 +5,18 @@
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
 \begin{axis}[
-height=5.101085673964669cm,
+height=6.6314113761540705cm,
 tick align=outside,
 tick pos=left,
-title={Field selection and initial beliefs \\ Field X: \(\displaystyle (\alpha_0, \beta_0)=(1, 1)\); Field Y: \(\displaystyle (\alpha_0, \beta_0)=(2, 2)\)},
-width=8.25373cm,
+title={Field selection and initial beliefs \\ Field X: \(\displaystyle (\alpha_{0}, \beta_{0}) = (1, 1)\); Field Y: \(\displaystyle (\alpha_{0}, \beta_{0}) = (1, 1)\)},
+width=9.904475999999999cm,
 x grid style={white!69.0196078431373!black},
-xmin=-0.95, xmax=23.75,
+xlabel={t},
+xmin=-0.95, xmax=27,
 xtick style={color=black},
 xtick={0,5,10,15},
 xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\)},
+ylabel={Fraction students enrolled in field},
 ymajorgrids,
 ymin=-0.05, ymax=1.05,
 ytick style={color=black},
@@ -24,59 +26,56 @@ yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\
 \addplot [semithick, color0]
 table {%
 0 0
-1 0.483
-2 0.25
-3 0.25
-4 0.281
-5 0.266
-6 0.249
-7 0.236
-8 0.233
-9 0.247
-10 0.241
-11 0.24
-12 0.238
-13 0.237
-14 0.237
-15 0.237
-16 0.236
-17 0.237
-18 0.237
-19 0.237
+1 0.48800003528595
+2 0.230000019073486
+3 0.230000019073486
+4 0.253000020980835
+5 0.246000051498413
+6 0.23199999332428
+7 0.230000019073486
+8 0.222000002861023
+9 0.228000044822693
+11 0.22599995136261
+12 0.22599995136261
+13 0.225000023841858
+14 0.22599995136261
+16 0.223999977111816
+19 0.223999977111816
 };
 \addplot [semithick, color1]
 table {%
 0 1
-1 0.517
-2 0.75
-3 0.75
-4 0.719
-5 0.734
-6 0.751
-7 0.764
-8 0.767
-9 0.753
-10 0.759
-11 0.76
-12 0.762
-13 0.763
-14 0.763
-15 0.763
-16 0.764
-17 0.763
-18 0.763
-19 0.763
+1 0.51200008392334
+2 0.769999980926514
+3 0.769999980926514
+4 0.746999979019165
+5 0.753999948501587
+6 0.76800000667572
+7 0.769999980926514
+8 0.777999997138977
+9 0.772000074386597
+11 0.773999929428101
+12 0.773999929428101
+13 0.774999976158142
+14 0.773999929428101
+16 0.776000022888184
+19 0.776000022888184
 };
-\draw (axis cs:19.5,0.237) node[
+\draw (axis cs:19.5,0.224) node[
   anchor=base west,
   text=color0,
   rotate=0.0
 ]{Field X};
-\draw (axis cs:19.5,0.763) node[
+\draw (axis cs:19.5,0.776) node[
   anchor=base west,
   text=color1,
   rotate=0.0
 ]{Field Y};
+\draw (axis cs:17,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N simulations = 1,000};
 \end{axis}
 
 \end{tikzpicture}

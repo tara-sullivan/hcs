@@ -1,0 +1,391 @@
+% This file was created by tikzplotlib v0.9.2.
+\begin{tikzpicture}
+
+\definecolor{color0}{rgb}{0.266666666666667,0.466666666666667,0.666666666666667}
+\definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
+
+\begin{groupplot}[group style={group size=2 by 3, vertical sep=1.8cm, horizontal sep=1.2cm}]
+\nextgroupplot[
+height=5.101085673964669cm,
+tick align=outside,
+tick pos=left,
+title={Baseline Simulation},
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xmin=-1.05, xmax=27,
+xtick style={color=black},
+xtick={0,5,10,15,20},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
+ylabel={Fraction enrolled in field},
+ymajorgrids,
+ymin=0, ymax=1,
+ytick style={color=black},
+ytick={0,0.25,0.5,0.75,1},
+yticklabels={\(\displaystyle 0\),\(\displaystyle 0.25\),\(\displaystyle 0.5\),\(\displaystyle 0.75\),\(\displaystyle 1\)}
+]
+\addplot [semithick, color0]
+table {%
+0 0.505500078201294
+1 0.503099918365479
+2 0.502699971199036
+3 0.498600006103516
+4 0.502599954605103
+5 0.502599954605103
+6 0.503499984741211
+7 0.506099939346313
+8 0.505100011825562
+9 0.505399942398071
+10 0.505300045013428
+11 0.506900072097778
+12 0.506399989128113
+13 0.506500005722046
+14 0.506999969482422
+15 0.506700038909912
+16 0.506799936294556
+17 0.506500005722046
+20 0.506500005722046
+21 0.506500005722046
+};
+\addplot [semithick, color1]
+table {%
+0 0.494500041007996
+1 0.496899962425232
+2 0.497300028800964
+3 0.501399993896484
+4 0.497400045394897
+5 0.497400045394897
+6 0.496500015258789
+7 0.493900060653687
+8 0.494899988174438
+9 0.494600057601929
+10 0.494699954986572
+11 0.493099927902222
+12 0.493600010871887
+13 0.493499994277954
+14 0.493000030517578
+15 0.493299961090088
+16 0.493200063705444
+17 0.493499994277954
+20 0.493499994277954
+21 0.493499994277954
+};
+\draw (axis cs:21.5,0.4265) node[
+  anchor=base west,
+  text=color0,
+  rotate=0.0
+]{Field X};
+\draw (axis cs:21.5,0.5235) node[
+  anchor=base west,
+  text=color1,
+  rotate=0.0
+]{Field Y};
+\draw (axis cs:3,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N = 10,000};
+
+\nextgroupplot[
+height=5.101085673964669cm,
+tick align=outside,
+tick pos=left,
+title={Baseline Simulation (zoomed in)},
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xmin=-1.05, xmax=27,
+xtick style={color=black},
+xtick={0,5,10,15,20},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
+ymajorgrids,
+ymin=0, ymax=1,
+ytick style={color=black},
+ytick={0,0.25,0.5,0.75,1},
+yticklabels={\(\displaystyle 0\),\(\displaystyle 0.25\),\(\displaystyle 0.5\),\(\displaystyle 0.75\),\(\displaystyle 1\)}
+]
+\addplot [semithick, color0]
+table {%
+0 0.5
+1 0.319999933242798
+2 0.360000014305115
+3 0.379999995231628
+4 0.360000014305115
+5 0.379999995231628
+6 0.360000014305115
+7 0.379999995231628
+8 0.360000014305115
+9 0.379999995231628
+13 0.379999995231628
+14 0.399999976158142
+15 0.379999995231628
+21 0.379999995231628
+};
+\addplot [semithick, color1]
+table {%
+0 0.5
+1 0.680000066757202
+2 0.639999985694885
+3 0.620000004768372
+4 0.639999985694885
+5 0.620000004768372
+6 0.639999985694885
+7 0.620000004768372
+8 0.639999985694885
+9 0.620000004768372
+13 0.620000004768372
+14 0.600000023841858
+15 0.620000004768372
+21 0.620000004768372
+};
+\draw (axis cs:21.5,0.3) node[
+  anchor=base west,
+  text=color0,
+  rotate=0.0
+]{Field X};
+\draw (axis cs:21.5,0.65) node[
+  anchor=base west,
+  text=color1,
+  rotate=0.0
+]{Field Y};
+\draw (axis cs:3,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N = 50};
+
+\nextgroupplot[
+height=5.101085673964669cm,
+tick align=outside,
+tick pos=left,
+title={\(\displaystyle w_{X} = 1\); \(\displaystyle w_{Y} = 1.5\)},
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xmin=-1.05, xmax=27,
+xtick style={color=black},
+xtick={0,5,10,15,20},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
+ylabel={Fraction enrolled in field},
+ymajorgrids,
+ymin=-0.05, ymax=1.05,
+ytick style={color=black},
+ytick={0,0.2,0.4,0.6,0.8,1},
+yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
+]
+\addplot [semithick, color0]
+table {%
+0 0
+1 0
+2 0.250999927520752
+3 0.111999988555908
+4 0.182000041007996
+5 0.148000001907349
+6 0.14900004863739
+7 0.154000043869019
+8 0.149999976158142
+9 0.138999938964844
+10 0.149999976158142
+11 0.146999955177307
+12 0.144999980926514
+13 0.146999955177307
+14 0.146999955177307
+15 0.148000001907349
+21 0.148000001907349
+};
+\addplot [semithick, color1]
+table {%
+0 1
+1 1
+2 0.749000072479248
+3 0.888000011444092
+4 0.818000078201294
+5 0.851999998092651
+6 0.851000070571899
+7 0.845999956130981
+8 0.850000023841858
+9 0.861000061035156
+10 0.850000023841858
+11 0.852999925613403
+12 0.855000019073486
+13 0.852999925613403
+14 0.852999925613403
+15 0.851999998092651
+21 0.851999998092651
+};
+\draw (axis cs:21.5,0.178) node[
+  anchor=base west,
+  text=color0,
+  rotate=0.0
+]{Field X};
+\draw (axis cs:21.5,0.882) node[
+  anchor=base west,
+  text=color1,
+  rotate=0.0
+]{Field Y};
+\draw (axis cs:3,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N = 1,000};
+
+\nextgroupplot[
+height=5.101085673964669cm,
+tick align=outside,
+tick pos=left,
+title={\(\displaystyle (\alpha_{X, 0}, \beta_{X, 0}) = (1, 1)\); \(\displaystyle (\alpha_{Y, 0}, \beta_{Y, 0}) = (1, 1)\)},
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xmin=-0.95, xmax=27,
+xtick style={color=black},
+xtick={0,5,10,15},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\)},
+ymajorgrids,
+ymin=-0.05, ymax=1.05,
+ytick style={color=black},
+ytick={0,0.2,0.4,0.6,0.8,1},
+yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
+]
+\addplot [semithick, color0]
+table {%
+0 0
+1 0.48800003528595
+2 0.230000019073486
+3 0.230000019073486
+4 0.253000020980835
+5 0.246000051498413
+6 0.23199999332428
+7 0.230000019073486
+8 0.222000002861023
+9 0.228000044822693
+11 0.22599995136261
+12 0.22599995136261
+13 0.225000023841858
+14 0.22599995136261
+16 0.223999977111816
+19 0.223999977111816
+};
+\addplot [semithick, color1]
+table {%
+0 1
+1 0.51200008392334
+2 0.769999980926514
+3 0.769999980926514
+4 0.746999979019165
+5 0.753999948501587
+6 0.76800000667572
+7 0.769999980926514
+8 0.777999997138977
+9 0.772000074386597
+11 0.773999929428101
+12 0.773999929428101
+13 0.774999976158142
+14 0.773999929428101
+16 0.776000022888184
+19 0.776000022888184
+};
+\draw (axis cs:19.5,0.224) node[
+  anchor=base west,
+  text=color0,
+  rotate=0.0
+]{Field X};
+\draw (axis cs:19.5,0.776) node[
+  anchor=base west,
+  text=color1,
+  rotate=0.0
+]{Field Y};
+\draw (axis cs:3,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N = 1,000};
+
+\nextgroupplot[
+height=5.101085673964669cm,
+tick align=outside,
+tick pos=left,
+title={\(\displaystyle \theta_{X} = 0.25\); \(\displaystyle \theta_{Y} = 0.75\)},
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xlabel={t},
+xmin=-1.05, xmax=27,
+xtick style={color=black},
+xtick={0,5,10,15,20},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
+ylabel={Fraction enrolled in field},
+ymajorgrids,
+ymin=0, ymax=1,
+ytick style={color=black},
+ytick={0,0.2,0.4,0.6,0.8,1},
+yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
+]
+\addplot [semithick, color0]
+table {%
+0 0.506999969482422
+1 0.261000037193298
+2 0.272000074386597
+3 0.177000045776367
+4 0.172000050544739
+5 0.152999997138977
+6 0.128000020980835
+7 0.118000030517578
+8 0.123999953269958
+9 0.123999953269958
+10 0.121999979019165
+11 0.111000061035156
+12 0.111999988555908
+13 0.111999988555908
+14 0.108000040054321
+15 0.110000014305115
+21 0.110000014305115
+};
+\addplot [semithick, color1]
+table {%
+0 0.493000030517578
+1 0.739000082015991
+2 0.727999925613403
+3 0.822999954223633
+4 0.828000068664551
+5 0.847000002861023
+6 0.871999979019165
+7 0.881999969482422
+8 0.875999927520752
+9 0.875999927520752
+10 0.878000020980835
+11 0.888999938964844
+12 0.888000011444092
+13 0.888000011444092
+14 0.891999959945679
+15 0.889999985694885
+21 0.889999985694885
+};
+\draw (axis cs:21.5,0.14) node[
+  anchor=base west,
+  text=color0,
+  rotate=0.0
+]{Field X};
+\draw (axis cs:21.5,0.92) node[
+  anchor=base west,
+  text=color1,
+  rotate=0.0
+]{Field Y};
+\draw (axis cs:3,0.03) node[
+  anchor=base west,
+  text=black,
+  rotate=0.0
+]{N = 1,000};
+
+\nextgroupplot[
+height=5.101085673964669cm,
+hide x axis,
+hide y axis,
+tick align=outside,
+tick pos=left,
+width=8.25373cm,
+x grid style={white!69.0196078431373!black},
+xmin=0, xmax=1,
+xtick style={color=black},
+y grid style={white!69.0196078431373!black},
+ymin=0, ymax=1,
+ytick style={color=black}
+]
+\end{groupplot}
+
+\end{tikzpicture}

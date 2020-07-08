@@ -19,7 +19,7 @@ sys.path.append(rootdir)
 import img.code.tol_colors as tol_colors
 
 
-def plot_df(df, ax=None,cols=None, col_labels=None, title='',
+def plot_df(df, ax=None, cols=None, col_labels=None, title='',
             x_title='', y_title=None,
             label_edit={}, x_lim=None,
             add_text=None, xticks=None, yticks=None):
@@ -48,7 +48,7 @@ def plot_df(df, ax=None,cols=None, col_labels=None, title='',
     # Some useful numbers
     first_idx = min(df.index.array)
     last_idx = max(df.index.array)
-    step_size = (last_idx - first_idx)/(df.index.size - 1)
+    step_size = (last_idx - first_idx) / (df.index.size - 1)
 
     # Columns of the dataframe to plot and their labels
     if cols is None:
@@ -123,6 +123,18 @@ def plot_df(df, ax=None,cols=None, col_labels=None, title='',
     if y_title is not None:
         ax.set_ylabel(y_title)
 
+    # There is an error that sometimes arises with minor xticks in group plots
+    # To avoid that, set the minor ticks to []
+    ax.set_xticks([], minor=True)
+    ax.set_yticks([], minor=True)
+
+    # Add any additional text
+    if add_text is not None:
+        # Added text should take the form:
+        # add_text = {'add_loc': (1, 0.95), 'add_str': 'N simulations'}
+        ax.text(x=add_text['add_loc'][0], y=add_text['add_loc'][1],
+                s=add_text['add_str'], fontsize=20)
+
     ax.set_title(title)
 
     # Create grid
@@ -159,4 +171,5 @@ if __name__ == '__main__':
 
     # tikzplotlib.clean_figure()
     # tikzplotlib.save('testfig.pgf')
+    fig = plt.gca()
     plt.show()
