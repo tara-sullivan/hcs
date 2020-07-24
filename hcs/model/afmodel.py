@@ -49,7 +49,7 @@ history_spec = init_spec + [
 ]
 
 
-@nb.experimental.jitclass(history_spec)
+# @nb.experimental.jitclass(history_spec)
 class AgentHistory(ModelParams):
     '''
     Simulates agent's course history, given prior ab_0

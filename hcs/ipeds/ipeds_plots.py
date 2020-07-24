@@ -1,5 +1,4 @@
 import matplotlib.pyplot as plt
-# import tikzplotlib as tpl
 
 import os
 import sys
@@ -12,19 +11,28 @@ try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+# rootdir: /hcs/hcs
 rootdir = os.path.dirname(os.path.dirname(currpath))
 sys.path.append(rootdir)
 
+# Image path
+imgpath = rootdir + '/img/'
+
 from ipeds.make_df import cip4labels_df
+# get figure heigth and width
+from img.code import tikzplotlib_functions as tplf
+from img.code.figsize import ArticleSize
+size = ArticleSize()
 
 from ipeds import plot_by_n
-from ipeds import plot_by_cip
-
 plot_n_degrees = plot_by_n.plot_n_degrees
+
+from ipeds import plot_by_cip
 PlotCIP = plot_by_cip.PlotCIP
-save_rateplot = plot_by_cip.save_rateplot
-save_areaplot = plot_by_cip.save_areaplot
-save_comboplot = plot_by_cip.save_comboplot
+from ipeds import save_ipeds_plots
+save_rateplot = save_ipeds_plots.save_rateplot
+save_areaplot = save_ipeds_plots.save_areaplot
+save_comboplot = save_ipeds_plots.save_comboplot
 
 plt.close('all')
 
@@ -32,20 +40,79 @@ plt.close('all')
 # 1. Number degrees completed by men and women
 
 plot_n_degrees()
-save_rateplot('n_degrees')
+title_str = ('Number of Bachelor\'s Degrees awarded'
+             ' in US 4-year colleges')
+save_rateplot('n_degrees', source='Snyder (2013)', plot_title=title_str)
 
 ##############################################################################
 # 2. Ration men to women in historically male dominated fields
 
-male_dom_cip = ['14', '11', '40', '45', '27', '52', '26']
+male_dom_cip = ['14', '11', '40', '45', '27', '52', '26', '42']
 
-label_edit = {'11': -.04, '40': -.04}
+# Initialize first sub-plot
+plt.close('all')
+fig, ax = plt.subplots(1, 2)
+ref_name = 'fig:ipeds'
+subplot_titles = ''
+group_caption = ''
+# Subplot specific data
+ax_loc = 0
+subtitle_id = 'a'
 
-PlotCIP(male_dom_cip, rategraph=True, x_lim=2030, label_edit=label_edit)
+cip_dict = {
+    'Social Sciences': ['45', '42'],
+    'All Fields': ['98']
+}
+
+label_edit = {'11': -.07, '14': .02, '40': -.08}
+
+# Create standalong version of graph
+cip_cls = PlotCIP(male_dom_cip, rategraph=True, x_lim=2030,
+                  label_edit=label_edit, cip_dict=cip_dict, rate_total=True)
 save_rateplot('male_dom')
+
+# Create version for sub-plot version
+# edit cip dictionary
+cip_cls.cip_dict['42'] = 'Social \\\\ Sciences'
+cip_cls.cip_dict['11'] = 'Computer \\\\ Services'
+cip_cls.cip_dict['26'] = 'Biological \\\\ Sciences'
+cip_cls.cip_dict['27'] = 'Math'
+cip_cls.cip_dict['40'] = 'Physical \\\\ Sciences'
+
+# cip_dict = {'Computer \\\\ Services': ['11'],
+#             'Biological \\\\ Sciences': ['26'],
+#             'Math': ['27'],
+#             'Physical \\\\ Sciences': ['40'],
+#             'Social \\\\ Sciences': ['45', '42'],
+#             'All Fields': ['98']
+#             }
+
+cip_cls.label_edit = {
+    '14': 0, '11': -.22,
+    '40': -.23, '27': 0, '52': -.05,
+    '26': -.2, '42': -.05, '98': -.05}
+
+# plot sub-pot graph
+cip_cls.plot_rate(ax=ax[ax_loc], xticks=[1990, 1995, 2000, 2005, 2010, 2015])
+
+# edit variable for save_subplots
+plt_title = ax[ax_loc].get_title()
+# remove y-axis label
+ax[ax_loc].set_title('')
+subplot_titles += tplf.subplot_title(
+    ax_loc=ax_loc, ref_name=ref_name, col=False,
+    subtitle_id=subtitle_id, plt_title=plt_title
+)
+group_caption += 'Ratio of women to men completing Bachelor\'s degrees' \
+    + ' in U.S. 4-year colleges. Source: IPEDS.'
+
 
 ##############################################################################
 # 3. Social sciences - rate and area graphs
+
+# Subplot variables
+ax_loc = 1
+subtitle_id = 'b'
 
 # Social science degrees
 cip_list = ['42', '45.10', '45.11', '45.02', '45.06',
@@ -62,14 +129,56 @@ cip_dict_arg = {
               '45.12', '45.13', '45.99']
 }
 
+# cip_list = ['42', '45.10', '45.11', '45.02', '45.06',
+#             '45.09',
+#             '45.01', '45.05', '45.14', '45.03', '45.12', '45.13', '45.99'
+#             ]
+# cip_dict_arg = {
+#     'Political \\\\ science': ['45.10'],
+#     'Int\'l relations': ['45.09'],
+#     # 'Geography': ['45.07'],
+#     'Other': ['45.01', '45.04', '45.05', '45.05', '45.14', '45.03',
+#               '45.12', '45.13', '45.99']
+# }
+
 # Rate graph
-PlotCIP(cip_list, cip_dict=cip_dict_arg, rategraph=True,
-        cip_inlabel=False, drop_other=True, x_lim=2030)
+cip_cls = PlotCIP(cip_list, cip_dict=cip_dict_arg,
+                  cip_inlabel=False, drop_other=True, x_lim=2030)
+cip_cls.plot_rate()
 save_rateplot('social_science_rat')
+
+# save version of subplot
+cip_cls.cip_dict['45.10'] = 'Political \\\\ science'
+cip_cls.label_edit = {
+    '45.11': -.1, '45.09': -.1, '45.10': -.15, '45.06': -.2
+}
+
+# plot sub-pot graph
+cip_cls = PlotCIP(cip_list, cip_dict=cip_dict_arg,
+                  cip_inlabel=False, drop_other=False, x_lim=2030)
+cip_cls.plot_rate(ax=ax[ax_loc], xticks=[1990, 1995, 2000, 2005, 2010, 2015])
+# edit variable for save_subplots
+plt_title = ax[ax_loc].get_title() + ' - Social Sciences'
+# remove y-axis label
+ax[ax_loc].set_title('')
+subplot_titles += tplf.subplot_title(
+    ax_loc=ax_loc, ref_name=ref_name, col=False,
+    subtitle_id=subtitle_id, plt_title=plt_title
+)
+
+tplf.save_subplots(imgpath + 'intro_ipeds.tex', figure=fig,
+                   node_code=subplot_titles, caption=group_caption,
+                   height=size.h(1.25), width=size.w(1.1),
+                   extra_tikzpicture_parameters={
+                       'every node/.style={font=\\footnotesize}',
+                       'align=left'
+                   })
 
 # Area graph
 PlotCIP(cip_list, cip_dict=cip_dict_arg, areagraph=True, shareyflag=False)
 save_areaplot('social_science_area', 'Social Science')
+
+# Add plot to subplot
 
 ##############################################################################
 # Social Sciences cip
@@ -241,4 +350,4 @@ save_comboplot(cip_cls, 'physical_science_math')
 
 ##############################################################################
 plt.close('all')
-print('done')
+print('done: ipeds_plots.py')

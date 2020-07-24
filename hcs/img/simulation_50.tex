@@ -5,14 +5,14 @@
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
 \begin{axis}[
-height=6.6314113761540705cm,
+height=6.121302808757603cm,
 tick align=outside,
 tick pos=left,
 title={Baseline Simulation (zoomed in)},
-width=9.904475999999999cm,
+width=10.729849cm,
 x grid style={white!69.0196078431373!black},
 xlabel={t},
-xmin=-1.05, xmax=27,
+xmin=-1.05, xmax=30,
 xtick style={color=black},
 xtick={0,5,10,15,20},
 xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
@@ -23,46 +23,62 @@ ytick style={color=black},
 ytick={0,0.25,0.5,0.75,1},
 yticklabels={\(\displaystyle 0\),\(\displaystyle 0.25\),\(\displaystyle 0.5\),\(\displaystyle 0.75\),\(\displaystyle 1\)}
 ]
-\addplot [semithick, color0]
+\addplot [thick, color0, mark=x, mark size=3, mark options={solid}]
 table {%
-0 0.5
-1 0.319999933242798
-2 0.360000014305115
-3 0.379999995231628
-4 0.360000014305115
-5 0.379999995231628
-6 0.360000014305115
-7 0.379999995231628
-8 0.360000014305115
-9 0.379999995231628
-13 0.379999995231628
-14 0.399999976158142
-15 0.379999995231628
-21 0.379999995231628
+0 0.46
+1 0.4
+2 0.42
+3 0.5
+4 0.42
+5 0.48
+6 0.46
+7 0.44
+8 0.46
+9 0.48
+10 0.46
+11 0.48
+12 0.48
+13 0.48
+14 0.48
+15 0.48
+16 0.48
+17 0.48
+18 0.48
+19 0.48
+20 0.48
+21 0.48
 };
-\addplot [semithick, color1]
+\addplot [thick, color1, mark=x, mark size=3, mark options={solid}]
 table {%
-0 0.5
-1 0.680000066757202
-2 0.639999985694885
-3 0.620000004768372
-4 0.639999985694885
-5 0.620000004768372
-6 0.639999985694885
-7 0.620000004768372
-8 0.639999985694885
-9 0.620000004768372
-13 0.620000004768372
-14 0.600000023841858
-15 0.620000004768372
-21 0.620000004768372
+0 0.54
+1 0.6
+2 0.58
+3 0.5
+4 0.58
+5 0.52
+6 0.54
+7 0.56
+8 0.54
+9 0.52
+10 0.54
+11 0.52
+12 0.52
+13 0.52
+14 0.52
+15 0.52
+16 0.52
+17 0.52
+18 0.52
+19 0.52
+20 0.52
+21 0.52
 };
-\draw (axis cs:21.5,0.3) node[
+\draw (axis cs:21.5,0.4) node[
   anchor=base west,
   text=color0,
   rotate=0.0
 ]{Field X};
-\draw (axis cs:21.5,0.65) node[
+\draw (axis cs:21.5,0.55) node[
   anchor=base west,
   text=color1,
   rotate=0.0

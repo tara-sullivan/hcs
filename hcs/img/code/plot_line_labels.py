@@ -35,9 +35,14 @@ def plot_df(df, ax=None, cols=None, col_labels=None, title='',
         * y_title:      y-axis label
         * label_edit:   manually edit position of label using dict
         * x_lim:        manually set the x-axis limit
-        * add_text:     text to add
+        * add_text:     text to add as a dictionary
         * xticks:       list of xticks
         * yticks:       list of yticks
+
+    Details:
+
+    add_text: text to add as a dictionary. Added text should take the form:
+    add_text = {'add_loc': (1, 0.95), 'add_str': 'N simulations'}
     '''
 
     # List of colors used
@@ -63,16 +68,17 @@ def plot_df(df, ax=None, cols=None, col_labels=None, title='',
 
     for col, hex_color in zip(cols, cycle(color_list)):
         # Plot the rate
-        df.plot(y=col, ax=ax, color=hex_color)
+        df.plot(y=col, ax=ax, color=hex_color, linewidth=1.5)
         # Find text defaults
-        y_pos = df.loc[last_idx, col]
+        last_col_idx = df[col].last_valid_index()
+        y_pos = df.loc[last_col_idx, col]
         # Can add some manual adjustments to the text
         if len(label_edit) > 0:
             for col_edit, adjustment in label_edit.items():
                 if col == col_edit:
                     y_pos = y_pos + adjustment
         # Plot text for each line
-        ax.text(x=last_idx + step_size / 2, y=y_pos, s=col_labels[col],
+        ax.text(x=last_col_idx + step_size / 2, y=y_pos, s=col_labels[col],
                 color=hex_color, fontsize=20)
     ax.get_legend().remove()
 
@@ -138,7 +144,7 @@ def plot_df(df, ax=None, cols=None, col_labels=None, title='',
     ax.set_title(title)
 
     # Create grid
-    ax.grid(axis='y', color='#000000', linewidth=.5, linestyle=':')
+    ax.grid(axis='y', color='#000000', linewidth=.3, linestyle=':')
 
     # Remove axes
     ax.spines['right'].set_visible(False)

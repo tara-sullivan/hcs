@@ -330,7 +330,7 @@ table {%
 \definecolor{color4}{rgb}{0.4,0.8,0.933333333333333}
 \definecolor{color5}{rgb}{0.666666666666667,0.2,0.466666666666667}
 
-\begin{groupplot}[group style={group size=2 by 1, group name=my plots, horizontal sep=0.8cm}]
+\begin{groupplot}[group style={group size=2 by 1, horizontal sep=0.8cm, group name=my plots}]
 \nextgroupplot[
 height=90pt, width=160pt,
 legend style={at={(2.02, 0.5)},anchor=west,},
@@ -1888,6 +1888,6 @@ table {%
 
 
 
-\draw ($(my plots c1r1.north)!0.5!(my plots c2r1.north) + (0, 0.25cm)$) node {Number Bachelor's degrees awarded (thousands)};
+
 \end{tikzpicture}
-\caption{Source: IPEDS}
+\caption{Number Bachelor's degrees awarded (thousands). Source: IPEDS.}

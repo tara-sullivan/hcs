@@ -9,6 +9,8 @@ hcs/model/archive/*
 # ipeds/data/*
 # ipeds/archive/*
 
+*run_all.sh
+
 hcs/ipeds/data/*
 hcs/ipeds/archive/*
 

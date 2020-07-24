@@ -1,0 +1,56 @@
+File Manifest for ICPSR 2138
+
+U.S. Dept. of Education, National Center for Education Statistics. HIGHER
+EDUCATION GENERAL INFORMATION SURVEY (HEGIS) VI: DEGREES AND OTHER FORMAL
+AWARDS CONFERRED BETWEEN JULY 1, 1970, AND JUNE 30, 1971. ICPSR02138-v2.
+Washington, DC: U.S. Dept. of Education, National Center for Education
+Statistics [producer], 1971. Ann Arbor, MI: Inter-university Consortium for
+Political and Social Research [distributor], 2005-11-04.
+http://doi.org/10.3886/ICPSR02138.v2
+
+Details on the version history can be found below the file listings.
+
+
+Study-level Documentation
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    02138-descriptioncitation.pdf       -       -         -       2014-07-15  -
+
+    02138-related_literature.txt        -       -         -       daily       -
+
+    02138-manifest.txt                  -       -         -       daily       -
+
+
+DS0001 Higher Education General Information Survey (HEGIS) VI: Degreed and
+Other Formal Awards..
+
+    Filename                            Record  Record    Var.    Date        MD5
+                                        Length  Count     Count   Updated     Checksum
+
+    02138-0001-Codebook.pdf             -       -         -       2005-11-03  ecbacb99165d999a8963f9b65a41a3f9
+
+    02138-0001-Data.dta                 -       75,419    60      2005-11-03  52ba8800e0cca1c473a76c150ae75cb5
+
+    02138-0001-Data.por                 -       75,419    60      2005-11-03  e9b2720c8f9429b89d056c078212a1fa
+
+    02138-0001-Data.txt                 292     75,419    60      2005-11-03  7942ac0a59e4e9eea70f8a780665ce14
+
+    02138-0001-Data.xpt                 -       75,419    60      2005-11-03  f7e07f0bab63696e9acea35e5cef7ba9
+
+    02138-0001-Setup.dct                -       -         -       2005-11-03  b130854e02df465699d38f3b4127fae2
+
+    02138-0001-Setup.do                 -       -         -       2005-11-03  47de1895806b6acd670355dafa057de9
+
+    02138-0001-Setup.sas                -       -         -       2005-11-03  842d0b7efb33db9273b2b099f822802e
+
+    02138-0001-Setup.sps                -       -         -       2005-11-03  0e341e6d13a912732e608d9d6a1855f1
+
+    02138-0001-Supplemental_syntax.sas  -       -         -       2005-11-03  5d03589e1e7037ca50124966b7b86272
+
+
+Version History
+
+2005-11-04 An ICPSR codebook, and SAS, SPSS, and  Stata setup files have
+been added to the study. The title of the study has been altered.

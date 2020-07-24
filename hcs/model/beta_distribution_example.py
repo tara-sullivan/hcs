@@ -1,4 +1,3 @@
-import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import tikzplotlib
@@ -15,6 +14,7 @@ rootdir = os.path.dirname(os.path.dirname(currpath))
 sys.path.append(rootdir)
 
 from scipy.stats import beta
+import string
 
 imgpath = rootdir + '/img/'
 # Set color map
@@ -23,6 +23,8 @@ color_list = list(tol_colors.tol_cset('bright'))
 # get figure heigth and width
 from img.code.figsize import ArticleSize
 size = ArticleSize()
+# tikzplotlib save functions
+from img.code import tikzplotlib_functions as tplf
 
 
 def beta_example_gender():
@@ -32,8 +34,6 @@ def beta_example_gender():
 
     a_f, b_f = 3 * 1, 2 * 1
     a_m, b_m = a_f * 2, b_f * 2
-    # a_f, b_f = 3*2, 1*2
-    # a_m, b_m = a_f*3, b_f*3
 
     # Mean and sample size
     mu_m = beta.moment(1, a_m, b_m)
@@ -63,7 +63,7 @@ def beta_example_gender():
               frameon=False,
               borderpad=0)
 
-    # get teh current limit of y-axis
+    # get the current limit of y-axis
     _, y_max = ax.get_ylim()
 
     # Dotted line at mean
@@ -72,22 +72,14 @@ def beta_example_gender():
     # set y-limit
     ax.set_ylim(0, y_max)
 
-    ax.set_title('PDF of Beta distribution')
 
+def beta_example_change(ab0, history):
+    '''
+    Create beta distribution examples
 
-def ab_str(a, b, t):
-    ab_str = r'$\alpha_{' + str(t) + r'} = ' + str(a) + r'$, ' \
-             + r'$\beta_{' + str(t) + r'} = ' + str(b) + r'$'
-    return ab_str
-
-
-def tikz_save(figname):
-    tikzplotlib.clean_figure()
-    # default tikz (width, height) = (240pt, 207pt) (manual 4.10.01)
-    tikzplotlib.save(imgpath + figname + '.tex',
-                     axis_height='120pt', axis_width='150pt')
-
-def beta_example_main(ab0, history):
+      * ab_0: prior parameters for two fields
+      * history: history of passing/failing for three periods
+    '''
 
     x_range = np.linspace(0, 1, 50)
 
@@ -179,44 +171,87 @@ def beta_example_main(ab0, history):
     ax.set_title(title_str)
 
     tikz_save('beta_example3')
-    # plt.show()
+
+
+def beta_example_change_paper():
+    '''
+    Beta example plot. Two lines, legend in figure. aimed at paper
+    '''
+    plt.close('all')
+    fig, ax = plt.subplots(3, 3, sharex=True, sharey=True)
+    # initial groupplot stuff
+    subplot_titles = ''
+    ref_name = 'fig:beta_ex'
+
+    x_range = np.linspace(0, 1, 50)
+
+    i, j = 0, 0
+    for i in np.arange(3):
+        for j in np.arange(3):
+            alpha0 = j + 1
+            beta0 = i + 1
+            subtitle_id = string.ascii_lowercase[i * 3 + j]
+
+            y_range = beta.pdf(x_range, alpha0, beta0)
+
+            ax[i, j].plot(x_range, y_range, color=color_list[0], linewidth=2)
+            plt_title = \
+                r'$(\alpha_0, \beta_0) = ({a0}, {b0})$'.format(a0=alpha0,
+                                                               b0=beta0)
+
+            # direction of ticks
+            ax[i, j].tick_params(direction="in")
+
+            subplot_titles += tplf.subplot_title(
+                ax_loc=[i, j], ref_name=ref_name,
+                subtitle_id=subtitle_id, plt_title=plt_title,
+                text_width=size.w(0.65)
+            )
+    caption_str = 'Evolution of the Beta distribution ' \
+        + r'$\mathcal{B} (\alpha_{0}, \beta_{0})$' \
+        + r' for different values of $(\alpha_{0}, \beta_{0})$.'
+
+    tplf.save_subplots(
+        imgpath + 'beta_example_change.tex',
+        height=size.h(.7), width=size.w(0.7),
+        clean_figure=True,
+        node_code=subplot_titles, caption=caption_str,
+        extra_groupstyle_parameters={
+            'horizontal sep=0.75cm',
+        })
+
+
+def ab_str(j, t, a, b):
+    ab_str = r'$(\alpha_{{{0}{1:g}}}, \beta_{{{0}{1:g}}})'.format(j, t) \
+             + r' = ({0:g},{1:g})$'.format(a, b)
+    return ab_str
+
+
+def tikz_save(figname):
+    tikzplotlib.clean_figure()
+    # default tikz (width, height) = (240pt, 207pt) (manual 4.10.01)
+    tikzplotlib.save(imgpath + figname + '.tex',
+                     axis_height='120pt', axis_width='150pt')
+
+
+def main():
+    # Create plot for male - female beta distribution example
+    beta_example_gender()
+    # Save figure
+    tikzplotlib.clean_figure()
+    tikzplotlib.save(imgpath + 'beta_example_gender.tex',
+                     axis_width=size.w(1.25),
+                     axis_height=size.h(1.25))
+
+    # Create beta distribution examples that show how they change
+    # This is for the slide deck and wil be smaller
+    beta_example_change(ab0=(1, 1), history=[1, 0, 1])
+
+    # Create plot for paper
+    beta_example_change_paper()
 
 
 if __name__ == '__main__':
     plt.close('all')
 
-    beta_example_gender()
-
-    tikzplotlib.clean_figure()
-
-    tikzplotlib.save(imgpath + 'beta_example_gender.tex',
-                     axis_width=size.w(1.25),
-                     axis_height=size.h(1.25))
-
-    tikzplotlib.save(imgpath + 'beta_example_gender_slide.tex',
-                     axis_height='150pt', axis_width='250pt')
-    plt.show()
-
-    beta_example_main((1, 1), [1, 0, 1])
-
-    # beta_example_main((3, 3), [1, 0, 1])
-
-    # beta_example_main((1, 1), [0, 1, 1])
-
-
-    # beta_example((1, 1), True)
-    # beta_example((1, 1), True, True)
-
-    # plt.show()
-
-    # param_list = [(1, 1), (2, 1), (1, 2), (2, 2), (3, 1), (2, 2), (1, 3)]
-    # for a, b in param_list:
-    #     beta_example(a, b)
-    #     figname = 'beta_example_' + str(a) + '_' + str(b)
-    #     print(figname)
-    #     tikzplotlib.clean_figure()
-    #     # default tikz (width, height) = (240pt, 207pt) (manual 4.10.01)
-    #     tikzplotlib.save(imgpath + figname + '.tex', strict=True,
-    #                      axis_height='70pt', axis_width='90pt', textsize=8.0)
-
-    #     plt.show()
+    main()

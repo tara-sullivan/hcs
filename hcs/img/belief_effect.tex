@@ -5,17 +5,18 @@
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
 \begin{axis}[
-height=6.6314113761540705cm,
+height=6.121302808757603cm,
 tick align=outside,
 tick pos=left,
-title={Field selection and initial beliefs \\ Field X: \(\displaystyle (\alpha_{0}, \beta_{0}) = (1, 1)\); Field Y: \(\displaystyle (\alpha_{0}, \beta_{0}) = (1, 1)\)},
-width=9.904475999999999cm,
+title={Field selection and initial beliefs \\ Field X: \(\displaystyle (\alpha_{0}, \beta_{0}) = (1, 1)\); Field Y: \(\displaystyle (\alpha_{0}, \beta_{0}) = (2, 2)\)},
+unbounded coords=jump,
+width=10.729849cm,
 x grid style={white!69.0196078431373!black},
 xlabel={t},
-xmin=-0.95, xmax=27,
+xmin=-1.1, xmax=30,
 xtick style={color=black},
-xtick={0,5,10,15},
-xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\)},
+xtick={0,5,10,15,20},
+xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
 ylabel={Fraction students enrolled in field},
 ymajorgrids,
 ymin=-0.05, ymax=1.05,
@@ -23,59 +24,73 @@ ytick style={color=black},
 ytick={0,0.2,0.4,0.6,0.8,1},
 yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
 ]
-\addplot [semithick, color0]
+\addplot [thick, color0, mark=x, mark size=3, mark options={solid}]
 table {%
 0 0
-1 0.48800003528595
-2 0.230000019073486
-3 0.230000019073486
-4 0.253000020980835
-5 0.246000051498413
-6 0.23199999332428
-7 0.230000019073486
-8 0.222000002861023
-9 0.228000044822693
-11 0.22599995136261
-12 0.22599995136261
-13 0.225000023841858
-14 0.22599995136261
-16 0.223999977111816
-19 0.223999977111816
+1 0.4978
+2 0.2521
+3 0.2521
+4 0.2767
+5 0.2819
+6 0.2649
+7 0.2576
+8 0.255
+9 0.2662
+10 0.2602
+11 0.2602
+12 0.2603
+13 0.2593
+14 0.2595
+15 0.2592
+16 0.2595
+17 0.2595
+18 0.2595
+19 0.2595
+20 0.2595
+21 0.2595
+22 0.2596
 };
-\addplot [semithick, color1]
+\addplot [thick, color1, mark=x, mark size=3, mark options={solid}]
 table {%
 0 1
-1 0.51200008392334
-2 0.769999980926514
-3 0.769999980926514
-4 0.746999979019165
-5 0.753999948501587
-6 0.76800000667572
-7 0.769999980926514
-8 0.777999997138977
-9 0.772000074386597
-11 0.773999929428101
-12 0.773999929428101
-13 0.774999976158142
-14 0.773999929428101
-16 0.776000022888184
-19 0.776000022888184
+1 0.5022
+2 0.7479
+3 0.7479
+4 0.7233
+5 0.7181
+6 0.7351
+7 0.7424
+8 0.745
+9 0.7338
+10 0.7398
+11 0.7398
+12 0.7397
+13 0.7407
+14 0.7405
+15 0.7408
+16 0.7405
+17 0.7405
+18 0.7405
+19 0.7405
+20 nan
+21 nan
+22 nan
 };
-\draw (axis cs:19.5,0.224) node[
+\draw (axis cs:22.5,0.2596) node[
   anchor=base west,
   text=color0,
   rotate=0.0
 ]{Field X};
-\draw (axis cs:19.5,0.776) node[
+\draw (axis cs:19.5,0.7405) node[
   anchor=base west,
   text=color1,
   rotate=0.0
 ]{Field Y};
-\draw (axis cs:17,0.03) node[
+\draw (axis cs:16,0.03) node[
   anchor=base west,
   text=black,
   rotate=0.0
-]{N simulations = 1,000};
+]{N simulations = 10,000};
 \end{axis}
 
 \end{tikzpicture}

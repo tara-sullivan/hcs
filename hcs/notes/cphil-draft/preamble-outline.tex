@@ -56,8 +56,48 @@
 \setlist[footcount]{label=(\alph*),left=0pt .. \fixw}
 
 %%%%%%%%%%
-% No indent in footnotes
-\usepackage[flushmargin,hang]{footmisc}
+% Foodnote Edits
+% Bottom package ensures that footnote won't be above a figure
+\usepackage[bottom]{footmisc}
 
-%\usepackage[marginal]{footmisc}
-%\setlength\footnotemargin{5pt}  % default value: 1.8em
+% No indent in footnotes
+% NOTHING SEEMS TO WORK
+% \usepackage{scrextend}
+% \deffootnote[\fixw]{\fixw}{.195in}{\makebox[\fixw][r]{\thefootnotemark.\hspace{.2in}}}
+% \usepackage[flushmargin, hang]{footmisc} % flush footnote mark to left margin
+% \renewcommand{\footnotelayout}{\doublespacing\raggedright}
+% \usepackage[flushmargin,hang]{footmisc}
+% \usepackage[hang, flushmargin]{footmisc}
+% \setlength{\footnotemargin}{0.5in}
+
+
+% % \usepackage[marginal]{footmisc}
+% \setlength\footnotemargin{0pt}  % default value: 1.8em
+
+% \usepackage[flushmargin,hang]{footmisc}
+% % \setlength{\footnotemargin}{1em} % just to show clearly equal output
+
+% % \usepackage[marginal]{footmisc}
+% \setlength{\footnotemargin}{10em} % just to show clearly equal output
+
+% \renewcommand{\footnotelayout}{\raggedright}
+
+
+%%%%%%%%%%
+% Skip line between paragraphs, set indent to \fixw
+\usepackage[parfill, indent=\fixw]{parskip}
+
+%%%%%%%%%%
+% format caption
+% get rid of 'Figure: ' in caption
+\usepackage{caption}
+% \captionsetup[table]{labelsep=space}
+\captionsetup{%
+    % labelformat=empty,
+    % font=small,
+    labelsep=quad,
+    tableposition=top,
+    labelsep=period,
+    margin=\fixw,
+}
+

@@ -1,5 +1,6 @@
 # Male dominated fields in IPEDS
 import pandas as pd
+import numpy as np
 import matplotlib.pyplot as plt
 import tikzplotlib as tpl
 
@@ -8,7 +9,8 @@ import sys
 import inspect
 import codecs
 
-# import pdb
+# Helpful tools
+import pdb
 # from importlib import reload
 
 try:
@@ -29,6 +31,10 @@ save = tpl._save.save
 from img.code import tol_colors
 from img.code import plot_line_labels
 plot_df = plot_line_labels.plot_df
+# get figure heigth and width
+from img.code.figsize import ArticleSize
+size = ArticleSize()
+
 
 imgpath = rootdir + '/img/'
 
@@ -55,17 +61,23 @@ class PlotCIP:
         * cip_dict:     Read dict. into graph
         * areagraph:    Create area graphs; default false
         * cip_inlabel:  Include CIP code in legend labels
-        * rategraph:    Create rate graph; default true
-        * shareyflag:   Have area graph axes share y-axis
-        * dropcip:      Drop CIP codes from small majors from rate graph
         * drop_other:   Drop 'Other' category from dictionary
+        * x_lim:        real limit of x-axis; adjust to accomodate labels
+
+    Rategraph options:
+        * rategraph:    Create rate graph
         * rate_title:   Title of rate graph
-        * label_edit:   Pass a dictionary that moves labels to rate graph
+        * label_edit:   Pass a dictionary that moves labels in rate graph
+        * rate_total:   Plot ratio for all majors
+
+    Areagraph options:
+        * areagraph:    Create area graph
+        * shareyflag:   Have area graph axes share y-axis
         * area_leg:     Legend for area plot
     '''
     def __init__(self, cip_list, cip_dict=None,
                  rategraph=False, areagraph=False,
-                 drop_other=False, cip_inlabel=False,
+                 drop_other=False, cip_inlabel=False, rate_total=False,
                  x_lim=None, rate_title=None, label_edit=None,
                  shareyflag=True, area_leg=None,
                  ):
@@ -91,6 +103,9 @@ class PlotCIP:
             self.label_edit = {}
         else:
             self.label_edit = label_edit
+        self.rate_total = rate_total
+        if self.rate_total:
+            self.total_cip = '98'
         # formatting flags for area graph
         self.shareyflag = shareyflag
         if self.rategraph and self.areagraph and area_leg is None:
@@ -110,7 +125,7 @@ class PlotCIP:
            1. The amount of men and women using a CIP code over time, or
            2. The ratio of women to men studying a CIP code over time
         '''
-        # # Clean up notation
+        # Clean up notation
         # cip_list, cip_dict = self.cip_list, self.cip_dict
         # if only a single 2-digit cip code is passed, we want to plot the
         # components
@@ -170,6 +185,10 @@ class PlotCIP:
             self.cip_dict = {key: key + ': ' + value
                              for key, value in self.cip_dict.items()}
 
+        # If plotting a total ratio in the rate graph, set default value
+        if self.rate_total:
+            self.cip_dict.setdefault(self.total_cip, 'Total')
+
         # groupby new cip column and year
         # index = (['year', 'cip'], columns = ['ctotalm', ctotalw])
         cipdf = (df4[df4['cip2'].isin(cip_list_2d) | df4['cip4']
@@ -179,14 +198,28 @@ class PlotCIP:
         # Set up that order here so colors match across graphs
         # Create a total variable
         cipdf['total'] = cipdf.sum(axis=1)
+        # Sort values; note this is the ordering you want for the figure!
         cipdf = (cipdf.unstack(level=0)
                  .sort_values([('total', 2018)], ascending=False))
+        # drop total column
+        cipdf = cipdf.drop(columns='total')
+
+        if self.rate_total:
+            # Create a total dataframe
+            total_df = df4.groupby('year').sum().assign(cip=self.total_cip)
+            total_df = total_df.reset_index()
+            # dimensions should match current version
+            total_df = total_df.pivot(index='cip', columns='year')
+            # append current version to totals
+            cipdf = cipdf.append(total_df)
         # to preserve order you just found, unstack to series
-        cipdf = cipdf.unstack()
+        # create series from dataframe
+        # cipdf = cipdf.unstack()
+        cipdf = cipdf.unstack('cip')
         # further unstack outermost level
         cipdf = cipdf.unstack(0)
         # drop total column
-        cipdf.drop('total', axis=1, inplace=True)
+        # cipdf.drop('total', axis=1, inplace=True)
 
         # drop the specified 'other' category
         if self.drop_other:
@@ -196,7 +229,7 @@ class PlotCIP:
         # return dataframe
         self.cipdf = cipdf
 
-    def plot_rate(self, ax=None):
+    def plot_rate(self, ax=None, xticks=None):
         ciprate_df = self.cipdf.copy()
         ciprate_df['ratio'] = ciprate_df['ctotalw'] / ciprate_df['ctotalm']
         ciprate_df = ciprate_df.drop(columns=['ctotalm', 'ctotalw'])
@@ -207,7 +240,8 @@ class PlotCIP:
 
         plot_df(ciprate_df, col_labels=self.cip_dict, ax=ax,
                 x_lim=self.x_lim, title=self.rate_title,
-                label_edit=self.label_edit)
+                label_edit=self.label_edit,
+                xticks=xticks)
 
     def plot_area(self, ax_w=None, ax_m=None):
 
@@ -281,138 +315,30 @@ class PlotCIP:
         if self.rategraph and self.areagraph:
             self.plot_rate()
             self.plot_area()
-
-
-def add_begin_content(filepath):
-    # edit the file to include \begin{tikzpicture} at top
-    with open(filepath, 'r+') as file_handle:
-        content = file_handle.read()
-        file_handle.seek(0, 0)
-        line = "\\begin{tikzpicture}"
-        file_handle.write(line.rstrip('\r\n') + '\n' + content)
-
-
-def add_end_content(filepath, group_title=None, title_space="1cm"):
-    '''
-    Add end content, including:
-       * a title for subplots, if a group plot
-       * end the tikzpicture
-       * add the caption
-    '''
-    with open(filepath, 'a+') as file_handle:
-        content = file_handle.read()
-        file_handle.seek(0, 0)
-        if group_title is None:
-            line = "\n\\end{tikzpicture}\n\\caption{Source: IPEDS}"
-        else:
-            line = "\\draw" \
-                   + " ($(my plots c1r1.north)!0.5!(my plots c2r1.north)" \
-                   + " + (0, " + title_space + ")$)" \
-                   + " node {" + group_title + "};" \
-                   + "\n\\end{tikzpicture}" \
-                   + "\n\\caption{Source: IPEDS}"
-        file_handle.write('\n' + line.rstrip('\r\n') + '\n' + content)
-
-
-def save_rateplot(filename):
-    tpl.clean_figure()
-    filepath = imgpath + filename + '.tex'
-    tpl.save(filepath, wrap=False, axis_height='207pt', axis_width='300pt')
-    add_begin_content(filepath)
-    add_end_content(filepath)
-
-
-def save_areaplot(filename, title):
-    tpl.clean_figure()
-    filepath = imgpath + filename + '.tex'
-    tpl.save(filepath, wrap=False,
-             extra_axis_parameters={"height=180pt, width=150pt",
-                                    "reverse legend",
-                                    "legend style={"
-                                    + "at={(2.02, 0.5)},"
-                                    + "anchor=west,"
-                                    + "}"},
-             extra_groupstyle_parameters={"horizontal sep=0.8cm",
-                                          "group name=my plots"},
-             )
-    add_begin_content(filepath)
-    title_str = title + " - number Bachelor's degrees awarded (thousands)"
-    add_end_content(filepath, title_str)
-
-
-def save_comboplot(cip_cls, filename):
-    filepath = imgpath + filename + '.tex'
-    file_handle = codecs.open(filepath, 'w')
-
-    # Rate graph
-    cip_cls.plot_rate()
-    # To do: figure out why computer science ('11') raises error here
-    try:
-        tpl.clean_figure()
-    except ValueError:
-        pass
-    code = tpl.get_tikz_code(axis_height='140pt',
-                             axis_width='300pt',
-                             # axis_width='150pt',
-                             # extra_axis_parameters={'x post scale=2',
-                             #                        'y post scale=1'}
-                             )
-    file_handle.write(code)
-    file_handle.write('\n\\vspace{0.1cm}\n\\begin{tikzpicture}')
-    file_handle.close()
-
-    # area graph
-    cip_cls.plot_area()
-    tpl.clean_figure()
-    code = tpl.get_tikz_code(
-        wrap=False,
-        extra_axis_parameters={"height=90pt, width=160pt",
-                               "reverse legend",
-                               "legend style={"
-                               + "at={(2.02, 0.5)},"
-                               + "anchor=west,"
-                               + "}"},
-        extra_groupstyle_parameters={"horizontal sep=0.8cm",
-                                     "group name=my plots"},
-    )
-    with open(filepath, 'a+') as file_handle:
-        content = file_handle.read()
-        file_handle.seek(0, 0)
-        file_handle.write('\n' + code + '\n' + content)
-    group_title = 'Number Bachelor\'s degrees awarded (thousands)'
-    add_end_content(filepath, group_title, title_space="0.25cm")
-
-    # if group_title is None:
-    #         line = "\n\\end{tikzpicture}\n\\caption{Source: IPEDS}"
-    #     else:
-    #         line = "\\draw" \
-    #                + " ($(my plots c1r1.north)!0.5!(my plots c2r1.north)" \
-    #                + " + (0, 1cm)$) node {" + group_title + "};" \
-    #                + "\n\\end{tikzpicture}" \
-    #                + "\n\\caption{Source: IPEDS}"
-
+            
 
 if __name__ == '__main__':
 
     # Keep desired cip codes
 
-    # # Social science degrees
-    # cip_list = ['42', '45.10', '45.11', '45.02', '45.06',
-    #             # '45.07',
-    #             '45.09',
-    #             '45.04',
-    #             '45.01', '45.05', '45.14', '45.03', '45.12', '45.13', '45.99'
-    #             ]
-    # cip_dict_arg = {
-    #     'Political science': ['45.10'],
-    #     'Int\'l relations': ['45.09'],
-    #     # 'Geography': ['45.07'],
-    #     'Other': ['45.01', '45.05', '45.14', '45.03', '45.12', '45.13',
-    #               '45.99']
-    # }
+    # Social science degrees
+    cip_list = ['42', '45.10', '45.11', '45.02', '45.06',
+                # '45.07',
+                '45.09',
+                '45.04',
+                '45.01', '45.05', '45.14', '45.03', '45.12', '45.13', '45.99'
+                ]
+    cip_dict_arg = {
+        'Political science': ['45.10'],
+        'Int\'l relations': ['45.09'],
+        # 'Geography': ['45.07'],
+        'Other': ['45.01', '45.05', '45.14', '45.03', '45.12', '45.13',
+                  '45.99']
+    }
 
-    # social_science = PlotCIP(cip_list, cip_dict=cip_dict_arg, rategraph=True,
-    #                          cip_inlabel=False, drop_other=True, x_lim=2030)
+    social_science = PlotCIP(cip_list, cip_dict=cip_dict_arg, rategraph=True,
+                             rate_total=True,
+                             cip_inlabel=False, drop_other=True, x_lim=2030)
 
     # save_rateplot('social_science_rat')
 

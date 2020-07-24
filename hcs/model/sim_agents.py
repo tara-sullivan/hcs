@@ -13,7 +13,7 @@ import afmodel
 AgentHistory = afmodel.AgentHistory
 
 
-sim_num_default = 1000
+sim_num_default = 10000
 ab_0_default = np.array([[1, 1], [1, 1]], np.float64)
 w_default = np.array([1, 1], np.float64)
 v_default = np.array([1, 1], np.float64)
@@ -96,7 +96,7 @@ class SimulateAgents:
         field_state = np.empty((sim_num, 2))
         course_history_list = []
 
-        print('Running...')
+        print('Simulating agents...')
         timing.tic()
         for i in range(sim_num):
             # Create agent's history
@@ -122,8 +122,32 @@ class SimulateAgents:
 
 if __name__ == '__main__':
 
-    SimulateAgents()
+    # SimulateAgents()
 
-    np.random.seed(125)
+    # np.random.seed(125)
     sim = SimulateAgents(sim_num=10)
-    print(sim.chosen_field)
+    # print(sim.chosen_field)
+
+    def print_i(idx):
+        print('True ability: ' + str(sim.ability[idx]))
+        print('Course History: ')
+        print(sim.course_history.loc[idx])
+        count = np.unique(sim.course_history.loc[idx, 'subject'],
+                          return_counts=True)
+        print('Subject {j} courses: {c}'.format(j=count[0], c=count[1]))
+        print('Final state: ' + str(sim.field_state[idx]))
+
+    print_i(0)
+
+    # Last time period for each student
+    temp = (sim.course_history.reset_index()
+            .pivot_table('t', index='student', aggfunc='max'))
+    # by field, when did each group exit
+    temp = temp.groupby(sim.chosen_field).min()
+# from sklearn.decomposition import PCA
+
+# X = pd.DataFrame({'j': sim.chosen_field,
+#                   'a_0': sim.ability[:, 0],
+#                   'b_0': sim.ability[:, 1]})
+
+#     pca = PCA(n_components=2)

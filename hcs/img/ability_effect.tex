@@ -5,14 +5,14 @@
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
 \begin{axis}[
-height=6.6314113761540705cm,
+height=6.121302808757603cm,
 tick align=outside,
 tick pos=left,
-title={Field selection and ability to succeed \\ Field X: \(\displaystyle \theta = 0.25\); Field Y: \(\displaystyle \theta = 0.75\)},
-width=9.904475999999999cm,
+title={Field selection and ability to succeed \\ Field X: \(\displaystyle \theta = 0.4\); Field Y: \(\displaystyle \theta = 0.6\)},
+width=10.729849cm,
 x grid style={white!69.0196078431373!black},
 xlabel={t},
-xmin=-1.05, xmax=27,
+xmin=-1.05, xmax=30,
 xtick style={color=black},
 xtick={0,5,10,15,20},
 xticklabels={\(\displaystyle 0\),\(\displaystyle 5\),\(\displaystyle 10\),\(\displaystyle 15\),\(\displaystyle 20\)},
@@ -23,61 +23,71 @@ ytick style={color=black},
 ytick={0,0.2,0.4,0.6,0.8,1},
 yticklabels={\(\displaystyle 0\),\(\displaystyle 0.2\),\(\displaystyle 0.4\),\(\displaystyle 0.6\),\(\displaystyle 0.8\),\(\displaystyle 1\)}
 ]
-\addplot [semithick, color0]
+\addplot [thick, color0, mark=x, mark size=3, mark options={solid}]
 table {%
-0 0.506999969482422
-1 0.261000037193298
-2 0.272000074386597
-3 0.177000045776367
-4 0.172000050544739
-5 0.152999997138977
-6 0.128000020980835
-7 0.118000030517578
-8 0.123999953269958
-9 0.123999953269958
-10 0.121999979019165
-11 0.111000061035156
-12 0.111999988555908
-13 0.111999988555908
-14 0.108000040054321
-15 0.110000014305115
-21 0.110000014305115
+0 0.4957
+1 0.4002
+2 0.4038
+3 0.3522
+4 0.3549
+5 0.3476
+6 0.3399
+7 0.3254
+8 0.3293
+9 0.329
+10 0.3268
+11 0.3219
+12 0.3236
+13 0.3236
+14 0.3209
+15 0.3219
+16 0.3219
+17 0.3219
+18 0.322
+19 0.3222
+20 0.3222
+21 0.3222
 };
-\addplot [semithick, color1]
+\addplot [thick, color1, mark=x, mark size=3, mark options={solid}]
 table {%
-0 0.493000030517578
-1 0.739000082015991
-2 0.727999925613403
-3 0.822999954223633
-4 0.828000068664551
-5 0.847000002861023
-6 0.871999979019165
-7 0.881999969482422
-8 0.875999927520752
-9 0.875999927520752
-10 0.878000020980835
-11 0.888999938964844
-12 0.888000011444092
-13 0.888000011444092
-14 0.891999959945679
-15 0.889999985694885
-21 0.889999985694885
+0 0.5043
+1 0.5998
+2 0.5962
+3 0.6478
+4 0.6451
+5 0.6524
+6 0.6601
+7 0.6746
+8 0.6707
+9 0.671
+10 0.6732
+11 0.6781
+12 0.6764
+13 0.6764
+14 0.6791
+15 0.6781
+16 0.6781
+17 0.6781
+18 0.678
+19 0.6778
+20 0.6778
+21 0.6778
 };
-\draw (axis cs:21.5,0.14) node[
+\draw (axis cs:21.5,0.3522) node[
   anchor=base west,
   text=color0,
   rotate=0.0
 ]{Field X};
-\draw (axis cs:21.5,0.92) node[
+\draw (axis cs:21.5,0.7078) node[
   anchor=base west,
   text=color1,
   rotate=0.0
 ]{Field Y};
-\draw (axis cs:17,0.03) node[
+\draw (axis cs:16,0.03) node[
   anchor=base west,
   text=black,
   rotate=0.0
-]{N simulations = 1,000};
+]{N simulations = 10,000};
 \end{axis}
 
 \end{tikzpicture}
