@@ -107,6 +107,60 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Parametric example}\label{sim_parameterization}
+
+% Monotonicity of stopping problem (ensured by $h_{j0} \leq \nu \alpha_{j0}$) 
+% \begin{itemize}
+%     \item [$\implies$] Optimality of one-step-look-ahead, i.e. comparing
+%     \begin{enumerate}
+%         \item Value of entering labor market as skill $j$ specialist today, to
+%         \item Value of entering labor market as a skill $j$ specialist tomorrow
+%     \end{enumerate}
+% \end{itemize}
+Assuming $h_{j0} = \nu \alpha_{j0}$ and letting $c_{jt}$ be time spent studying $j$:
+\begin{itemize}
+    \item [$\implies$] Deterministic stopping function
+\end{itemize}
+\begin{equation*}
+    \frac{1- \delta}{\delta} \geq \frac{1}{c_{jt} + \alpha_{j0} + \beta_{j0}} \implies 
+    c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+\end{equation*}
+Graduation regions given by:
+\begin{equation*}
+    \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
+        \alpha_{jt}, \beta_{jt} 
+        \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
+    \right.\right\}
+\end{equation*}
+
+In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$:
+    % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
+    % \begin{cases}
+    %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
+    %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
+    %     \frac{w_{jt}}{1 - \delta} 
+    %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
+    % \end{cases}
+\begin{align*}
+\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+\begin{cases}
+\frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+\frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+   \frac{
+      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {c_{jt} + \alpha_{j0} + \beta_{j0}}
+   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+\end{cases}
+\end{align*}
+
+\hyperlink{simulate}{\beamergotobutton{Return: simulation set-up}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{frame}{}\label{app_ability_v_effect}
 
 If 

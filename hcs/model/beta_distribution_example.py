@@ -201,6 +201,10 @@ def beta_example_change_paper():
 
             # direction of ticks
             ax[i, j].tick_params(direction="in")
+            # start at 0
+            ax[i, j].set_xlim(left=0)
+            if j == 2:
+                ax[i, j].set_ylim(bottom=0)
 
             subplot_titles += tplf.subplot_title(
                 ax_loc=[i, j], ref_name=ref_name,
@@ -254,4 +258,7 @@ def main():
 if __name__ == '__main__':
     plt.close('all')
 
-    main()
+    # main()
+    beta_example_change_paper()
+
+    plt.show()

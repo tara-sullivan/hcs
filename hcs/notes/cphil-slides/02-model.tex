@@ -21,18 +21,38 @@ Individuals endowed with:
     \item [$P_{j0}$:] Prior beliefs about $\theta_j$
 \end{itemize}
 
+
+
 \vspace{2ex}
-At each $t$, individuals can choose to either study or work in one skill-$j$:
+Time constraint: At each $t$, individuals can choose to either study ($\study_{jt}$)
+or work ($\ell_{jt}$) in one field $j \in \{1, \dots, J\}$:
+\begin{equation*}
+    \sum_{j=0}^J (\study_{jt} + \ell_{jt}) = 1, \quad \quad \study_{jt}, \ell_{jt} \in \{0, 1\}
+\end{equation*}
+\vspace{-2.5ex}
 \begin{itemize}
-    \item Studying accumulates skill-$j$ human capital and reveals information about underlying probability of success in $j$
+    % \item $\study_{jt} = 1 \implies$ use time $t$ to study field $j$
+    \item Studying may accumulates field-$j$ human capital and reveals information about underlying probability of success in $j$
+    % \begin{itemize}
+    %   \item [$\implies$] $m_{jt} = 1$
+    % \end{itemize}
     % Endogenous enter labor market at time t as a skill j specialist to maximize 
+    % \item $\ell_{jt} = 1 \implies $ use time $t$ to work in field $j$ 
+
+    
+    % \item Use time $t$ to study field $j$ $\implies \study_{jt} = 1$; otherwise $\study_{jt} = 0$
+    % \begin{itemize}
+    %   \item Accumulates field-$j$ human capital
+    %   \item Reveals information about underlying prob. of success in $j$
+    % \end{itemize}
+    % \item Use time $t$ to work in field $j$ $\implies \ell_{jt} = 1$; otherwise $\ell_{jt} = 0$
+    % \begin{itemize}
+    %   \item Receive wage $w_j$
+    % \end{itemize}
     \item If you work, you receive wage $w_j$
 % To keep things simple, I'll assume utility is linear, and that the value of entering the market in period t as a skill k specialist simply depends on lifetime earnings
 \end{itemize}
-% Time constraint:
-% \begin{equation*}
-%     \sum_{j=0}^J (s_{jt} + \ell_{jt}) = 1, \quad \quad s_{jt}, \ell_{jt} \in \{0, 1\}
-% \end{equation*}
+
 
 \vspace{2ex}
 Enter labor market at time $t$ in skill-$j$ to maximize expected lifetime payoff:
@@ -54,7 +74,7 @@ Enter labor market at time $t$ in skill-$j$ to maximize expected lifetime payoff
 
 Students studying skill-$j$ at time $t$ pass the course with probability $\theta_j$:
 \begin{equation*}
-    a_{jt} \sim \text{Bernoulli} (\theta_j)
+    \pass_{jt} \sim \text{Bernoulli} (\theta_j)
 \end{equation*}
 \vspace{-2.5ex}
 \begin{itemize}
@@ -63,12 +83,12 @@ Students studying skill-$j$ at time $t$ pass the course with probability $\theta
   \begin{align*}
   % h_{jt+1} =& H(h_{kt}, a_{kt}), \quad \quad
 %   % a_{jt} \sim F_{\theta_j}
-    h_{jt+1} = h_{jt} + \nu_{j} a_{jt}
+    h_{jt+1} = h_{jt} + \nu_{j} \pass_{jt} \study{jt}
   \end{align*}
   \item 
   Beliefs about $\theta_j$ evolve:
   \begin{equation*}
-      \mgreen<2->{P_{j,t+1}} = \Pi_j (\mblue<2->{P_{jt}},a_{jt})
+      \mgreen<2->{P_{j,t+1}} = \Pi_j (\mblue<2->{P_{jt}}, \pass_{jt})
         % P_{j, t+1} 
   \end{equation*}
 \end{itemize}
@@ -217,21 +237,31 @@ A policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal if it maximizes:
 & \mathbb{E}^\pi \sbr{
    \sum_{t=0}^\infty \delta^t 
    \left. \pr{\sum_{j=1}^J h_{jt} w_j \ell_{jt} } \right\vert
-   \pr{(h_{10}, P_{10}^g), \dots, (h_{10}, P_{J0}^g)}
-} \\
-\text{subject to} \quad& h_{jt+1} = h_{jt}+ a_{jt} s_{jt}, \quad \quad a_{jt} = 
-   \begin{cases} 
-      \nu_j, & \text{with prob. } \theta_j,  \\ 
-      0, & \text{with prob. } 1 - \theta_j,
-   \end{cases} 
-   %\quad \quad h_{j0} = \alpha_{j0} \nu_j, 
-   \\
-\quad& P_{jt+1}^g = 
-  \mathcal{B} (\alpha_{j,t+1}^g, \beta_{j,t+1}^g), 
-  \quad \quad \theta_j \sim P_{j,0}^g \equiv \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g)
-  \quad \quad \text{if $j$ selected,} \\
-\quad& \sum_{j=1}^J (s_{jt} + \ell_{jt}) = 1, \quad \quad s_{jt}, \ell_{jt} \in \{0,1\} \\
-   & h_{j0} \leq \nu \alpha_{j0}
+   \pr{(h_{10}, P_{10}^g), \dots, (h_{J0}, P_{J0}^g)}
+} 
+\end{align*}
+Subject to the human capital accumulation and belief transition laws:
+\begin{align*}
+    h_{jt+1}^{} =& h_{jt}^{} + \nu_j \pass_{jt}^{}  \study_{jt}^{}, 
+    \quad \quad 
+    \pass_{jt}^{} \sim \text{Bernoulli} (\theta_j), 
+    \quad \quad
+    \theta_{j} \sim P_{j0}^{g} \equiv \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g),
+    \\
+    P_{j,t+1}^g =& \mathcal{B} (\alpha_{j,t+1}^g, \beta_{j,t+1}^g), 
+    \quad \quad 
+    (\alpha_{j,t+1}^{g}, \beta_{j,t+1}^{g}) = 
+    \begin{cases} 
+        (\alpha_{jt}^g + 1, \beta_{jt}^g) &\text{ if } \study_{jt}^g = 1 \text{ and } \pass_{jt}^g = 1 \\
+        (\alpha_{jt}^g, \beta_{jt}^g + 1) &\text{ if } \study_{jt}^g = 1 \text{ and } \pass_{jt}^g = 0 \\
+        (\alpha_{jt}^g, \beta_{jt}^g) &\text{ if } \study_{jt}^g = 0
+    \end{cases}
+    .
+\end{align*}
+And subject to the constraints:
+\begin{align*}
+&\sum_{j=1}^J (\study_{jt} + \ell_{jt}) = 1, \quad \quad \study_{jt}, \ell_{jt} \in \{0,1\} \\
+&h_{j0} \leq \nu_j \alpha_{j0}^{g}
 \end{align*}
 
 \end{frame}
@@ -242,30 +272,29 @@ A policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal if it maximizes:
 Define the skill $j$ index as the expected payoff if you committed to studying $j$:
 %\gen{ 
 \begin{equation*}
-\mathcal{I}_j (h_j, P_j^g) = \sup_{\tau \geq 0} \mathbb{E}^\tau
+\mathcal{I}_{jt} (h_{j}^g, P_{j}^g) = \sup_{\tau \geq 0} \mathbb{E}^\tau
 \ce{
-   \sum_{t=0}^\infty \delta^t \pr{h_{jt} w_j \ell_{jt} }}
-   {(h_{j0}, P_{j0}^g) = (h_j, P_j^g)
+   \sum_{t=0}^\infty \delta^t 
+   U_j(h_{jt}^g, w_j) \ell_{jt}^g
+}{
+    (h_{j0}^g, P_{j0}^g) = (h_{j}^g, P_{j}^g)
 }
-% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
-% \begin{cases}
-% \frac{h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
-% \frac{h_{jt}}{1 - \delta} \sbr{
-%    \frac{
-%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
-%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
-%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
-%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
-% \end{cases}
 \end{equation*}
 
 Define the graduation region of skill $j$ as: 
 \begin{equation*}
-% \mathcal{G}_j =  \left\{ \alpha_{jt}, \beta_{jt} \left\vert c_{jt} \geq \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0}) \right. \right\}
-\mathcal{G}_j = \left\{ (h_j, P_j^g) \left\vert
-   \arg \max_{\tau \geq 0} 
-   \mathbb{E}^\tau \ce{\sum_{t=0}^\infty \delta^t \pr{h_{jt} w_j \ell_{jt} }}
-   {(h_j, P_j^g)} = 0
+\mathcal{G}_j (h_{j}^g, P_{j}^g)  = 
+    \left\{
+        (h_{j}^g, P_{j}^g) 
+        \left\vert
+            \arg \max_{\tau \geq 0} 
+            \mathbb{E}^\tau 
+            \ce{
+                \sum_{t=0}^\infty \delta^t 
+                U_j(h_{jt}^g, w_j) \ell_{jt}^g
+            }{
+                (h_j, P_j^g)
+            } = 0
    \right. \right\}
 \end{equation*}
 

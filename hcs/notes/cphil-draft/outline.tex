@@ -1,4 +1,4 @@
-\documentclass[10 pt]{article}
+\documentclass[11 pt]{article}
 
 \input{preamble.tex}
 
@@ -86,6 +86,10 @@
 
 \usepackage{subcaption}
 
+% Prevents placing floats after a new section
+% Comment out for most versions
+% \usepackage[section]{placeins}
+
 \begin{document}
 
 % Find text width
@@ -107,7 +111,7 @@
 \begin{abstract}
 % The gender gap in postsecondary degree attainment has disappeared in the US over the past forty years; in fact, the overall gap has reversed, as women now earn more Bachelor's degrees than men, and at an increasing rate.  
 Although the overall gender gap in postsecondary degree attainment has reversed over the past forty years, significant heterogeneity persists in terms of which fields men and women choose to study.
-In this paper, I consider the role of group-based beliefs in explaining differential convergence rates for groups across fields. 
+In this paper, I consider the role of group-based beliefs in explaining these differential convergence rates across fields. 
 I assume a student forms their initial belief about their probability of success in a particular field based on past outcomes for their group type. 
 I then incorporate group-based beliefs into the model of gradual human capital specialization from \textcite{AF20} to show how these differences in priors can drive human capital specialization decisions amongst otherwise similar agents. 
 %I plan to calibrate this model to match parameters of the US postsecondary education system in order to separately identify the impact of expected lifetime wages and underlying beliefs on specialization decisions.
@@ -124,18 +128,17 @@ I then incorporate group-based beliefs into the model of gradual human capital s
 \tikzset{external/figure name={intro_}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\begin{figure}[b]
+\begin{figure}[b!] %htb!
 \centering
 \input{n_degrees.tex}
 \label{fig:n_degrees}
 \end{figure}
-\begin{figure}[t]
+\begin{figure}[t!] %htb!
 \centering
 \input{intro_ipeds.tex}
 \end{figure}
 
-The overall gender gap in postsecondary degree attainment has reversed in the US over the past fifty years.
-As seen in figure \ref{fig:n_degrees}, women now earn more Bachelor's degrees than men, and at an increasing rate.
+The overall gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.
 %\footnote{\toedit{This phenomenon is also documented in \textcite{BHM10}.}} 
 This convergence in human capital across genders has reduced the gender wage gap \parencite{BK17}, and may have even increased aggregate economic productivity \parencite{HHJK19}. 
 % \toedit{Moreover, improved allocation of talent increases overall economic productivity \parencite{HHJK19}.}
@@ -146,10 +149,10 @@ Consider figure \ref{fig:ipeds_a}, which plots the ratio of women to men complet
     Include overall ratio in black on the graphs. 
     Caption: Ratio of women to men completing bachelor's degrees by field of study. Source: IPEDS.
 }
-While some fields have increased their gender ratios since 1990, others have remained flat or worsened. 
-More generally, aggregations of college majors can easily mask underlying heterogeneity in gender convergence \parencite{BHST08}.
-This can be seen by comparing the Social Sciences gender ratio in Figure \ref{fig:ipeds_a} with those of its subfields in \ref{fig:ipeds_b}.
-Overall, these differences in major choice appear to matter for labor market outcomes \parencite{SHB19}, but the reasons these differences exist is not well understood. 
+While the gender ratios of some fields have increased since 1990, others have remained flat or worsened. 
+More generally, aggregations of college majors can easily mask heterogeneity in gender convergence across fields \parencite{BHST08}.
+This can be seen when comparing the overall Social Sciences gender ratio from Figure \ref{fig:ipeds_a} with the ratios of its subfields in \ref{fig:ipeds_b}.
+Although these differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, the reasons these differences exist is not well understood. 
 
 This paper addresses this heterogeneity using a model of group-based belief formation and gradual human capital specialization. 
 Building on \textcite{AF20}, I assume individuals belonging to a particular group choose to work or study in heterogeneous fields. 
@@ -161,19 +164,64 @@ I use simulations to highlight the different mechanisms of this model, and to sp
     allowing abilities to be correlated. 
 } 
 
+\toedit{
+    I then then use this model to consider how of group-based beliefs influences college major choice by gender. 
+    \begin{blist}
+    \item Ine line with \textcite{HHJK19}, we know these different beliefs can have significant effects on producitvity. 
+    \end{blist}
+}
+
+\toedit{
+    What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?
+}
+
+\toedit{
+    Discuss the role of affirmative action. Can affirmative action address these biases?
+}
+
 This paper proceeds as follows. After a brief literature review, I outline the model in section \ref{sec:model}. Implications of the model are explored in section \ref{sec:sims}. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Literature}
 
+\textcite{AF20}
+\begin{blist}
+\item Some experimentation is optimal in this paper (I think); this is different than what you get from a static choice model like \textcite{Z13} (and, I think, \textcite{A93}).
+\end{blist}
+Nonpecuniary determinants of college major choice:
+\begin{blist}
+\item \citeposs{A93} seminal work on the role of uncertainty in sequential education decisions. Also, as mentioned in \textcite{Z13}, ability is important \toedit{(and may have differential impacts on ex-post payoffs by gender)}
+\item \textcite{A04}: ability matters; sequential uncertainty
+\item Literature finds that preferences matter: \textcite{Z13}
+\end{blist}
+From statistical discrimination literature, know that self-fulfilling prophecies matter:
+\begin{blist}
+\item \textcite{CL93}
+\end{blist}
+Matters from an affirmative action point of view. Estimate inefficiencies across communities (compare to \textcite{AL16})
+% beliefs and preferences do appear to matter. 
+% some literature suggests that preferences are key, more so than beliefs.
+% know from statistical discrimination literature that self-fulfilling prophecies matter.
+% this paper ties these ideas together
+
+% The role of non-pecuniary job attributes in determining college major choice.
+% These papers focus on the role of preferences.
+% how non-pecuniary job characteristics influence major choice.
+
+
+% My papers follows the tradition of papers that consider the role of uncertainty in education decisions (Zafar 2013)
+
+
+
 This paper builds on recent literature in human capital specialization.
-In particular, I closely draw on the theoretical work in \textcite{AF20}.
-Of particular interest are studies about college major choice \parencite{ABM12,AAM16-education}, and analyses about the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
+In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
+I closely build on \citeposs{AF20} theoretical model.
+Of particular interest is research on the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
 This paper shares several theoretical commonalities with \textcite{AAMR16-wp}, who build a dynamic model of school and work decisions, though they focus on attrition; as such, major choice is broadly characterized as a choice between STEM fields and non-STEM fields. 
 % They also assume students are uncertain about underlying abilities and update these beliefs over time.
 
 % This paper related to empirical literature on gender gaps and college choice.
-This paper is largely motivated by empirical work on the relationship between gender and college major choice, and how that relationship has changed over time.
+This paper is motivated by empirical work on the relationship between gender and college major choice, and how that relationship has changed over time.
 Differences in major choice by gender has been documented using both administrative data \parencite{D10} and survey results \parencite{Z13}.
 It is worth noting that there has been significant improvement in gender ratios across fields compared to the mid-twentieth century.
 However, most of this gender convergence ended by the 1980s, well before parity was achieved \parencite{SHB19,EL06}. 
@@ -238,7 +286,7 @@ Let $U_j$ denote the expected per-period utility associated with working in fiel
     As noted in \textcite{AF20}, this can be expected average per-period payoff, and can evolve after graduation.} 
 The agent's expected lifetime payoff can be written as: 
 \begin{equation}\label{max_utility}
-    \sum_{t=0}^\infty \delta^t \sum_{j=1}^J U_{j} (w_j, h_{j, t}) \ell_{j, t},
+    \sum_{t=0}^\infty \delta^t \sum_{j=1}^J U_{j} (w_j, h_{jt}) \ell_{jt},
     % \max_{j \in {1, \dots, J}}
     % \sum_{t=0}^\infty \delta^t U_j (w_j, h_{jt}) \ell_{jt}
 \end{equation}
@@ -258,7 +306,7 @@ A student then passes any field-$j$ course with probability $\theta_j$, implying
     \nts{I do need to discuss what happens when the probability of success is correlated across fields. Also need to consider if these initial values are correlated across groups.}
 }
 Agents only accumulates human capital when they pass courses.
-Therefore, an agent's human capital evolves according to:
+Therefore, an agent's field-specific human capital evolves according to:
 \begin{equation}\label{eq:hc_accumulation}
     h_{j,t+1} = h_{jt} + \nu_j \pass_{jt} \study_{jt},
     \quad \quad
@@ -267,6 +315,7 @@ Therefore, an agent's human capital evolves according to:
 where $\nu_j \geq 0$ is the human capital gain associated with passing the course.\footnote{
     The per-period expected accumulation of human capital additionally must be non-negative and bounded. Regularity conditions imposed in section \ref{sec:optimal_policy} ensure that is the case.
     \nts{May want to mention that this can be considered to be the Mincerian returns for a particular course.}
+    \nts{Note that it might be better to explicitly state the inequalities that will ensure that people will choose to go to school.}
 }
 
 A student's probability of success in a field $j$ course, $\theta_j$, is an ability parameter; students with high values of $\theta_j$ are more likely to pass any given class in field $j$, whereas students with low values of $\theta_j$ are more likely to fail. 
@@ -287,8 +336,8 @@ Agents that plan to specialize in field $j$ will study $j$ to accumulate $j$-spe
     Technically, this depends on the parameterization of the problem, but will be true for the examples explored in this paper. (Something I should be specific about)
 }
 The decision of when to stop studying $j$ and enter the labor market is an agent's \emph{stopping decision}. 
-\toedit{Overall, students have two incentives for studying a field $j$.}
-First, they can potentially accumulate $j$-specific human capital, which directly increases lifetime utility if they become a field-$j$ specialist.
+\toedit{Overall, students have two incentives for studying a field $j$:}
+first, they can potentially accumulate $j$-specific human capital, which directly increases lifetime utility if they specialize in $j$.
 Second, studying $j$ reveals information about their ability in that field, which is central to the specialization decision.
 \nts{
 %\item 
@@ -311,7 +360,7 @@ The distributions of underlying abilities, $\theta_j$, are the same for men and 
 However, initial beliefs about underlying abilities, $P_{j0}^g$, are different for the two groups.
 
 \toedit{To make this explicit, let's fully parameterize the belief distribution for a type $g$ student.}
-Assume the initial initial beliefs about $\theta_j$ follow a beta distribution with parameters $(\alpha_{j0}^g, \beta_{j0}^g)$, implying $P_{j0}^g = \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g)$.
+Assume the initial beliefs about $\theta_j$ follow a beta distribution with parameters $(\alpha_{j0}^g, \beta_{j0}^g)$, implying $P_{j0}^g = \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g)$.
 To understand why this is a reasonable assumption, recall that our unknown ability parameter, $\theta_j$, is the probability that a student succeeds ($\pass_{jt}^g = 1$) or fails ($\pass_{jt}^g = 0$) a field $j$ course at time $t$.
 Because the realizations of $\pass_{jt}$ are independent over time, the sequence of successes and failures for some number of total field $j$ courses taken is a binomial random variable.
 The beta distribution is a conjugate prior for the binomial distribution, and is thus a natural and tractable choice for modeling beliefs about $\theta_j$ \parencite[pg. 325]{CB02}.\footnts{
@@ -332,7 +381,7 @@ Therefore, if we assume that a student updates their beliefs about $\theta_j$ us
 % The key assumption of this analysis is that students may use existing group outcomes to form initial beliefs about their probability of success.
 % As an example, suppose a type $g$ student's belief about their own ability is based on previously observed success rates for their group, $g$. 
 
-\toedit{To develop intuition about how beliefs based on existing group outcomes influence specialization decisions, it's helpful to proceed with an illustrative, albeit somewhat contrived, parameterization.}
+\toedit{To develop intuition about how this assumption influences specialization decisions, it's helpful to proceed with an illustrative, albeit somewhat contrived, parameterization.}
 Let $\alpha_{j0}^g$ and $\beta_{j0}^g$ denote the number of type $g$ students who have succeeded and failed in field $j$ at time 0, respectively.
 As an example, suppose a type $g$ student is forming their initial beliefs about their probability of success in field $j$, and therefore asks five type $g$ upperclassmen about their experiences in field $j$.
 If three of those type $g$ upperclassmen passed the introductory course in field $j$, while two failed, then the student's initial belief parameters $(\alpha_{j0}^g, \beta_{j0}^g)$ would equal $(3, 2)$.
@@ -346,7 +395,7 @@ Using this parameterization, the observed group-$g$ success rate, $\mu_{j0}^g$, 
   %\frac{\alpha_{j0}^m}{\alpha_{j0}^m + \beta_{j0}^m} = 
   %\frac{\alpha_{j0}^f}{\alpha_{j0}^f + \beta_{j0}^f}
 \end{equation*}
-This average is based on a sample of type $g$ students of size $n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g$.
+This average is based on a sample of $n_{j0}^g = \alpha_{j0}^g + \beta_{j0}^g$ type-$g$ students.
 Note that the beta distribution parameters, $\alpha_{j0}^g$ and $\beta_{j0}^g$, can be expressed using the average success rate, $\mu_{j0}^g$, and the sample size, $n_{j0}^g$:
 \begin{equation*}
      \alpha_{j0}^g = \mu_{j0}^g n_{j0}^g,
@@ -370,7 +419,7 @@ Figure \ref{beta_distribution} provides a numerical example to illustrate how th
 Although women and men have the same probability of success in expectation, women have more initial uncertainty regarding their underlying abilities. 
 \nts{Elaborate on what this means from the perspective of what beta distributions do.}
 
-In section \ref{sec:sims}, I discuss the implications of this assumption.
+In section \ref{sec:sims}, I discuss the implications of differential initial beliefs.
 Before moving forward, it is helpful to highlight some shortcomings of the above illustrative example.
 First, I am being purposefully vague about what ``success'' means when agents form their initial priors, $\alpha_{j0}^g$ and $\beta_{j0}^g$.
 The example above, in which students solicit feedback from upperclassmen, is helpful for building intuition, and is consistent with the literature highlighting the importance of role-models in specialization decisions; see \textcite{PS20} for directly relevant empirical evidence.
@@ -404,15 +453,15 @@ subject to the human capital accumulation and belief transition laws:\footnts{
     Is it correct to write $\theta_{j} \sim P_{j0}^g (\alpha_{j0}^g, \beta_{j0}^g)$ to denote the fact that initial beliefs about $\theta_j$ are given by the prior $P_{j0}^g$? Or does this notation suggest that the actual distribution is given by $P_{j0}^g$? I don't need to say something about the actual distribution here, do I? 
 }
 \begin{align*}
-    h_{jt+1}^g =& h_{jt}^g + \nu_j s_{jt}^g  \study_{jt}^g, 
+    h_{jt+1}^g =& h_{jt}^g + \nu_j \pass_{jt}^g  \study_{jt}^g, 
     \quad \quad 
-    s_{jt}^g \sim \text{Bernoulli} (\theta_j), 
+    \pass_{jt}^g \sim \text{Bernoulli} (\theta_j), 
     \quad \quad
     \theta_{j} \sim P_{j0}^g \equiv \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g),
     \\
     P_{j,t+1}^g =& \mathcal{B} (\alpha_{j,t+1}^g, \beta_{j,t+1}^g), 
     \quad \quad 
-    (\alpha_{j,t+1}, \beta_{j,t+1}) = 
+    (\alpha_{j,t+1}^g, \beta_{j,t+1}^g) = 
     \begin{cases} 
         (\alpha_{jt}^g + 1, \beta_{jt}^g) &\text{ if } \study_{jt}^g = 1 \text{ and } \pass_{jt}^g = 1 \\
         (\alpha_{jt}^g, \beta_{jt}^g + 1) &\text{ if } \study_{jt}^g = 1 \text{ and } \pass_{jt}^g = 0 \\
@@ -428,7 +477,7 @@ subject to the human capital accumulation and belief transition laws:\footnts{
 \end{align} 
 Let $\tau$ denote the optimal stopping rule defined over $\{s_{j1}^g, s_{j2}^g, \dots\}$. 
 Define the field-$j$ index as the expected lifetime payoff an agent would receive if they commit to studying field-$j$ given their state $(h_{jt}^g, P_{jt}^g)$: \nts{I need to ask Titan about this; I think the conditional should reflect the whole history of the agent, including number of courses taken.}
-\begin{equation*}
+\begin{equation}\label{eq:index_general}
 \mathcal{I}_{jt} (h_{j}^g, P_{j}^g) = \sup_{\tau \geq 0} \mathbb{E}^\tau
 \ce{
    \sum_{t=0}^\infty \delta^t 
@@ -436,9 +485,9 @@ Define the field-$j$ index as the expected lifetime payoff an agent would receiv
 }{
     (h_{j0}^g, P_{j0}^g) = (h_{j}^g, P_{j}^g)
 }
-\end{equation*}
+\end{equation}
 Define the graduation region of field $j$ as the states where an agent committed to studying field $j$ would choose to stop studying and enter the labor market: 
-\begin{equation*}
+\begin{equation}\label{eq:graduation_general}
 \mathcal{G}_j (h_{j}^g, P_{j}^g)  = 
     \left\{
         (h_{j}^g, P_{j}^g) 
@@ -452,7 +501,7 @@ Define the graduation region of field $j$ as the states where an agent committed
                 (h_j, P_j^g)
             } = 0
    \right. \right\}
-\end{equation*}
+\end{equation}
 Then the following policy $\pi: (h_{t}^g, P_{t}^g) \to (\study_{t}^g, \ell_t^g)$ is optimal: 
 \begin{enumerate}
     \item At each $t \geq 0$, choose skill $j^* = \arg \max_{j \in J} \mathcal{I}_j$, breaking ties according to any rule
@@ -460,27 +509,32 @@ Then the following policy $\pi: (h_{t}^g, P_{t}^g) \to (\study_{t}^g, \ell_t^g)$
 \end{enumerate}
 
 % At some point I need to highlight exactly where specialization is occuring. 
+\nts{Question: do I have stochastic dominance if I condition on the stopping rule? Is that possible?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Implications of model}\label{sec:sims}
 \tikzset{external/figure name={sims_}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-An agent's specialization decision is driven by field, individual, and group characteristics.
-% Some of these factors, such as wages,
-% are field-specific and shared by all agents. \nts{(This group also includes returns to education, $\nu_j$).}
-% Other factors, such as ability, are agent-specific. \nts{(this group also could be divided into known and unknown individual characteristics).}
-% Finally, initial beliefs in this model are group-specific. 
-To better understand how these factors drive an individual's behavior, I simulate the specialization decision of a student choosing between two completely symmetric fields.
-Specifically, I assume a student can choose to work or study in one of two fields, field $X$ or field $Y$. 
-Expected utility in field $j \in \{X, Y\}$ is equal to expected income: 
+An agent's specialization decision is affected by field, individual, and group characteristics.
+This section illustrates how these factors motivate an individual's behavior using a simplified version of the model.
+Section \ref{sec:sims_prelims} develops a version of the model where an agent chooses between two completely symmetric fields. 
+Simulations are explored in section \ref{sec:sims_plots} to illustrate how different factors influence decision making.
+In particular, I emphasize the role that beliefs play in an agent's specialization decision. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Choice between symmetric fields}\label{sec:sims_prelims}
+
+
+Assume a student can choose to work or study in one of two fields, field $X$ or field $Y$. 
+Utility in field $j \in \{X, Y\}$ at time $t$ is equal to income: 
 \begin{equation}\label{eq:linear_utility}
     U_j(w_j, h_{jt}^g) \ell_{jt}^g = w_j h_{jt}^g \ell_{jt}^g
 \end{equation}
 Wages in fields X and Y are equal and will be normalized to 1 ($w_X = w_Y = 1$), as are returns to successfully studying human capital ($\nu_X = \nu_Y = 1$).
 The student's underlying abilities in the two fields, $\theta_X$ and $\theta_Y$, are both equal to 0.5. Therefore, the student has a 50\% chance of passing any given field X or field Y course.
 Finally, I assume the student's beliefs about their own abilities in field X and Y are equal to the uniform prior:\footnote{
-    Note that if $(\alpha, \beta) = (1, 1)$, the beta distribution $\mathcal{B} (\alpha, \beta)$ equals the uniform distribution over $[0, 1]$. 
+    Note that if $(\alpha, \beta) = (1, 1)$, the beta distribution $\mathcal{B} (\alpha, \beta)$ equals the uniform distribution over $[0, 1]$. This distribution can be seen graphically in figure \ref{fig:beta_ex_a}.
         \nts{Intuitively, this implies that the student thinks all values of $\theta_j$ are equally likely. }
 }
 \begin{equation*}
@@ -493,18 +547,101 @@ For tractability, I modify the assumption in equation \eqref{eq:h_leq_alpha_v} a
 \begin{equation}\label{eq:h_eq_alpha_v}
     h_{j0}^g = \nu_j \alpha_{j0}^g.
 \end{equation}
-Equation \eqref{eq:h_eq_alpha_v} is consistent with the human capital accumulation function in equation \eqref{eq:hc_accumulation}, and allows for an analytical solution to the index and graduation region, \toedit{as described in \textcite{AF20}.}\footnts{
-    Include formulation of this in the appendix. 
+Equation \eqref{eq:h_eq_alpha_v} is consistent with the human capital accumulation function in equation \eqref{eq:hc_accumulation}, and allows for an analytical solution to the index and graduation region, \toedit{as described in \textcite{AF20}.}
+
+\toedit{
+To see why, let's revisit how the regularity condition \eqref{eq:h_leq_alpha_v} impacts the graduation index \eqref{eq:graduation_general}. 
+The graduation index \eqref{eq:graduation_general} characterizes the states for which individuals would stop studying field-$j$ and enter the labor market as a field-$j$ specialist, ignoring all other fields.
+Assuming $h_{jt} \leq \alpha_{j0}^g \nu_j$ implies the stopping problem for a given field is monotone.
+Here, monotonicity means that if an agent that would choose to stop studying $j$ at time $t$, then they would still want to stop studying $j$ at time $t+1$ if they continued on, independent of stochastic outcomes. 
+Monotonicity implies the optimality of a one-step-look-ahead comparison for the field-specific stopping problem.
+Therefore, when an agent at time $t$ decides whether to stop studying $j$, they compare their expected lifetime payoff for studying $j$ in the current period with their payoff in the subsequent period.
+An agent evaluating field $j$ at time $t$ will stop studying if their expected lifetime payoff in the current period exceeds their expected lifetime payoff in the $t+1$:
+\begin{equation*}
+    \frac{1}{1 - \delta} w_j h_{jt} 
+    \geq 
+    \frac{1}{1 - \delta} w_j \EE [h_{j,t+1}]
+    % = \frac{1}{1 - \delta} w_j \EE [h_{jt} + \nu_j \study_{jt}].
+\end{equation*}
+Assuming \eqref{eq:h_leq_alpha_v} implies this stopping condition simplifies to:
+\begin{equation*}
+    \frac{1 - \delta}{\delta} \geq 
+    \frac{
+        \nu_j \alpha_{j0}^g + h_{jt} - h_{j0}
+    }{
+        h_{jt} (\alpha_{jt}^g + \beta_{jt}^g)
+    }
+\end{equation*}
+Assuming \eqref{eq:h_eq_alpha_v} further simplifies the stopping condition:
+\begin{equation}\label{eq:stopping_func}
+    \frac{1 - \delta}{\delta} \geq 
+    \frac{
+        1
+    }{
+        h_{jt} (\alpha_{jt}^g + \beta_{jt}^g)
+    }.
+\end{equation}
+
+Let $c_{jt}$ denote the number of field-$j$ courses a student has taken at time $t$.\footnote{
+    Specifically, $c_{jt}$ equals the total number of successes, $\alpha_{jt}^g - \alpha_{j0}^g$, plus the total number of failures equals $\beta_{jt}^g - \beta_{j0}^g$.
 }
-It is important to note that under this assumption, the number of periods an agent specializing in field $j$ studies is a deterministic function of the agent's initial beliefs.
+Then the stopping condition \eqref{eq:stopping_func} can be written as:
+\begin{equation*}
+    \frac{1 - \delta}{\delta} \geq 
+    \frac{
+        1
+    }{
+        h_{jt} (c_{jt} + \alpha_{j0}^g + \beta_{j0}^g)
+    }.
+\end{equation*}
+Now, the optimal number of field-$j$ courses is a deterministic function of the agent's initial beliefs:
+\begin{equation*}
+     c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+\end{equation*}
 This means that an agent who specializes in field $j$ will take exactly $c_{j}^*$ courses in field $j$, where $c_{j}^*$ is a function of an agent's initial field-$j$ beliefs.\footnote{
-    Additionally, this assumption, and to a lesser extent the relaxed version in equation \eqref{eq:h_leq_alpha_v}, ties together beliefs and initial levels of human capital. 
+    \toedit{Additionally, this assumption, and to a lesser extent the relaxed version in equation \eqref{eq:h_leq_alpha_v}, ties together beliefs and initial levels of human capital. 
     This may have relevant implications when applying this model to specific groups. 
-    Specifically, if we make assumptions about initial group-based beliefs in line with section \ref{sec:group_based_beliefs}, equation \eqref{eq:h_eq_alpha_v} implies that (1) women begin with lower levels of initial human capital than men, and (2) women study for more periods than men in the fields in which they are more uncertain. \toedit{The first implication is not out of line with the literature, and the second implication here has some empirical support.} It is worth being aware of these implications moving forward. 
+    Specifically, if we make assumptions about initial group-based beliefs in line with section \ref{sec:group_based_beliefs}, equation \eqref{eq:h_eq_alpha_v} implies that (1) women begin with lower levels of initial human capital than men, and (2) women study for more periods than men in the fields in which they are more uncertain. \toedit{The first implication is not out of line with the literature, and the second implication here has some empirical support.} It is worth being aware of these implications moving forward.}
 }
+
+Therefore, assuming \eqref{eq:h_eq_alpha_v} and linear utility \eqref{eq:linear_utility} implies the optimal field-$j$ graduation region is given by:
+\begin{equation*}
+    \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
+        \alpha_{jt}, \beta_{jt} 
+        \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
+    \right.\right\}
+\end{equation*}
+In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. 
+Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$.
+The index from equation \eqref{eq:index_general} can be simplified to:
+\begin{align*}
+    % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
+    % \begin{cases}
+    %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
+    %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
+    %     \frac{w_{jt}}{1 - \delta} 
+    %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
+    % \end{cases}
+\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+\begin{cases}
+\frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+\frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+   \frac{
+      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {c_{jt} + \alpha_{j0} + \beta_{j0}}
+   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+\end{cases}
+\end{align*}
+
+} % end \toedit{}
 % However, this assumption ties together beliefs and initial levels of human capital.
 \nts{Future versions of this project will relax this assumption.}
 \nts{May also want to add that using a simple version of this stopping problem highlights other mechanisms.}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simulations}\label{sec:sims_plots}
 
 \begin{figure}[t!]
 \centering
@@ -519,7 +656,7 @@ The student then updates their beliefs about their own underlying ability, $\the
 Line movements in figure \ref{fig:sim_plots} are caused by agents switching fields in response to updated beliefs. 
 Eventually, students will specialize in one field and enter the labor market as a field-X or field-Y specialist.
 Specialization in figure \ref{fig:sim_plots} is represented by a flattening of the curve; once a student has made their specialization decision, they no longer switch fields. 
-For clarity, the line for any field $j$ ends once any agent specializing in $j$ stops studying and becomes a field-$j$ specialist.
+For clarity, the line for any field $j$ ends once any agent specializing in $j$ stops studying and enters the labor market.
 Therefore, the length of the lines in figure \ref{fig:sim_plots} denote the minimum amount of time an agents spends studying before becoming a field-$j$ specialist.
 
 The baseline scenarios in figures \ref{fig:sim_a} and \ref{fig:sim_b} illustrate these dynamics.
@@ -552,24 +689,43 @@ As in \ref{fig:sim_a}, approximately 50\% of agents specialize in field X, and 5
 The remainder of figure \ref{fig:sim_plots} plots variations of the baseline for $N = 10,000$ simulations.
 In figure \ref{fig:sim_c}, wages in field Y are 50\% higher than wages in field X. 
 All other variables are identical to the baseline scenario. 
+Unsurprisingly, higher wages in Y drive specialization into that field.
 Because the expected lifetime payoff is so much higher, approximately 80\% of agents choose to specialize in Y.
-Further, all agents begin their education studying Y.
+
+The field X line in figure \ref{fig:sim_c} is longer than the field Y line, implying that agents who specialize in X spend more time in school.
+To understand why this happens, first note that all agents begin their education studying Y because of the higher relative wages. 
 However, after two periods, a large fraction of agents switch from studying Y to studying X. 
 \toedit{This is due to agents (randomly) failing their first two courses in field Y, and switching into field X.}
-To see why, consider the evolution of the belief distribution in figure \ref{fig:beta_change}. 
+The reason agents switch fields can be seen by the evolution of their belief distributions, shown in figure \ref{fig:beta_change}.
 The student's initial belief distribution is plotted in figure \ref{fig:beta_ex_a}.
 A student that fails their first course in field Y updates their beliefs about their underlying ability in Y to the distribution plotted in figure \ref{fig:beta_ex_d}; if they fail their second course in Y, they update their beliefs to \ref{fig:beta_ex_g}.
 As we can see from figure \ref{fig:beta_ex_g}, a student that fails their first two classes in Y will believe they likely have a lower ability in that field.
-If they specialized in Y, they would not expect to successfully accumulate much human capital over the course of their studies, implying a lower expected lifetime payoff.
-As a result, these agents switch to studying field X, in spite of the lower wages. 
-
-
-The higher wages in field Y also causes agents specializing in X to spend more time in school, as seen in figure \ref{fig:sim_c}.
-As mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agents spends studying field X or Y is a deterministic function of initial beliefs. 
+As such, if they choose to specialize in Y, they would not expect to successfully accumulate much human capital over the course of their studies, implying a lower expected lifetime payoff.
+As a result, these agents switch to studying field X, in spite of the lower wages.
+% This leads to more overall time in school because, as mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agents spends studying field X or Y is a deterministic function of initial beliefs. 
+This switching leads to more overall time in school; as mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agents spends studying field X or Y before becoming a specialist is a deterministic function of initial beliefs. 
 Agents' initial beliefs about their abilities in X and Y are the same, and as such, agents specializing in either X or Y will study their chosen discipline for the same number of periods. 
 % In this simple version of the model does not allow for complementaries; therefore, switching fields necessarily increases the amount of time a student is in school. 
-However, because all agents spend the first two periods studying Field Y, those who specialize in Field X will study for a minimum of two more periods.
-% \toedit{Students who update their beliefs about their abilities in field Y}
+However, because all agents spend their first two periods studying Field Y, those who specialize in Field X will study for a minimum of two more periods.
+
+% % The higher wages in field Y also cause agents specializing in X to spend more time in school. 
+% % The minimum periods a field Y agents spends in school as seen in figure \ref{fig:sim_c}.
+% As mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agents spends studying field X or Y is a deterministic function of initial beliefs. 
+% Agents' initial beliefs about their abilities in X and Y are the same, and as such, agents specializing in either X or Y will study their chosen discipline for the same number of periods. 
+% % In this simple version of the model does not allow for complementaries; therefore, switching fields necessarily increases the amount of time a student is in school. 
+% However, because all agents spend the first two periods studying Field Y, those who specialize in Field X will study for a minimum of two more periods.
+% % \toedit{Students who update their beliefs about their abilities in field Y}
+
+% Further, all agents begin their education studying Y.
+% However, after two periods, a large fraction of agents switch from studying Y to studying X. 
+% \toedit{This is due to agents (randomly) failing their first two courses in field Y, and switching into field X.}
+% To see why, consider the evolution of the belief distribution in figure \ref{fig:beta_change}. 
+% The student's initial belief distribution is plotted in figure \ref{fig:beta_ex_a}.
+% A student that fails their first course in field Y updates their beliefs about their underlying ability in Y to the distribution plotted in figure \ref{fig:beta_ex_d}; if they fail their second course in Y, they update their beliefs to \ref{fig:beta_ex_g}.
+% As we can see from figure \ref{fig:beta_ex_g}, a student that fails their first two classes in Y will believe they likely have a lower ability in that field.
+% If they specialized in Y, they would not expect to successfully accumulate much human capital over the course of their studies, implying a lower expected lifetime payoff.
+% As a result, these agents switch to studying field X, in spite of the lower wages. 
+
 
 Figure \ref{fig:sim_d} augments the baseline scenario so agents have a higher ability in field Y. 
 Specifically, probability of success in any given field X course, $\theta_X$, equals 0.4, whereas the probability of success in field Y is given by $\theta_Y = 0.6$. 
@@ -577,23 +733,25 @@ Unsurprisingly, a higher ability in field Y drives specialization into that fiel
 
 We now turn to the impact of differential priors on specialization dynamics, plotted in Figure \ref{fig:sim_e}.
 I assume simulated agents are initially more certain about their abilities in field Y relative to field X.
-Specifically, I assume a student's initial prior about their ability in Y is given by $P_{Y0} = \mathcal{B} (2, 2)$, which corresponds to the distribution plotted in figure \ref{fig:beta_ex_e}.
-Their initial prior about their ability in X continues to equal the uniform distribution, $P_{X0} = \mathcal{B} (1, 1)$, seen in figure \ref{fig:beta_ex_a}.
-The prior for Y corresponds to the agent having more certainty about their underlying ability than in field X. 
-However, the mean of the initial distribution for Y equals the mean of the initial distribution for X.
+Specifically, I assume a student's initial prior about their ability in Y is given by $P_{Y0} = \mathcal{B} (2, 2)$; this corresponds to the distribution plotted in figure \ref{fig:beta_ex_e}.
+Their initial prior about their ability in X continues to equal the uniform distribution, $P_{X0} = \mathcal{B} (1, 1)$.
+Note that agents have the same belief about their probability of success in X and Y in expectation. 
+However, the variances of the initial distributions suggest that agents have more certainty about their underlying ability in field Y than in field X.
 
 The first consequence of this assumption is that agents specializing in field X study for more periods than those specializing in field Y, as shown in figure \ref{fig:sim_e}.
-As mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agent spends studying field $j$ before specializing in that field is a deterministic function of the agent's initial beliefs.
-Increased uncertainty about field-$j$ ability implies that agents will study $j$ for more time period before specializing. 
+As mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agent spends studying $j$ before specializing in that field is a deterministic function of the agent's initial beliefs.
+Agents have more initial uncertainty about their abilities in X than in Y, and therefore they will study X for more periods before specializing in that field.
+% Increased initial uncertainty about field-$j$ ability implies that agents will study $j$ for more time period before specializing. 
 \toedit{The second takeaway from \ref{fig:sim_e} is that all agents begin their education studying field Y.}
 Agents know that if they become field Y specialists, they will finish their education earlier, and begin earning an income sooner.
 The prospect of ending their education earlier drives agents to initially study field Y.
 
 \toedit{The key takeaway from figure \ref{fig:sim_e} is that increased initial certainty about field Y abilities causes more agents to specialize in field Y.
 \footnote{
-    It's worth emphasizing that this is not driven by risk-aversion across fields;
-    \toedit{assuming linear utility in \eqref{eq:linear_utility} ensures that agents are risk-neutral across fields.}
-    Rather, \toedit{concavity due to discounting ensures that agents are risk-averse across time.}
+    It's worth emphasizing that this is not driven by risk aversion across fields;
+    \toedit{assuming linear utility in \eqref{eq:linear_utility} ensures that agents are risk neutral across fields.}
+    Rather, \toedit{concavity due to discounting ensures that agents are risk averse across time.} 
+    \nts{Note that \textcite{A93} assumes first order stochastic dominance. It might be helpful to be able to communicate why my assumptions are different.}
 }}
 Although agents are equally likely to succeed in fields X and Y, and although the payoffs for specializing in these fields are the same, differential initial beliefs about underlying abilities drives the majority of simulated agents to specialize in field Y.
 Thus, initial beliefs play a key role in specialization decisions. 
