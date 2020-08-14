@@ -163,13 +163,27 @@ I use simulations to highlight the different mechanisms of this model, and to sp
     Good to mention here the types of checks I want to do. For example:
     allowing abilities to be correlated. 
 } 
+\toedit{I then use my model to demonstrate how group-based beliefs can lead to a misallocation of talent, and the dynamics of this result.}
 
 \toedit{
-    I then then use this model to consider how of group-based beliefs influences college major choice by gender. 
-    \begin{blist}
-    \item Ine line with \textcite{HHJK19}, we know these different beliefs can have significant effects on producitvity. 
-    \end{blist}
-}
+% start of actual section.
+The calibrated model can be used for counterfactual analysis. 
+First, group-based beliefs may lead to misallocation of talent.
+I estimate how the misallocation of talent due to group-based beliefs might affect aggregate productivity. 
+To do this, I modify the approach from \textcite{HHJK19}, who estimate the impact of barriers to human capital accumulation on aggregate productivity.
+Specifically, they build a \textcite{R51} model of occupational choice.
+
+There are several key differences between the model outlined below and the one from \textcite{HHJK19} that warrant attention.
+%
+First, they explicitly model barriers to field-specific human capital attainment in monetary terms. 
+As such, field specialization in their model is reduced to picking the occupation with the highest indirect expected utility.
+%
+% Their model allows for sorting on by preferences or ability. 
+% Their benchmark scenario considers sorting on ability, and thus I assume the same.
+% 
+
+
+} % end \toedit
 
 \toedit{
     What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?
@@ -268,7 +282,7 @@ This section outlines my theory of group-based beliefs and human capital special
 Please note that the agent's specialization problem and subsequent decision rule follows \citeposs{AF20} model of gradual human capital specialization; as such, I refer to the reader to their original paper for details. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Specialization decision}
+\subsection{Specialization decision}\label{sec:specialization}
 
 Assume infinitely lived agents in discrete time choose to work or study among $J$ fields.
 This means that at each time period $t$, individuals decide to either study a field $j$ at a postsecondary institution, or to work in a field $j$, where $j\in \{1, \dots, J\}$.
@@ -547,15 +561,17 @@ For tractability, I modify the assumption in equation \eqref{eq:h_leq_alpha_v} a
 \begin{equation}\label{eq:h_eq_alpha_v}
     h_{j0}^g = \nu_j \alpha_{j0}^g.
 \end{equation}
-Equation \eqref{eq:h_eq_alpha_v} is consistent with the human capital accumulation function in equation \eqref{eq:hc_accumulation}, and allows for an analytical solution to the index and graduation region, \toedit{as described in \textcite{AF20}.}
+Equation \eqref{eq:h_eq_alpha_v} is consistent with the human capital accumulation function in equation \eqref{eq:hc_accumulation}, and allows for an analytical solution to the index and graduation region.
+The analytical results associated with \eqref{eq:h_eq_alpha_v} and its weaker form, \eqref{eq:h_leq_alpha_v}, warrant discussion, and thus the remainder of this section will briefly discuss these derivations.
+For additional details, see \textcite{AF20}.
 
+Recall that the graduation index, \eqref{eq:graduation_general}, characterizes the states $(\alpha_{j}, \beta_{j})$ where an individual would stop studying field-$j$ and enter the labor market as a field-$j$ specialist, ignoring all other fields.
+As noted in section \ref{sec:specialization}, this is the field-specific stopping problem facing an individual agent.
+Under the weaker assumption $h_{j0} \leq \alpha_{j0}^g \nu_j$, the stopping problem for a given field is monotone.
+Intuitively, monotonicity means that an agent who wants to stop studying $j$ at time $t$ would still want to stop studying $j$ at time $t+1$ if they continued on, independent of stochastic outcomes.
+Therefore, when an agent at time $t$ chooses whether to stop studying $j$ and enter the labor market as a field-$j$ specialist, they compare their current expected lifetime payoff in $j$ with the expected payoff in $t+1$.
+In other words, monotonicity implies the optimality of a one-step-look-ahead comparison for the field-specific stopping problem.
 \toedit{
-To see why, let's revisit how the regularity condition \eqref{eq:h_leq_alpha_v} impacts the graduation index \eqref{eq:graduation_general}. 
-The graduation index \eqref{eq:graduation_general} characterizes the states for which individuals would stop studying field-$j$ and enter the labor market as a field-$j$ specialist, ignoring all other fields.
-Assuming $h_{jt} \leq \alpha_{j0}^g \nu_j$ implies the stopping problem for a given field is monotone.
-Here, monotonicity means that if an agent that would choose to stop studying $j$ at time $t$, then they would still want to stop studying $j$ at time $t+1$ if they continued on, independent of stochastic outcomes. 
-Monotonicity implies the optimality of a one-step-look-ahead comparison for the field-specific stopping problem.
-Therefore, when an agent at time $t$ decides whether to stop studying $j$, they compare their expected lifetime payoff for studying $j$ in the current period with their payoff in the subsequent period.
 An agent evaluating field $j$ at time $t$ will stop studying if their expected lifetime payoff in the current period exceeds their expected lifetime payoff in the $t+1$:
 \begin{equation*}
     \frac{1}{1 - \delta} w_j h_{jt} 
@@ -778,7 +794,18 @@ The empirical motivation relies on the IPEDS Completion Surveys, which describe 
     For earlier data, such as those used in Figure \ref{fig:n_degrees}, I supplement the IPEDS series with data from \textcite{S93}.
     However, it is worth noting that the predecessor to IPEDS series is the Higher Education General Information Survey (HEGIS), available through the International Archive of Education Data at University of Michigan (\url{https://www.icpsr.umich.edu/web/ICPSR/series/00030}). As such, I refer the reader to the HEGIS series for a more detailed portrait of postsecondary education statistics than available in \textcite{S93}.
 }
+
+Individual data on degree completions are from the American Community Survey (ACS), accessed using \textcite{IPUMS}.
+I follow the data selection procedure outlined in Appendix A of \textcite{SHB19}.
+Beginning in 2009, the ACS began recording up to two undergraduate field of study. 
+
+
 % 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%\section{Impact of misallocation}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 
 \printbibliography
 

@@ -3,6 +3,9 @@
 # !/edf/*/img/*/*.pdf
 # !/notes/*/img/*/*.pdf
 
+hcs/acs/*
+hcs/hhjk19/*
+
 hcs/model/from_titan/*
 hcs/model/archive/*
 

@@ -46,6 +46,7 @@ history_spec = init_spec + [
     ('chosen_field', nb.int8),
     ('c_history', nb.optional(nb.int16[:])),
     ('c_outcome', nb.optional(nb.int16[:])),
+    ('n_switch', nb.int8),
 ]
 
 
@@ -61,6 +62,7 @@ class AgentHistory(ModelParams):
         self.__init__ModelParams(ab_0, delta=delta, v=v, w=w)
         self.c_history = None
         self.c_outcome = None
+        # self.n_switch = None
 
     def get_index(self, ab_t):
         '''
@@ -87,6 +89,12 @@ class AgentHistory(ModelParams):
     def find_history_i(self, true_theta, fail_first=0, choose_first=-1):
         '''
         Find course history of agen i
+
+            * choose_first: choose course j first
+            * fail_first: fail first n number of courses
+
+        Note: choose_first and fail_first do not work with numba (there is
+        probably a way to fix that).
         '''
         # simplify terms
         delta, ab_0 = self.delta, self.ab_0
@@ -100,6 +108,7 @@ class AgentHistory(ModelParams):
         # # Initialize course history
         c_t = np.empty(0, dtype=np.int16)
         c_outcome = np.empty(0, dtype=np.int16)
+        n_switch = 0
 
         # Find full course history
         # pdb.set_trace()
@@ -114,6 +123,7 @@ class AgentHistory(ModelParams):
             # Otherwise specify which course comes first
             else:
                 choose_j = choose_first
+                choose_first = -1
 
             if np.sum(ab_t[choose_j, :]) >= dd:
                 self.chosen_field = choose_j
@@ -130,16 +140,18 @@ class AgentHistory(ModelParams):
                 ab_t[choose_j, :] = ab_t[choose_j, :] + \
                     np.array([outcome_j, 1 - outcome_j])
                 # record results
+                if len(c_t) > 0:
+                    if c_t[-1] != choose_j:
+                        n_switch = n_switch + 1
                 c_t = np.append(c_t, np.int16(choose_j))
                 c_outcome = np.append(c_outcome, np.int16(outcome_j))
                 # update index
                 I_t = self.get_index(ab_t)
 
-        # print(self.c_outcome)
         self.c_outcome = c_outcome
-        # print(self.c.outcome)
         self.c_history = c_t
         self.ab_t = ab_t
+        self.n_switch = n_switch
 
 
 if __name__ == '__main__':
@@ -161,14 +173,16 @@ if __name__ == '__main__':
     # afm.find_history_i(true_ability[0])
     # timing.toc()
 
+    n_switch = np.empty(N)
     chosen_field = np.empty(N)
     field_state = np.empty((N, 2))
     course_history_list = []
 
     timing.tic()
     for i in range(N):
-        afm.find_history_i(true_ability[i])
+        afm.find_history_i(true_ability[i], fail_first=3)
 
+        n_switch[i] = afm.n_switch
         chosen_field[i] = afm.chosen_field
         field_state[i] = afm.field_state
         course_history_list.append(
@@ -187,5 +201,6 @@ if __name__ == '__main__':
         print(np.unique(course_history.loc[idx, 'subject'],
                         return_counts=True))
         print('Final state: ' + str(field_state[idx]))
+        print('Number switches: ' + str(n_switch[idx]))
 
-    # print_i(1)
+    print_i(8)
