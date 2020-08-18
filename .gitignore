@@ -13,7 +13,7 @@ hcs/writeups/notes-01-03/
 hcs/writeups/mrg/
 
 # Ignore datasets
-hcs/ipeds/c/clean_data/*.dta
+hcs/data/ipeds/c/clean_data/*.dta
 hcs/ipeds/data/*
 
 hcs/acs/*
