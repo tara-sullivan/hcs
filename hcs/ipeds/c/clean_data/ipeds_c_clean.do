@@ -1,10 +1,20 @@
 /******************************************************************************
 File to clean raw ipeds data
 
-Input: raw ipeds files; cip files created using ipeds_cip_merge.dot
+Input: raw ipeds files; cip files created using ipeds_cip_merge.do
 
 Output: ipeds_c_all.dta
 
+Program defaults to running a panel of all data and saving that. It is possible 
+to run a cross-section for a particular year using the command:
+
+. do "`codepath'/ipeds_c_clean.do" 2018
+
+This will save a version of the dataset called "`temppath'/ipeds_c_temp.csv".
+
+This program creates a temporary file called temp, stores necessary datasets
+created in ipeds_cip_merge.do, and then deletes the temp folder. It is possible
+to turn off all of these features using globals/locals. 
 ******************************************************************************/
 capture restore
 set more off
@@ -27,14 +37,19 @@ else {
 
 local datapath "ipeds/data"
 local rawpath "`datapath'/raw"
-local cippath "`datapath'/cip_edit"
-local savepath "`datapath'"
+local codepath "ipeds/c/clean_data"
+local temppath "ipeds/c/clean_data/temp"
+local savepath "ipeds/c/clean_data"
 
-* if arugmnt cs passed, do not run as a cross section
+* remove temporary directory at the end of code
+global rm_temp_dir 1
+
+* if a year arugumnt is passed, do not run as a cross section
 if !missing("`1'") {
 	if regexm("`1'", "[0-9][0-9][0-9][0-9]") {
 		global panel_data = 0
 		global cs_yr = `1'
+		* save temporary version of the file
 		local savetemp = 1
 	}
 }
@@ -48,21 +63,27 @@ if strpos("${panel_data}", "0") {
 	}
 	else {
 		local startyr = 2014
-		local endyr = 2014
+		local endyr = $startyr
 	}
 }
 else {
 	local startyr = 1990
 	local endyr = 2018
 	local savefile = 1
+	local savetemp = 0
+}
+
+* Check if programs created by ipeds_cip_merge are available:
+capture confirm file "./`temppath'/"
+if _rc {
+	shell mkdir "./`temppath'"
+	do "`codepath'/ipeds_cip_merge.do"
 }
 
 * initialize dataset
 clear all
 tempfile master_data
 save `master_data', emptyok
-
-if `readdata' {
 
 forvalues yr = `startyr'/`endyr' {
 
@@ -171,7 +192,7 @@ forvalues yr = `startyr'/`endyr' {
 	if `yr' < 2010 {
 		* merge in appropriate `yr' cipcodes
 		gen cipcode`startyr'_d`yr' = cipcode
-		qui merge m:1 cipcode`startyr'_d`yr' using "`cippath'/cip`yr'"
+		qui merge m:1 cipcode`startyr'_d`yr' using "`temppath'/cip`yr'"
 		qui drop if _merge == 2
 		qui count if _merge == 1 & `not_agg_cips' 
 		if `r(N)' != 0 {
@@ -187,7 +208,7 @@ forvalues yr = `startyr'/`endyr' {
 	* merge in the 2000 cipcodes for 1990 data
 	if `yr' < 2000 {
 		* merge in 2000 cipcodes
-		qui merge m:1 cipcode1990 using "`cippath'/crosswalk1990to2000"
+		qui merge m:1 cipcode1990 using "`temppath'/crosswalk1990to2000"
 		qui drop if _merge == 2
 		* note that you might have cipcodes that are missing here; these are the ones 
 		* I check for at the end of the merge file
@@ -210,7 +231,7 @@ forvalues yr = `startyr'/`endyr' {
 	}
 
 	if `yr' < 2010 {
-		qui merge m:1 cipcode2000 using "`cippath'/crosswalk2000to2010"
+		qui merge m:1 cipcode2000 using "`temppath'/crosswalk2000to2010"
 		qui drop if _merge == 2
 		* Find number and percent of missing observations
 		qui count if cipcode2010=="" & `not_agg_cips'
@@ -247,17 +268,18 @@ forvalues yr = `startyr'/`endyr' {
 order year unitid cipcode cipcode2010 awlevel majornum
 sort unitid cipcode awlevel year majornum
 
+* save main version of file
 if `savefile' == 1 {
 	qui save "`savepath'/ipeds_c_all.dta", replace
 }
 
-} // end readdata local
-
-else{
-	use "`savepath'/ipeds_c_all.dta", clear
+* if desired, save a temporary version of data for cross section
+if `savetemp' == 1 {
+	qui export delimited "`temppath'/ipeds_c_temp.csv", replace
 }
 
-if `savetemp' == 1 {
-	qui export delimited "`savepath'/ipeds_c_temp.csv", replace
+* remove temporary folders, unless otherwise specfied
+if $rm_temp_dir {
+	shell rm -rf "./`temppath'/"
 }
 

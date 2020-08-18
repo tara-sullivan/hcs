@@ -12,6 +12,9 @@ hcs/writeups/notes-06-01/
 hcs/writeups/notes-01-03/
 hcs/writeups/mrg/
 
+# Ignore datasets
+hcs/ipeds/c/clean_data/*.dta
+hcs/ipeds/data/*
 
 hcs/acs/*
 hcs/hhjk19/*
@@ -25,7 +28,6 @@ hcs/model/archive/*
 
 *run_all.sh
 
-hcs/ipeds/data/*
 hcs/ipeds/archive/*
 
 .ipynb_checkpoints
