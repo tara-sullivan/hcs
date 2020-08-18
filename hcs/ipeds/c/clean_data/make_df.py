@@ -15,11 +15,12 @@ try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-rootdir = os.path.dirname(os.path.dirname(currpath))
+rootdir = (os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    currpath)))))
 sys.path.append(rootdir)
 
-datapath = rootdir + '/ipeds/data/'
-cippath = rootdir + '/ipeds/data/cip_edit/'
+datapath = rootdir + '/ipeds/c/clean_data/'
+cippath = rootdir + '/ipeds/c/clean_data/'
 
 
 class ReadData:
