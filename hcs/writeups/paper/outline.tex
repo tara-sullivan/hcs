@@ -67,6 +67,11 @@
 % Seeing if I can include subcaptiongs in groupplots
 \usepackage{subcaption}
 
+% for \toprule or \bottomrule in tables
+\usepackage{booktabs}
+% for long tables
+\usepackage{longtable}
+
 % path to tex images
 \makeatletter
 \def\input@path{{../../img/}}
@@ -138,9 +143,9 @@ I then incorporate group-based beliefs into the model of gradual human capital s
 \input{intro_ipeds.tex}
 \end{figure}
 
-The overall gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.
+The gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.
 %\footnote{\toedit{This phenomenon is also documented in \textcite{BHM10}.}} 
-This convergence in human capital across genders has reduced the gender wage gap \parencite{BK17}, and may have even increased aggregate economic productivity \parencite{HHJK19}. 
+The overall gender convergence in human capital has \toedit{been related to a number of economic benefits, including reducing the gender wage gap \parencite{BK17} and increasing aggregate economic productivity \parencite{HHJK19}.} 
 % \toedit{Moreover, improved allocation of talent increases overall economic productivity \parencite{HHJK19}.}
 % However, gender gaps in paritcular fields of study occasionally if we consider specific fields of study, gender convergence becomes much more unclear. 
 However, this pattern is not uniformly observed across fields of study.
@@ -167,7 +172,7 @@ I use simulations to highlight the different mechanisms of this model, and to sp
 
 \toedit{
 % start of actual section.
-The calibrated model can be used for counterfactual analysis. 
+We can then use this model for counterfactual analysis. 
 First, group-based beliefs may lead to misallocation of talent.
 I estimate how the misallocation of talent due to group-based beliefs might affect aggregate productivity. 
 To do this, I modify the approach from \textcite{HHJK19}, who estimate the impact of barriers to human capital accumulation on aggregate productivity.
@@ -198,25 +203,29 @@ This paper proceeds as follows. After a brief literature review, I outline the m
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Literature}
 
-\textcite{AF20}
-\begin{blist}
-\item Some experimentation is optimal in this paper (I think); this is different than what you get from a static choice model like \textcite{Z13} (and, I think, \textcite{A93}).
-\end{blist}
-Nonpecuniary determinants of college major choice:
-\begin{blist}
-\item \citeposs{A93} seminal work on the role of uncertainty in sequential education decisions. Also, as mentioned in \textcite{Z13}, ability is important \toedit{(and may have differential impacts on ex-post payoffs by gender)}
-\item \textcite{A04}: ability matters; sequential uncertainty
-\item Literature finds that preferences matter: \textcite{Z13}
-\end{blist}
-From statistical discrimination literature, know that self-fulfilling prophecies matter:
-\begin{blist}
-\item \textcite{CL93}
-\end{blist}
-Matters from an affirmative action point of view. Estimate inefficiencies across communities (compare to \textcite{AL16})
-% beliefs and preferences do appear to matter. 
-% some literature suggests that preferences are key, more so than beliefs.
-% know from statistical discrimination literature that self-fulfilling prophecies matter.
-% this paper ties these ideas together
+This paper builds upon the extensive literature on human capital formation \parencite{B62,B67,M74,R83}. 
+I expand on \citeposs{AF20} theoretical model of gradual specialization, a recent contribution to the literature. 
+Their framework closely relates to two classical papers from this field.
+\toedit{The first is the seminal \textcite{M74} model of the returns to education. 
+The second is the \textcite{R51} model of occupational choice and skill heterogeneity.
+% Their paper effectively generalizes the mincerean model to include skill heterogeneity 
+\citeposs{AF20} model, and by extension my own, can be viewed as a generalization of the mincerian model of human capital accumulation to include a dynamic Roy model with unknown heterogeneous abilities and sequential learning.}
+
+I focus on pre-labor market specialization decisions, specifically college major choice. 
+As such, this project is closely tied to the theoretical and empirical literature on education decisions and college major choice.
+\citeposs{A93} seminal work on the role of uncertainty in sequential education decisions provides a theoretical antecedent for this paper. 
+
+Empirical research on determinants of educational choices and returns to education is too extensive to fully outline here.
+I will focus on several relevant strands of empirical literature that either motivate my analysis or provide relevant context. 
+Of particular relevance is the empirical literature on the nonpecuniary determinants of college major choice \parencite{A04,WZ18,Z13}.
+As noted in \toedit{\textcite{Z13}}, much of the literature on nonpecuniary determinants focus on the primacy of preferences. 
+\nts{What did Titan and I say about preferences}
+
+% \begin{blist}
+% \item Some experimentation is optimal in this paper (I think); this is different than what you get from a static choice model like \textcite{Z13} (and, I think, \textcite{A93}).
+% \item  Also, as mentioned in \textcite{Z13}, ability is important \toedit{(and may have differential impacts on ex-post payoffs by gender)}
+% \item \textcite{A04}: ability matters; sequential uncertainty
+% \end{blist}
 
 % The role of non-pecuniary job attributes in determining college major choice.
 % These papers focus on the role of preferences.
@@ -229,7 +238,6 @@ Matters from an affirmative action point of view. Estimate inefficiencies across
 
 This paper builds on recent literature in human capital specialization.
 In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
-I closely build on \citeposs{AF20} theoretical model.
 Of particular interest is research on the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
 This paper shares several theoretical commonalities with \textcite{AAMR16-wp}, who build a dynamic model of school and work decisions, though they focus on attrition; as such, major choice is broadly characterized as a choice between STEM fields and non-STEM fields. 
 % They also assume students are uncertain about underlying abilities and update these beliefs over time.
@@ -261,14 +269,26 @@ This approach is consistent with a number of determinants of gender major choice
 % \textcite{KLS19} provide strong evidence that children have a significant impact on lifetime earnings for women.
 
 Finally, the results of this paper will be closely tied to statistical discrimination literature. 
-The theory of statistical discrimination, as first formulated by \textcite{A72} and \textcite{P72}, assumes discrimination arises out of imperfect information.
-For example, \textcite{AC77} assume that employer's use job applicant's race as one variable when inferring potential productivity.
+The theory of statistical discrimination, as posited by \textcite{A72} and \textcite{P72}, and then formalized in \textcite{AC77}, assumes discrimination arises out of imperfect information.
+For example, the aforementioned papers consider the case where employer's use a job applicant's race as one variable when inferring potential productivity.
 % However, all of these papers note that discrimination theories apply in alternative contexts.
-A key concern associated with statistical discrimination in labor markets are self-fulfilling prophecies \textcite{LS83}. 
+The 
+A key concern associated with statistical discrimination in labor markets are self-fulfilling prophecies \parencite{LS83}. 
 \toedit{As discussed in section TBD, this model in this paper is closely tied to the theory of statistical discrimination}.
+From statistical discrimination literature, know that self-fulfilling prophecies matter:
+\begin{blist}
+\item \textcite{CL93}
+\end{blist}
+Matters from an affirmative action point of view. Estimate inefficiencies across communities (compare to \textcite{AL16})
+% beliefs and preferences do appear to matter. 
+% some literature suggests that preferences are key, more so than beliefs.
+% know from statistical discrimination literature that self-fulfilling prophecies matter.
+% this paper ties these ideas together
 
 \nts{Question: is statistical discrimination just Bayesian linear regression?} \nts{How does this fit in with the \textcite{L98} idea that }
 
+% Here, it's not so much that labor market discrimination leads to inefficient outcomes. 
+Statistical discrimination runs into conflicts with legal definitions of discrimination, a point noted in \textcite{LS83}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Model of human capital specialization}\label{sec:model}
@@ -788,23 +808,36 @@ Thus, initial beliefs play a key role in specialization decisions.
 
 Characteristics of all U.S. postsecondary institutions are reported in the Integrated Postsecondary Education Data System (IPEDS) data.
 These data are collected annually by the National Center for Educational Statistics and describe the universe of institutions that participate in federal student financial aid programs. 
-The empirical motivation relies on the IPEDS Completion Surveys, which describe all degrees and certificates awarded at postsecondary institutions by field of study, gender, and race.\footnote{
+The empirical motivation for this analysis relies on the IPEDS Completion Surveys, which describe all degrees and certificates awarded at postsecondary institutions by field of study, gender, and race.\footnote{
     For more details on the IPEDS series, please visit \url{https://nces.ed.gov/ipeds/}.
     IPEDS data are available from 1986 until the present, though I begin empirical analysis in 1990 due to changes in how fields of study are classified.
     For earlier data, such as those used in Figure \ref{fig:n_degrees}, I supplement the IPEDS series with data from \textcite{S93}.
     However, it is worth noting that the predecessor to IPEDS series is the Higher Education General Information Survey (HEGIS), available through the International Archive of Education Data at University of Michigan (\url{https://www.icpsr.umich.edu/web/ICPSR/series/00030}). As such, I refer the reader to the HEGIS series for a more detailed portrait of postsecondary education statistics than available in \textcite{S93}.
 }
+University-level graduation rates are estimated using the IPEDS graduation surveys. 
+Details on IPEDS graduation surveys are in the Appendix. 
 
-Individual data on degree completions are from the American Community Survey (ACS), accessed using \textcite{IPUMS}.
-I follow the data selection procedure outlined in Appendix A of \textcite{SHB19}.
+
+Individual-level data on degree completions are from the American Community Survey (ACS), as accessed using \textcite{IPUMS}.
 Beginning in 2009, the ACS began recording up to two undergraduate field of study. 
+I follow the data selection procedure outlined in Appendix A of \textcite{SHB19}.
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Identification}
+
+The first key parameter for this analysis are the number of fields of study, $J$. 
+I utilize both IPEDS and ACS data for this analysis, and therefore wanted a classification system that applies across both fields. 
 
 % 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%\section{Impact of misallocation}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix}
+\setcounter{table}{0}
+\renewcommand{\thetable}{A\arabic{table}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{degree_labels.tex}
 
 
 \printbibliography
