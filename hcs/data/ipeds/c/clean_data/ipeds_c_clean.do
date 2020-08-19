@@ -15,6 +15,8 @@ This will save a version of the dataset called "`temppath'/ipeds_c_temp.csv".
 This program creates a temporary file called temp, stores necessary datasets
 created in ipeds_cip_merge.do, and then deletes the temp folder. It is possible
 to turn off all of these features using globals/locals. 
+
+Note to self: remember you can drop all macros using "macro drop _all"
 ******************************************************************************/
 capture restore
 set more off
@@ -26,6 +28,8 @@ local readdata 1
 
 if "`c(os)'" == "MacOSX" | "`c(os)'" == "Unix" {
 	cd "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/hcs/"
+// 	local datapath "/Volumes/GoogleDrive/My Drive/data/IPEDS"
+	local rawpath "/Volumes/GoogleDrive/My Drive/data/IPEDS"
 }
 else {
 	cd "Z:\hcs"
@@ -35,11 +39,10 @@ else {
 *do Z:\hcs\code\ipeds\ipeds_clean.do
 *do "/Users/tarasullivan/Google Drive File Stream/My Drive/research/hcs/code/ipeds/ipeds_clean.do"
 
-local datapath "ipeds/data"
-local rawpath "`datapath'/raw"
-local codepath "ipeds/c/clean_data"
-local temppath "ipeds/c/clean_data/temp"
-local savepath "ipeds/c/clean_data"
+// local datapath "ipeds/data"
+local codepath "data/ipeds/c/clean_data"
+local temppath "data/ipeds/c/clean_data/temp"
+local savepath "data/ipeds/c/clean_data"
 
 * remove temporary directory at the end of code
 global rm_temp_dir 1
@@ -63,13 +66,15 @@ if strpos("${panel_data}", "0") {
 	}
 	else {
 		local startyr = 2014
-		local endyr = $startyr
+		local endyr = `startyr'
 	}
 }
 else {
 	local startyr = 1990
 	local endyr = 2018
 	local savefile = 1
+}
+if missing("`savetemp'") {
 	local savetemp = 0
 }
 
