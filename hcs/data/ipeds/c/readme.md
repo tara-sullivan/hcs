@@ -26,10 +26,10 @@ Project tree:
             * table28c.pdf
             * table28a.zip 
             * table28c.zip
-    - plot_by_n.py
-    - plot_by_cip.py
-    - ipeds_plots.py
-    - save_ipeds_plots.py
+- plot_by_n.py
+- plot_by_cip.py
+- ipeds_plots.py
+- save_ipeds_plots.py
 
 
 ## Cleaning IPEDS completion data
