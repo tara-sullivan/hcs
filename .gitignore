@@ -1,5 +1,4 @@
 ## Generated if empty string is given at "Please type another file name for output:"
-*.pdf
 
 # Works in progress
 hcs/data/acs/*
@@ -21,7 +20,9 @@ hcs/data/ipeds/c/archive/
 
 # Ignore miscellaneous documentation and notes
 hcs/data/ipeds/c/clean_data/historical_data/93442.pdf
-# hcs/data/ipeds/c/clean_data/historical_data/hegis/*
+hcs/data/ipeds/c/clean_data/historical_data/hegis/ICPSR_02138/DS0001/02138-0001-Codebook.pdf
+hcs/writeups/from_titan/
+hcs/writeups/paper/outline-edits.pdf
 
 hcs/hhjk19/*
 
