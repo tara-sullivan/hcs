@@ -2,7 +2,7 @@
 *.pdf
 
 # Works in progress
-hcs/ipeds/gr/*
+hcs/data/acs/*
 hcs/img/degree_labels.tex
 hcs/model/calibration.py
 hcs/model/parameters.py
@@ -16,11 +16,13 @@ hcs/writeups/mrg/
 hcs/data/ipeds/c/clean_data/*.dta
 hcs/ipeds/data/*
 
+# Archived and temporary folders
+hcs/data/ipeds/c/archive/
+
 # Ignore miscellaneous documentation and notes
 hcs/data/ipeds/c/clean_data/historical_data/93442.pdf
 # hcs/data/ipeds/c/clean_data/historical_data/hegis/*
 
-hcs/acs/*
 hcs/hhjk19/*
 
 hcs/model/from_titan/*

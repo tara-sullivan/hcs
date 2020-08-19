@@ -32,7 +32,7 @@ Project tree:
     - save_ipeds_plots.py
 
 
-## Cleaning IPEDS data
+## Cleaning IPEDS completion data
 
 Raw data can be found here: https://nces.ed.gov/ipeds/datacenter/DataFiles.aspx
 
