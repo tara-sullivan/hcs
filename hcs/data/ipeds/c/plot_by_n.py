@@ -10,11 +10,13 @@ try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-rootdir = os.path.dirname(os.path.dirname(currpath))
+rootdir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    currpath))))
 sys.path.append(rootdir)
 
-from ipeds.historical_data.historical_df import make_df
-from ipeds.make_df import df
+# from ipeds.historical_data.historical_df import make_df
+from data.ipeds.c.clean_data.historical_data.historical_df import make_df
+from data.ipeds.c.clean_data.make_df import df
 from img.code import plot_line_labels
 plot_df = plot_line_labels.plot_df
 

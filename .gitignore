@@ -16,6 +16,10 @@ hcs/writeups/mrg/
 hcs/data/ipeds/c/clean_data/*.dta
 hcs/ipeds/data/*
 
+# Ignore miscellaneous documentation and notes
+hcs/data/ipeds/c/clean_data/historical_data/93442.pdf
+# hcs/data/ipeds/c/clean_data/historical_data/hegis/*
+
 hcs/acs/*
 hcs/hhjk19/*
 

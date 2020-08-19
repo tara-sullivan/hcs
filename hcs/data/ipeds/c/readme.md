@@ -11,13 +11,21 @@ For more details on the IPEDS series, please visit https://nces.ed.gov/ipeds/.
 ### Directory structure
 
 Project tree: 
-- clean_data
-    - ipeds_c_clean.do
-      * creates cip2names.dta, cip4names.dta [ignored in .gitignore]
-    - ipeds_cip_merge.do
-      * creates ipeds_c_all.dta [ignored in .gitignore]
+- clean_data/
+    - ipeds_c_clean.do: creates cip2names.dta, cip4names.dta [ignored in .gitignore]
+    - ipeds_cip_merge.do: creates ipeds_c_all.dta [ignored in .gitignore]
     - make_df.py
-
+    - historical_data/
+        * historical_df.py
+        * table28/
+            * table28.pdf
+            * table28b.zip
+            * table28a-page-1-table-1.csv 
+            * table28c-page-1-table-1.csv
+            * table28a.pdf 
+            * table28c.pdf
+            * table28a.zip 
+            * table28c.zip
 
 ## Cleaning IPEDS data
 
@@ -34,5 +42,10 @@ It uses the raw data from the IPEDS website and the temporary files created by `
 Note that it's possible to run this program to produce only a cross section of data for a particular year; see the program for details.
 
 The program `make_df.py` reads the smaller dataset `ipeds_c_all.dta` and creates a dataframe from the appropriate observations. It also creates dictionaries from `cip2names.dta` and `cip4names.dta`.
+
+The subfolder historical_data.py creates a longer time series than is available through IPEDS. 
+I downloaded "120 Years of American Education" from NCES website: (https://nces.ed.gov/pubsearch/pubsinfo.asp?pubid=93442).
+I saved table 28 as a pdf, and used excalibur-py to save the data from each of the three pages as a csv.
+These data are turned into a compatible dataframe in historical_data.py
 
 Note that I wrote two key cleaning programs in Stata before navigating to python, hence the change in language. 
