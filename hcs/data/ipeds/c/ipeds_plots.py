@@ -5,31 +5,32 @@ import sys
 import inspect
 
 # import pdb
-from importlib import reload
+# from importlib import reload
 
 try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
 # rootdir: /hcs/hcs
-rootdir = os.path.dirname(os.path.dirname(currpath))
+rootdir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    currpath))))
 sys.path.append(rootdir)
 
 # Image path
 imgpath = rootdir + '/img/'
 
-from ipeds.make_df import cip4labels_df
+from data.ipeds.c.clean_data.make_df import cip4labels_df
 # get figure heigth and width
 from img.code import tikzplotlib_functions as tplf
 from img.code.figsize import ArticleSize
 size = ArticleSize()
 
-from ipeds import plot_by_n
+from data.ipeds.c import plot_by_n
 plot_n_degrees = plot_by_n.plot_n_degrees
 
-from ipeds import plot_by_cip
+from data.ipeds.c import plot_by_cip
 PlotCIP = plot_by_cip.PlotCIP
-from ipeds import save_ipeds_plots
+from data.ipeds.c import save_ipeds_plots
 save_rateplot = save_ipeds_plots.save_rateplot
 save_areaplot = save_ipeds_plots.save_areaplot
 save_comboplot = save_ipeds_plots.save_comboplot

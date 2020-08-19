@@ -26,6 +26,11 @@ Project tree:
             * table28c.pdf
             * table28a.zip 
             * table28c.zip
+    - plot_by_n.py
+    - plot_by_cip.py
+    - ipeds_plots.py
+    - save_ipeds_plots.py
+
 
 ## Cleaning IPEDS data
 
@@ -49,3 +54,8 @@ I saved table 28 as a pdf, and used excalibur-py to save the data from each of t
 These data are turned into a compatible dataframe in historical_data.py
 
 Note that I wrote two key cleaning programs in Stata before navigating to python, hence the change in language. 
+
+## Making IPEDS completion survey plots
+
+All IPEDS plots used in this project are created in `ipeds_plots.py`. This program calls `plot_by_n.py`, which plots the total number of degrees completed by men and by women. It also callls `plot_by_cip.py`, which plots the total number of degrees completed by field of study (or lists of fields of study). 
+The program `plot_by_cip.py` allows you to create ratio plots or area plots, and saves the plots in a way that works for beamer presentations or for tex articles. As such, some code that saves graphs in helpful ways is in `save_ipeds_plots.py`. 

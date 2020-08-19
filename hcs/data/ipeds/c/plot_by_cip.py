@@ -17,7 +17,8 @@ try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-rootdir = os.path.dirname(os.path.dirname(currpath))
+rootdir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    currpath))))
 sys.path.append(rootdir)
 
 # testdir = os.path.dirname(os.path.dirname(os.path.dirname(rootdir))) \
@@ -38,7 +39,8 @@ size = ArticleSize()
 
 imgpath = rootdir + '/img/'
 
-from ipeds.make_df import df4, cip2labels_short, cip4labels_df
+from data.ipeds.c.clean_data.make_df import df4
+from data.ipeds.c.clean_data.make_df import cip2labels_short, cip4labels_df
 
 # make 2-digit and 4-digit cip codes consistent
 # in this program, concordance given by series

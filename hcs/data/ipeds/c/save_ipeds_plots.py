@@ -14,7 +14,8 @@ try:
     currpath = os.path.abspath(__file__)
 except NameError:
     currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
-rootdir = os.path.dirname(os.path.dirname(currpath))
+rootdir = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
+    currpath))))
 sys.path.append(rootdir)
 
 # Image path
@@ -26,9 +27,9 @@ import img.code.tikzplotlib_functions as tplf
 add_begin_content = tplf.add_begin_content
 
 # from other ipeds data folders
-from ipeds import plot_by_cip
+from data.ipeds.c import plot_by_cip
 PlotCIP = plot_by_cip.PlotCIP
-from ipeds import plot_by_n
+from data.ipeds.c import plot_by_n
 plot_n_degrees = plot_by_n.plot_n_degrees
 
 # add_begin_content: moved to tplf
