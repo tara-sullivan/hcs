@@ -7,7 +7,7 @@ This folder contains replication code for my job market paper.
 ### Data paths to update
 
 This project utilizes several large datasets. 
-In order for this code to be run locally, several datapaths need to be changed:
+In order for this code to be run locally, several data paths need to be changed:
 * The path to raw IPEDs completion surveys in `data/ipeds/c/clean_data/ipeds_cip_merge.do` and `data/ipeds/c/clean_data/ipeds_c_clean.do`
 * The path to raw IPEDS graduation surveys in `data/ipeds/gr/ipeds_gr_clean.py`
 * The path to raw ACS data in `data/acs/make_acs_df.py`
@@ -15,8 +15,8 @@ For more details, see the readme's in each of the respective data folders.
 
 ### System path and imports
 
-Most of the python code in this repository starts by finding the root directory, `hcs/hcs/` and adding it to the path.
-To find the current directory, I first try using the `__file__` attribute.
+Most of the python code in this repository starts by finding the root directory, `hcs/hcs/`, and adding it to the path.
+I first try to find the current directory using the `__file__` attribute.
 If this attribute [does not work](https://stackoverflow.com/questions/2292703/how-can-i-get-the-executables-current-directory-in-py2exe) and raises a nameerror (which happens when running interactively), I find the current path using the [inspect module](https://stackoverflow.com/questions/714063/importing-modules-from-parent-folder/11158224#11158224). 
 I then add the root directory to the path.
 When importing other modules, I use [absolute imports](https://chrisyeh96.github.io/2017/08/08/definitive-guide-python-imports.html#absolute-vs-relative-import) beginning at the root directory.
