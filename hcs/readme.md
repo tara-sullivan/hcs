@@ -4,11 +4,9 @@ Below is an overview of what is contained in each of the above directories.
 More detailed documentation and replication instructions can be found in any referenced readmes.
 
 ### data/
-
-* data/
     * ipeds/
-        * c
-        * gr
+        * c/
+        * gr/
     * acs/
     
 The `/data/ipeds/` directory contains IPEDS data used in this project. 
@@ -17,8 +15,6 @@ Replication instructions for the completion surveys can be found in the `data/ip
 Replication instructions for graduation surveys can be found in `data/ipeds/gr/`; see the readme in that folder for more information.
 
 ### img/
-
-* img/
     * code/
     * PGF plots code 
 
@@ -31,8 +27,6 @@ To see standalone PDFs used in a particular writeup (either the slides or the pa
 ### model/
 
 ### writeups/
-
-* writeups/
     * paper/
         * sullivan[2020]-jmp.tex
         * preamble.tex
