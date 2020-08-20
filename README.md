@@ -1,8 +1,8 @@
 # Group-based beliefs and Human Capital Specialization 
 
-This folder contains replication code for my job market paper.
+This folder contains replication code for my job market paper. 
 
-## Notes on running code
+## Replication notes
 
 ### Data paths to update
 
@@ -12,6 +12,18 @@ In order for this code to be run locally, several data paths need to be changed:
 * The path to raw IPEDS graduation surveys in `data/ipeds/gr/ipeds_gr_clean.py`
 * The path to raw ACS data in `data/acs/make_acs_df.py`
 For more details, see the readme's in each of the respective data folders.
+
+### Running code
+
+I use [tikzplotlib](https://github.com/nschloe/tikzplotlib) to generate [PGFPlots](http://pgfplots.sourceforge.net/) code for this project.
+Therefore, you must run TeX to generate PDF figures. 
+To generate standalone versions of figures (and to make my TeX code compile faster), externalize the PGFPlots figures.
+This means that when I compile my tex, code, I run the following commands:
+```shell session
+cd witeups/paper
+pdflatex -shell-escape sullivan[2020]-jmp
+```
+The resulting pdfs can be found in the relevant `figures/` subfoler. 
 
 ### System path and imports
 
