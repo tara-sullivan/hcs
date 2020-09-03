@@ -16,8 +16,8 @@ rawpath = '/Volumes/GoogleDrive/My Drive/data/ACS/'
 datapath = rootdir + '/data/acs/'
 tablepath = rootdir + '/img/'
 
-from data.ipeds.c.clean_data.make_df import cip4labels_df
-from data.ipeds.c.clean_data.make_df import cip2labels_short, cip2labels
+# from data.ipeds.c.clean_data.make_df import cip4labels_df
+# from data.ipeds.c.clean_data.make_df import cip2labels_short, cip2labels
 
 
 df = pd.read_hdf(datapath + 'acs.h5', 'df')

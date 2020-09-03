@@ -98,7 +98,8 @@ dtypes = {
 # Compressed file
 # Engine = c
 print('compressed with c engine')
-start_time = time.time()
+start_time = time.time()m
+
 df = pd.read_csv(rawpath + 'usa_00005.csv.gz', dtype=dtypes, sep=',',
                  engine='c', compression='gzip')
 print('time to load: %s' % (time.time() - start_time))

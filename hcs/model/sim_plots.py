@@ -1,5 +1,6 @@
 import numpy as np
-# import pandas as pd
+import pandas as pd
+
 import matplotlib.pyplot as plt
 import tikzplotlib as tpl
 import string
@@ -41,6 +42,7 @@ def course_history_df(sim):
     '''
     course_history = sim.course_history
     chosen_field = sim.chosen_field
+
     # For some buggy reason, margins=True doesn't seem to work
     df = (course_history.pivot_table(index='t', columns='subject',
                                      aggfunc='count', margins=False
@@ -61,13 +63,9 @@ def course_history_df(sim):
     # eliminate observations after maximum idx
     df = df.loc[:max_idx]
     # replace with NaN for other values
-    # pdb.set_trace()
     for subject in min_t.index.tolist():
-        # pdb.set_trace()
         if min_t.loc[subject].item() < max_idx:
-            # pdb.set_trace()
             grad_t = min_t.loc[subject][0] + 1
-            # pdb.set_trace()
             df[subject].loc[grad_t:] = np.nan
 
     # temp = np.unique(course_history.index.get_level_values(1),
@@ -84,9 +82,19 @@ def course_history_df(sim):
     return df
 
 
+def median_specialize_idx(sim):
+    idx = sim.course_history.index.unique(level=0)
+    spec_df = pd.DataFrame(
+        {'subject': sim.chosen_field,
+         'specialize_idx': sim.specialize_idx},
+        index=idx)
+    spec_df = spec_df.groupby('subject').median()
+    return spec_df
+
+
 def make_sim_plots(figname, ax_loc=None, group_ax=None, plt_title='',
                    plt_subtitle=False, subtitle_dict=None, subtitle_id=None,
-                   sim_num=None,
+                   sim_num=None, plot_vline=False,
                    *args, **kwargs):
     '''
     Run the plotting code twice; once to save a standalone figure that can
@@ -98,6 +106,7 @@ def make_sim_plots(figname, ax_loc=None, group_ax=None, plt_title='',
     * plt_title: title of plot
     * plt_subtitle: optional subtitle of plot
     * subtitle_id: ID for each subtitle (i.e. '(a)')
+    * plot_vline: vertial line (i.e. median specializtion index)
     * (*args, **kwargs) wraps plot_df signature
 
     '''
@@ -130,15 +139,52 @@ def make_sim_plots(figname, ax_loc=None, group_ax=None, plt_title='',
     fig_standalone, ax_standalone = plt.subplots()
     # Create standalone figure
     plot_df(ax=ax_standalone, *args, **kwargs)
+
+    # Initialize objects to plot vertical line at median
+    if plot_vline is not None:
+        vline_dict = {}
+        spec_idx = plot_vline
+
     # Change some properties after plotting
     for line in ax_standalone.lines:
         # Change line width
         line.set_linewidth(2.0)
         # Add marker
         line.set_marker('x')
+        if plot_vline is not None:
+            # find the subject
+            subject = int(line.get_label())
+            vline_dict[subject] = {}
+            # find the line color
+            line_color = line.get_color()
+            vline_dict[subject]['color'] = line_color
+            # point where you want to plot vline
+            vline = spec_idx.loc[subject].squeeze()
+            vline_dict[subject]['idx'] = vline
+            # if plot_vline is not None:
+        # ax_standalone.axvline(
+        #     vline,
+        #     linestyle='--', alpha=0.5, color=line_color,
+        #     marker='')
+
+    # Plot the median values using the same line color as above
+    if plot_vline is not None:
+        for subject in vline_dict.keys():
+            ax_standalone.axvline(
+                vline_dict[subject]['idx'],
+                linestyle='--', alpha=0.5,
+                color=vline_dict[subject]['color']
+            )
+
+    # pdb.set_trace()
+    # if plot_vline is not None:
+    #     ax_standalone.axvline(
+    #         spec_idx.loc[0].squeeze(),
+    #         linestyle='--', alpha=0.5)
 
     # Save standalone version of the graph
     # pdb.set_trace()
+
     # tpl.clean_figure(fig_standalone)
     tpl.save(figure=fig_standalone, filepath=imgpath + figname + '.tex',
              axis_height=size.h(1.2), axis_width=size.w(1.3),)
@@ -180,12 +226,36 @@ def make_sim_plots(figname, ax_loc=None, group_ax=None, plt_title='',
 
         plot_df(ax=group_ax, *args, **kwargs)
 
+        # Initialize objects to plot vertical line at median
+        if plot_vline is not None:
+            vline_dict = {}
+            spec_idx = plot_vline
+
         # Change some properties after plotting
         for line in group_ax.lines:
             # Change line width
             line.set_linewidth(2.0)
             # Add marker
             line.set_marker('x')
+            if plot_vline is not None:
+                # find the subject
+                subject = int(line.get_label())
+                vline_dict[subject] = {}
+                # find the line color
+                line_color = line.get_color()
+                vline_dict[subject]['color'] = line_color
+                # point where you want to plot vline
+                vline = spec_idx.loc[subject].squeeze()
+                vline_dict[subject]['idx'] = vline
+
+        # Plot the median values using the same line color as above
+        if plot_vline is not None:
+            for subject in vline_dict.keys():
+                group_ax.axvline(
+                    vline_dict[subject]['idx'],
+                    linestyle='--', alpha=0.5,
+                    color=vline_dict[subject]['color']
+                )
 
 
 def col_dict(df):
@@ -271,9 +341,6 @@ def fmt_subtitle(subtitle_dict, length, sep=';'):
 
 
 if __name__ == '__main__':
-    plt.close('all')
-
-    fig_all, ax = plt.subplots(3, 2)
 
     ##################################
     # Baseline simulation - 50 times #
@@ -285,15 +352,31 @@ if __name__ == '__main__':
     # sim = SimulateAgents(sim_num=50)
 
     df = course_history_df(sim)
+    spec_idx = median_specialize_idx(sim)
+
     # arguments for plotting
     plt_title = 'Baseline Simulation (zoomed in)'
     label_edit = {0: -.08, 1: .03}
     ax_loc = [0, 1]
     subtitle_id = 'b'
 
+    plt.close('all')
+
+    make_sim_plots('simulation_50',
+                   df=df,
+                   plt_title=plt_title, sim_num=sim.sim_num,
+                   plot_vline=spec_idx,
+                   subtitle_id=subtitle_id,
+                   xticks=[0, 5, 10, 15, 20], yticks=[0, 0.25, 0.5, 0.75, 1],
+                   label_edit=label_edit,
+                   )
+
+    fig_all, ax = plt.subplots(3, 2)
+
     make_sim_plots('simulation_50',
                    df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                    plt_title=plt_title, sim_num=sim.sim_num,
+                   plot_vline=spec_idx,
                    subtitle_id=subtitle_id,
                    xticks=[0, 5, 10, 15, 20], yticks=[0, 0.25, 0.5, 0.75, 1],
                    label_edit=label_edit,

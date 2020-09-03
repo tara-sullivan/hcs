@@ -58,6 +58,7 @@ Need to comment out decorator in afmodel.py for code to run quickly.
 from model import sim_plots
 reload(sim_plots)
 course_history_df = sim_plots.course_history_df
+median_specialize_idx = sim_plots.median_specialize_idx
 make_sim_plots = sim_plots.make_sim_plots
 fmt_subtitle = sim_plots.fmt_subtitle
 from model import sim_agents
@@ -78,6 +79,7 @@ ref_name = 'fig:sim'
 np.random.seed(125)
 sim = SimulateAgents(sim_num=10000)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 plt_title = 'Baseline Simulation'
 label_edit = {0: -.08, 1: .03}
@@ -88,6 +90,7 @@ make_sim_plots(figname='simulation_1000',
                df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                subtitle_id=subtitle_id,
                plt_title=plt_title, sim_num=sim.sim_num,
+               plot_vline=spec_idx,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.25, 0.5, 0.75, 1],
                label_edit=label_edit,
                )
@@ -107,6 +110,7 @@ np.random.seed(125)
 sim = SimulateAgents(sim_num=50)
 
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 plt_title = 'Baseline Simulation (zoomed in)'
 label_edit = {0: -.08, 1: .03}
@@ -117,6 +121,7 @@ make_sim_plots('simulation_50',
                df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                plt_title=plt_title, sim_num=sim.sim_num,
                subtitle_id=subtitle_id,
+               plot_vline=spec_idx,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.25, 0.5, 0.75, 1],
                label_edit=label_edit,
                )
@@ -135,6 +140,7 @@ np.random.seed(29)
 wage = np.array([1, 1.5])
 sim = SimulateAgents(w=wage)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 # plt_title = 'Field selection and wages \\\\ ' + print_w(wage)
 plt_title = 'Field selection and wages '
@@ -147,6 +153,7 @@ make_sim_plots('wage_effect',
                df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                plt_title=plt_title, sim_num=sim.sim_num,
                subtitle_id=subtitle_id,
+               plot_vline=spec_idx,
                plt_subtitle=True, subtitle_dict=subtitle_dict,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.2, 0.4, 0.6, 0.8, 1],
                label_edit=label_edit,
@@ -170,6 +177,7 @@ np.random.seed(29)
 ability = np.array([.4, .6])
 sim = SimulateAgents(ability=ability)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 plt_title = 'Field selection and ability to succeed'
 subtitle_dict = {'var_tex': r'\theta', 'var': ability}
@@ -181,6 +189,7 @@ make_sim_plots('ability_effect',
                df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                plt_title=plt_title, sim_num=sim.sim_num,
                subtitle_id=subtitle_id,
+               plot_vline=spec_idx,
                plt_subtitle=True, subtitle_dict=subtitle_dict,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.2, 0.4, 0.6, 0.8, 1],
                label_edit=label_edit,
@@ -201,6 +210,7 @@ np.random.seed(519)
 ab_0 = np.array([[1., 1.], [2., 2.]])
 sim = SimulateAgents(ab_0=ab_0)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 plt_title = 'Field selection and initial beliefs'
 subtitle_dict = {'var_tex': 'ab_0', 'var': ab_0}
@@ -212,6 +222,7 @@ make_sim_plots('belief_effect',
                df=df, ax_loc=ax_loc, group_ax=ax[ax_loc[0], ax_loc[1]],
                plt_title=plt_title, sim_num=sim.sim_num,
                subtitle_id=subtitle_id,
+               plot_vline=spec_idx,
                plt_subtitle=True, subtitle_dict=subtitle_dict,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.2, 0.4, 0.6, 0.8, 1],
                label_edit=label_edit,
@@ -252,6 +263,7 @@ v = np.array([
     1])
 sim = SimulateAgents(ab_0=ab_0, v=v)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 subtitle_dict = {'var_tex': r'\nu', 'var': np.round(v, 2)}
 plt_title = fmt_subtitle(subtitle_dict, 'long')
@@ -261,6 +273,7 @@ label_edit = {}
 make_sim_plots('belief_adj_effect',
                df=df,
                plt_title=plt_title, sim_num=sim.sim_num,
+               plot_vline=spec_idx,
                plt_subtitle=True, subtitle_dict=subtitle_dict,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.2, 0.4, 0.6, 0.8, 1],
                label_edit=label_edit,
@@ -273,6 +286,7 @@ make_sim_plots('belief_adj_effect',
 np.random.seed(29)
 sim = SimulateAgents(v=v)
 df = course_history_df(sim)
+spec_idx = median_specialize_idx(sim)
 # arguments for plotting
 subtitle_dict = {'var_tex': r'\nu', 'var': np.round(v, 2)}
 plt_title = fmt_subtitle(subtitle_dict, 'long')
@@ -281,6 +295,7 @@ label_edit = {0: .03, 1: .03}
 make_sim_plots('v_effect',
                df=df,
                plt_title='', sim_num=sim.sim_num,
+               plot_vline=spec_idx,
                plt_subtitle=False, subtitle_dict=subtitle_dict,
                xticks=[0, 5, 10, 15, 20], yticks=[0, 0.2, 0.4, 0.6, 0.8, 1],
                label_edit=label_edit,

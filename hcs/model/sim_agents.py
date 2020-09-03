@@ -92,6 +92,7 @@ class SimulateAgents:
         ability = self.ability
         afm = self.afm
         # initialize arrays
+        specialize_idx = np.empty(sim_num)
         chosen_field = np.empty(sim_num)
         field_state = np.empty((sim_num, 2))
         course_history_list = []
@@ -106,6 +107,7 @@ class SimulateAgents:
             # Fill in result arrays
             chosen_field[i] = afm.chosen_field
             field_state[i] = afm.field_state
+            specialize_idx[i] = afm.specialize_idx
             # Create a list of dataframes; quicker to concatenate later
             course_history_list.append(
                 pd.DataFrame(list(zip(afm.c_history, afm.c_outcome)),
@@ -118,6 +120,7 @@ class SimulateAgents:
         self.chosen_field = chosen_field
         self.field_state = field_state
         self.course_history = course_history
+        self.specialize_idx = specialize_idx
 
 
 if __name__ == '__main__':
@@ -136,6 +139,7 @@ if __name__ == '__main__':
                           return_counts=True)
         print('Subject {j} courses: {c}'.format(j=count[0], c=count[1]))
         print('Final state: ' + str(sim.field_state[idx]))
+        print('Specialize index: ' + str(sim.specialize_idx[idx]))
 
     print_i(0)
 

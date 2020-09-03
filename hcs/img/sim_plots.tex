@@ -3,7 +3,7 @@
 \definecolor{color0}{rgb}{0.266666666666667,0.466666666666667,0.666666666666667}
 \definecolor{color1}{rgb}{0.933333333333333,0.4,0.466666666666667}
 
-\begin{groupplot}[group style={group size=2 by 3, group name=my plots, horizontal sep=1.2cm, vertical sep=2cm}]
+\begin{groupplot}[group style={group size=2 by 3, vertical sep=2cm, group name=my plots, horizontal sep=1.2cm}]
 \nextgroupplot[
 height=5.101085673964669cm,
 tick pos=left,
@@ -71,6 +71,16 @@ table {%
 19 0.5024
 20 0.5024
 21 0.5024
+};
+\addplot [semithick, color0, opacity=0.5, dashed]
+table {%
+10 -4.44089209850063e-16
+10 0.999999999999999
+};
+\addplot [semithick, color1, opacity=0.5, dashed]
+table {%
+10 -4.44089209850063e-16
+10 0.999999999999999
 };
 \draw (axis cs:21.5,0.4176) node[
   anchor=base west,
@@ -149,6 +159,16 @@ table {%
 19 0.52
 20 0.52
 21 0.52
+};
+\addplot [semithick, color0, opacity=0.5, dashed]
+table {%
+10 -4.44089209850063e-16
+10 0.999999999999999
+};
+\addplot [semithick, color1, opacity=0.5, dashed]
+table {%
+10 -4.44089209850063e-16
+10 0.999999999999999
 };
 \draw (axis cs:21.5,0.4) node[
   anchor=base west,
@@ -234,6 +254,16 @@ table {%
 22 nan
 23 nan
 };
+\addplot [semithick, color0, opacity=0.5, dashed]
+table {%
+12 -0.0499999999999998
+12 1.05
+};
+\addplot [semithick, color1, opacity=0.5, dashed]
+table {%
+8 -0.0499999999999998
+8 1.05
+};
 \draw (axis cs:23.5,0.1905) node[
   anchor=base west,
   text=color0,
@@ -311,6 +341,16 @@ table {%
 19 0.6778
 20 0.6778
 21 0.6778
+};
+\addplot [semithick, color0, opacity=0.5, dashed]
+table {%
+12 0
+12 1
+};
+\addplot [semithick, color1, opacity=0.5, dashed]
+table {%
+9 0
+9 1
 };
 \draw (axis cs:21.5,0.3522) node[
   anchor=base west,
@@ -393,6 +433,16 @@ table {%
 20 nan
 21 nan
 22 nan
+};
+\addplot [semithick, color0, opacity=0.5, dashed]
+table {%
+11 -0.05
+11 1.05
+};
+\addplot [semithick, color1, opacity=0.5, dashed]
+table {%
+9 -0.05
+9 1.05
 };
 \draw (axis cs:22.5,0.2596) node[
   anchor=base west,

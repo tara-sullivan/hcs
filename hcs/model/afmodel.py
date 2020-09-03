@@ -3,7 +3,7 @@ import pandas as pd
 import numba as nb
 
 # Useful tools
-# import pdb
+import pdb
 from quantecon.util import timing
 
 init_spec = [
@@ -47,6 +47,7 @@ history_spec = init_spec + [
     ('c_history', nb.optional(nb.int16[:])),
     ('c_outcome', nb.optional(nb.int16[:])),
     ('n_switch', nb.int8),
+    ('specialize_idx', nb.int8),
 ]
 
 
@@ -63,6 +64,7 @@ class AgentHistory(ModelParams):
         self.c_history = None
         self.c_outcome = None
         # self.n_switch = None
+        # self.specialize_idx =None
 
     def get_index(self, ab_t):
         '''
@@ -105,13 +107,16 @@ class AgentHistory(ModelParams):
         # find initial index
         I_t = self.get_index(ab_t)
 
+        # calculate total courses
+        total_courses = np.ceil(delta / (1 - delta)) - np.sum(ab_0, axis=1)
+
         # # Initialize course history
         c_t = np.empty(0, dtype=np.int16)
         c_outcome = np.empty(0, dtype=np.int16)
         n_switch = 0
+        specialize_idx = 0
 
         # Find full course history
-        # pdb.set_trace()
         keep_studying = 1
         while keep_studying == 1:
             # If no first course is specified, pick a random one
@@ -125,6 +130,40 @@ class AgentHistory(ModelParams):
                 choose_j = choose_first
                 choose_first = -1
 
+            # Determine whether you are specialized
+            if specialize_idx == 0:
+                # Make dictionary of course counts
+                # Note: https://github.com/numba/numba/pull/2959
+                # course_counts = dict(zip(
+                #     * np.unique(c_t, return_counts=True)))
+                # Also: https://github.com/numba/numba/issues/5135
+                # unique = np.unique(c_t)
+                # pdb.set_trace()
+                # unique_counts = np.array([len(c_t[np.where(c_t == x)]) for x in unique])
+                # course_counts = dict(zip(unique, unique_counts))
+                # pdb.set_trace()
+                # course_counts = {x: len(c_t[np.where(c_t == x)]) for x in unique}
+                # if choose_j not in course_counts:
+                #     course_counts[choose_j] = 0
+                course_counts = len(c_t[np.where(c_t == choose_j)])
+                # calculate index as if you failed remaining courses
+                fail_index = (
+                    (1 / (1 - delta)) * delta ** (
+                        total_courses[choose_j] - course_counts)
+                    * (self.w[choose_j] * self.v[choose_j]
+                        * ab_t[choose_j, 0])
+                )
+                # add failure index to index
+                I_specialize = I_t.copy()
+                I_specialize[choose_j] = fail_index
+                max_specialize = np.argwhere(I_specialize == np.max(I_specialize))
+                if max_specialize[0, 0] == choose_j:
+                    # worth double checking this is the correct index;
+                    # subtract by 1 because of python 0 index
+                    # pdb.set_trace()
+                    specialize_idx = len(c_t) - 1
+
+            # Graduate if in graduation region
             if np.sum(ab_t[choose_j, :]) >= dd:
                 self.chosen_field = choose_j
                 self.field_state = ab_t[choose_j, :]
@@ -152,14 +191,16 @@ class AgentHistory(ModelParams):
         self.c_history = c_t
         self.ab_t = ab_t
         self.n_switch = n_switch
+        self.specialize_idx = specialize_idx
 
 
 if __name__ == '__main__':
 
     np.random.seed(10)
-    N = 10
+    N = 1
     # Initial human capital levels
-    ab_0 = np.array([[2, 2], [2, 2]], dtype=np.float64)
+    ab_0 = np.array([[1, 1], [1, 1]], dtype=np.float64)
+    wages = np.array([1, 1.25], dtype=np.float64)
 
     # Number of fields
     N_j = np.size(ab_0, axis=0)
@@ -168,21 +209,24 @@ if __name__ == '__main__':
 
     # call instance of AFModel
     # timing.tic()
-    afm = AgentHistory(ab_0)
+    afm = AgentHistory(ab_0, w=wages)
 
-    # afm.find_history_i(true_ability[0])
+    afm.find_history_i(true_ability[0])
     # timing.toc()
 
     n_switch = np.empty(N)
+    specialize_idx = np.empty(N)
     chosen_field = np.empty(N)
     field_state = np.empty((N, 2))
     course_history_list = []
 
     timing.tic()
     for i in range(N):
-        afm.find_history_i(true_ability[i], fail_first=3)
+        # afm.find_history_i(true_ability[i], fail_first=1)
+        afm.find_history_i(true_ability[i])
 
         n_switch[i] = afm.n_switch
+        specialize_idx[i] = afm.specialize_idx
         chosen_field[i] = afm.chosen_field
         field_state[i] = afm.field_state
         course_history_list.append(
@@ -202,5 +246,6 @@ if __name__ == '__main__':
                         return_counts=True))
         print('Final state: ' + str(field_state[idx]))
         print('Number switches: ' + str(n_switch[idx]))
+        print('Specialize index: ' + str(specialize_idx[idx]))
 
-    print_i(8)
+    print_i(0)
