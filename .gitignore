@@ -4,11 +4,13 @@
 hcs/img/degree_labels.tex
 hcs/model/calibration.py
 hcs/model/parameters.py
+hcs/writeups/readme.txt
 
 # Archived folders
 hcs/writeups/notes-06-01/
 hcs/writeups/notes-01-03/
 hcs/writeups/mrg/
+hcs/writeups/slides-09-04/
 hcs/data/acs/archive/
 hcs/data/ipeds/c/archive/
 hcs/model/archive/
