@@ -1,0 +1,196 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}\label{app_social_science_num}
+\Wider[4em]{
+
+\begin{figure}
+\input{social_science_area.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Social Sciences}\label{app_social_science_cip}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{cip45.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Engineering}\label{app_engineering}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{cip14.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Business}\label{app_business}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{cip52.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Computer Science}\label{app_computer_science}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{cip11.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Education}\label{app_education}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{cip13.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Biological and Physical Sciences and Mathematics}\label{app_science_math}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{science_math.tex}
+\end{figure}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+\hyperlink{app_physical_science_math}{\beamerbutton{No biology}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Physical Sciences and math}\label{app_physical_science_math}
+\Wider[4em]{
+
+\begin{figure}
+\setlength{\abovecaptionskip}{2pt}
+\setlength{\belowcaptionskip}{-2pt}
+\input{physical_science_math.tex}
+\end{figure}
+\hyperlink{app_science_math}{\beamerbutton{Return: Science and math}}
+\hyperlink{intro_social_science_ratio}{\beamerbutton{Return: Social science ratio}}
+}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Appendix - Simulations %
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Parametric example}\label{sim_parameterization}
+
+% Monotonicity of stopping problem (ensured by $h_{j0} \leq \nu \alpha_{j0}$) 
+% \begin{itemize}
+%     \item [$\implies$] Optimality of one-step-look-ahead, i.e. comparing
+%     \begin{enumerate}
+%         \item Value of entering labor market as skill $j$ specialist today, to
+%         \item Value of entering labor market as a skill $j$ specialist tomorrow
+%     \end{enumerate}
+% \end{itemize}
+Assuming $h_{j0} = \nu \alpha_{j0}$ and letting $c_{jt}$ be time spent studying $j$:
+\begin{itemize}
+    \item [$\implies$] Deterministic stopping function
+\end{itemize}
+\begin{equation*}
+    \frac{1- \delta}{\delta} \geq \frac{1}{c_{jt} + \alpha_{j0} + \beta_{j0}} \implies 
+    c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+\end{equation*}
+Graduation regions given by:
+\begin{equation*}
+    \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
+        \alpha_{jt}, \beta_{jt} 
+        \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
+    \right.\right\}
+\end{equation*}
+
+In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$:
+    % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
+    % \begin{cases}
+    %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
+    %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
+    %     \frac{w_{jt}}{1 - \delta} 
+    %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
+    % \end{cases}
+\begin{align*}
+\mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+\begin{cases}
+\frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+\frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+   \frac{
+      \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+      \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+   {c_{jt} + \alpha_{j0} + \beta_{j0}}
+   } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+\end{cases}
+\end{align*}
+
+\hyperlink{simulate}{\beamergotobutton{Return: simulation set-up}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+\hyperlink{id_model_notes}{\beamerbutton{Return: ID notes}}
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{}\label{app_ability_v_effect}
+
+If 
+$\nu_X = 
+\frac{\alpha_{X0} + \beta_{X0}}{\alpha_{Y0} + \beta_{Y0}} 
+\cdot \frac{\alpha_{Y0}}{\alpha_{X0}}
+\cdot \delta^{\alpha_{X0} + \beta_{X0} - \alpha_{Y0} - \beta_{Y0}}$, then:
+\begin{itemize}
+     \item $h_{X0} = h_{Y0}$, and
+     \item Agents randomly choose between fields $X$ and $Y$ at $t=0$
+ \end{itemize}  
+\begin{figure}
+\centering
+\input{belief_adj_effect.tex}
+\end{figure}
+\hyperlink{app_v_effects}{\beamerbutton{$\nu$ effects}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+
+\end{frame}
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{$\nu$ effects}\label{app_v_effects}
+
+\begin{figure}
+\centering
+\input{v_effect.tex}
+\end{figure}
+\hyperlink{app_ability_v_effect}{\beamerbutton{Return: $\alpha_{X0} \nu_X = \alpha_{Y0} \nu_Y$}}
+\hyperlink{sim_beliefs}{\beamerbutton{Return: belief simulation}}
+\hyperlink{sim_ability}{\beamerbutton{Return: ability simulation}}
+
+\end{frame}
