@@ -35,7 +35,9 @@
 \titleformat{\subsection}{\normalfont\large\bfseries\color{\subsectc}}
 	{\makebox[{\fixw}][l]{\subsecc{\thesubsection.}}}{0pt}{} 
 \titleformat{\subsubsection}{\normalfont\bfseries}
-	{}{0pt}{} %{\makebox[{\fixw}][l]{}}{0pt}{} 
+  {\thesubsubsection.}{0pt}{}  
+  % {\makebox[{\fixw}][l]{\thesubsubsection.}}{0pt}{}  
+  %{}{0pt}{}
 
 % Highlight certain items
 \newcommand{\hitem}[2][DarkAlice]{\color{#1} \item #2 \color{black}}
