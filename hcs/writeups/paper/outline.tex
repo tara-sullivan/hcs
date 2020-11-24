@@ -10,13 +10,22 @@
 \usepackage[authordate,backend=biber]{biblatex-chicago}
 % \addbibresource{../bibliography.bib}
 \addbibresource{bibliography.bib}
+% Ensure that the cite year command includes a hyperlink
+% https://tex.stackexchange.com/a/476849
+\DeclareCiteCommand{\citeyear}
+    {\usebibmacro{prenote}}
+    {\bibhyperref{\printfield{year}}\bibhyperref{\printfield{extrayear}}}
+    {\multicitedelim}
+    {\usebibmacro{postnote}}
+% possessive citation command
+\newcommand{\citeposs}[1]{{\citeauthor{#1}'s (\citeyear{#1})}}
 
 % remove space 
 % \usepackage[font=small,skip=0pt]{caption}
 
 % To edit
 \newif\iftoedit
-\toedittrue % uncomment to show
+% \toedittrue % uncomment to show
 \iftoedit 
   \newcommand{\toedit}[1]{{\color{gray}#1}}
 \else
@@ -34,15 +43,6 @@
 \else
   \newcommand{\footnts}[1]{}
 \fi
-
-
-% % Nest this in \nts
-% \ifnts
-%     \footntstrue % uncomment to show
-% \else
-% \fi
-
-\newcommand{\citeposs}[1]{{\citeauthor{#1}'s (\citeyear{#1})}}
 
 \newcommand{\br}[1]{\left\{ #1 \right\}}
 \newcommand{\sbr}[1]{\left[ #1 \right]}
@@ -125,7 +125,7 @@
 \maketitle
 \onehalfspacing
 
-\noindent\nts{Please note that gray text are notes/comments. }\toedit{Please note that gray text are placeholders that need to be edited or checked.}
+% \noindent\nts{Please note that gray text are notes/comments. }\toedit{Please note that gray text are placeholders that need to be edited or checked.}
 
 \begin{abstract}
 % The gender gap in postsecondary degree attainment has disappeared in the US over the past forty years; in fact, the overall gap has reversed, as women now earn more Bachelor's degrees than men, and at an increasing rate.  
@@ -1446,6 +1446,12 @@ And set the index equal to $\frac{w_j}{1 - \delta} \EE_t \ce{g\pr{N}}{\hat{\psi}
 \input{04-sims}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Connection to statistical discrimination}\label{sec:stat_discrim}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{05-stat_discrim}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Future work: Identification and quantitative exercises}\label{sec:identification}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1489,7 +1495,7 @@ Assuming we have data on the agent's choice of field at time $t$, we can utilize
 Thus, identifying the model entails specifying the appropriate choice probability. 
 
 One immediate concern associated with this process is time endogeneity; an agent's choice of a field at time $t$ is related to their choice at time $t+1$. A simple way to avoid this endogeneity is to identify model parameters from time $t=0$ (i.e. the beginning of the agent's education).
-More robust methods should take advantage of the problem's recursive structure to utilize more of an agent's panel. 
+More sophisticated methods should take advantage of the problem's recursive structure to utilize more of an agent's panel. 
 
 Let $G_j (x)$ denote the CDF of the index $j$. Recall from section \ref{sec:solving_index} that the agent's expected lifetime payoff associated with field $j$ is a function of their expected time in school, denoted $N$:
 \begin{alignat*}{3}
@@ -1570,27 +1576,27 @@ An application for restricted-use BPS data is pending.
 \subsection{Quantitative exercises}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\toedit{
-% start of actual section.
-This model can then be used for counterfactual analysis. Possible quantitative exercises:
-\begin{outline}
-\item How much of the dynamics in figure \ref{fig:n_degrees} can I explain? 
+% \toedit{
+% % start of actual section.
+% This model can then be used for counterfactual analysis. Possible quantitative exercises:
+% \begin{outline}
+% \item How much of the dynamics in figure \ref{fig:n_degrees} can I explain? 
 
-\item Productivity exercise: does the misallocation of talent due to group-based beliefs affect agregate productivity. Modify the approach from \textcite{HHJK19}, who estimate the impact of barriers to human capital accumulation on aggregate productivity using a \textcite{R51} model of occupational choice. 
-% There are several key differences between the model outlined below and the one from \textcite{HHJK19} that warrant attention.
-%
-% First, they explicitly model barriers to field-specific human capital attainment in monetary terms. 
-% As such, field specialization in their model is reduced to picking the occupation with the highest indirect expected utility.
-%
-% Their model allows for sorting on by preferences or ability. 
-% Their benchmark scenario considers sorting on ability, and thus I assume the same.
-% 
-\item What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?
+% \item Productivity exercise: does the misallocation of talent due to group-based beliefs affect agregate productivity. Modify the approach from \textcite{HHJK19}, who estimate the impact of barriers to human capital accumulation on aggregate productivity using a \textcite{R51} model of occupational choice. 
+% % There are several key differences between the model outlined below and the one from \textcite{HHJK19} that warrant attention.
+% %
+% % First, they explicitly model barriers to field-specific human capital attainment in monetary terms. 
+% % As such, field specialization in their model is reduced to picking the occupation with the highest indirect expected utility.
+% %
+% % Their model allows for sorting on by preferences or ability. 
+% % Their benchmark scenario considers sorting on ability, and thus I assume the same.
+% % 
+% \item What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?
 
-\item Discuss the role of affirmative action. Can affirmative action address these biases?
-\end{outline}
+% \item Discuss the role of affirmative action. Can affirmative action address these biases?
+% \end{outline}
 
-} % end \toedit
+% } % end \toedit
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % \section*{Appendix}

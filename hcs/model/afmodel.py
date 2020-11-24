@@ -8,6 +8,7 @@ from quantecon.util import timing
 
 init_spec = [
     ('ab_0', nb.float64[:, :]),
+    ('h_0', nb.float64[:]),
     ('delta', nb.float64),
     ('v', nb.float64[:]),
     ('w', nb.float64[:]),
@@ -19,10 +20,11 @@ class ModelParams:
     Initialize model parameters
     '''
     def __init__(self,
-                 ab_0,        # initial human capital levels
+                 ab_0,        # initial abilities
+                 h_0=None,    # initial human capital
                  delta=0.96,  # discount rate
                  v=None,      # human capital update amount
-                 w=None,  # default sector-specific wages
+                 w=None,      # default sector-specific wages
                  ):
         self.ab_0 = ab_0
         self.delta = delta
@@ -38,6 +40,10 @@ class ModelParams:
             self.w = np.ones(n_j, dtype=np.float64)
         else:
             self.w = w  # (note: this was wages)
+        if h_0 is None:
+            self.h_0 = np.ones(n_j, dtype=np.float64)
+        else:
+            self.h_0 = h_0
 
 
 history_spec = init_spec + [
@@ -51,7 +57,7 @@ history_spec = init_spec + [
 ]
 
 
-# @nb.experimental.jitclass(history_spec)
+@nb.experimental.jitclass(history_spec)
 class AgentHistory(ModelParams):
     '''
     Simulates agent's course history, given prior ab_0
@@ -59,12 +65,10 @@ class AgentHistory(ModelParams):
     # Work around: https://github.com/numba/numba/issues/1694
     __init__ModelParams = ModelParams.__init__
 
-    def __init__(self, ab_0, delta=0.96, v=None, w=None):
-        self.__init__ModelParams(ab_0, delta=delta, v=v, w=w)
+    def __init__(self, ab_0, delta=0.96, v=None, w=None, h_0=None):
+        self.__init__ModelParams(ab_0, delta=delta, v=v, w=w, h_0=h_0)
         self.c_history = None
         self.c_outcome = None
-        # self.n_switch = None
-        # self.specialize_idx =None
 
     def get_index(self, ab_t):
         '''
@@ -90,7 +94,7 @@ class AgentHistory(ModelParams):
 
     def find_history_i(self, true_theta, fail_first=0, choose_first=-1):
         '''
-        Find course history of agen i
+        Find course history of agent i
 
             * choose_first: choose course j first
             * fail_first: fail first n number of courses

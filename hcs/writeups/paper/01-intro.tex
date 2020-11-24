@@ -11,39 +11,38 @@
 
 The gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.
 %\footnote{\toedit{This phenomenon is also documented in \textcite{BHM10}.}} 
-The overall gender convergence in human capital has \toedit{been related to a number of macroeconomic benefits, including reducing the gender wage gap \parencite{BK17} and increasing aggregate economic productivity \parencite{HHJK19}.} 
+The overall gender convergence in human capital has \toedit{been related to a number of macroeconomic benefits, including a reduction in the gender wage gap \parencite{BK17} and increased aggregate economic productivity \parencite{HHJK19}.} 
 % \toedit{Moreover, improved allocation of talent increases overall economic productivity \parencite{HHJK19}.}
 % However, gender gaps in paritcular fields of study occasionally if we consider specific fields of study, gender convergence becomes much more unclear. 
 However, this pattern is not uniformly observed across fields of study.
-Consider figure \ref{fig:ipeds_a}, which plots the ratio of women to men completing Bachelor's degrees \toedit{in historically male-dominated subjects}.\footnts{
-    I should be referencing the HEGIS data here. These are all historically male dominated fields. Proving that has been a pain in the ass, though.
-    Include overall ratio in black on the graphs. 
-    Caption: Ratio of women to men completing bachelor's degrees by field of study. Source: IPEDS.
+Consider figure \ref{fig:ipeds_a}, which plots the ratio of women to men completing Bachelor's degrees \toedit{in several subjects}.\footnts{
+    I may want to use HEGIS data to emphasize that these are historically male dominated fields.
 }
 While the gender ratios of some fields have increased since 1990, others have remained flat or worsened. 
 More generally, aggregations of college majors can easily mask heterogeneity in gender convergence across fields \parencite{BHST08}.
 This can be seen when comparing the overall Social Sciences gender ratio from Figure \ref{fig:ipeds_a} with those of its subfields in \ref{fig:ipeds_b}.
-Although these differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, the reasons these differences exist is not well understood. 
+% Although these differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, the reasons these differences exist is not well understood. 
+Because differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, it is worth examining why these differences persist.
 
 This paper addresses this heterogeneity using a model of group-based belief formation and gradual human capital specialization. 
 Building on \textcite{AF20}, I assume individuals belonging to a particular group choose to work or study in heterogeneous fields. 
 Returns to education are stochastic, and underlying abilities are unknown.
 Agents form beliefs about their unknown abilities based on existing group outcomes, and update these beliefs as they study. 
-I extend the theoretical results of \textcite{AF20} and analytically characterize the dynamics of student's belief distribution as their education proceeds. 
-I then use simulations to highlight the different mechanisms of this model, and to specifically show how beliefs can impact decision making.\footnts{
+I can use this model to analytically characterize the dynamics of student's belief distribution as their education proceeds. 
+
+I then use simulations to highlight the different mechanisms of this model.
+% Agent specialization decisions may be motivated by wages, abilities, or beliefs. 
+In particular, I highlight the important role that beliefs play in impacting specialization decisions.\footnts{
     Good to mention here the types of checks I want to do. For example:
     allowing abilities to be correlated. 
-} 
-
-\toedit{
-Future work will identify model parameters and conduct counterfactual exercises. 
-As this work is ongoing, this draft will briefly review possible identification methods and data sources. 
-I will then discuss in the conclusion several possible counterfacutal exercises. 
 }
+I use these results to motivate how we can view the model through the lens of statistical discrimination. 
+Future work will identify model parameters and conduct counterfactual exercises. 
+This draft will briefly review possible identification methods and data sources. 
+I will then discuss in the conclusion several possible quantitative exercises this model can be used for. 
 
 
-
-This paper proceeds as follows. After a brief literature review, I outline the model in section \ref{sec:model}. Analytical results are derived in section \ref{sec:analytic_results}, and implications of the model are explored in section \ref{sec:sims}. Next steps, including identification and quantitative analysis, are discussed in section 
+This paper proceeds as follows. After a brief literature review, I outline the model in section \ref{sec:model}. Analytical results are derived in section \ref{sec:analytic_results}, and implications of the model are explored in section \ref{sec:sims}. The connection between this model and the theory of statistical discrimination are outlined in section \ref{sec:stat_discrim}. Next steps, including identification and quantitative analysis, are discussed in section \ref{sec:identification}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Literature}
@@ -56,15 +55,42 @@ The second is the \textcite{R51} model of occupational choice and skill heteroge
 % Their paper effectively generalizes the mincerean model to include skill heterogeneity 
 \citeposs{AF20} model, and by extension my own, can be viewed as a generalization of the mincerian model of human capital accumulation to include a dynamic Roy model with unknown heterogeneous abilities and sequential learning.}
 
-I focus on pre-labor market specialization decisions, specifically college major choice. 
+This paper focuses on pre-labor market specialization decisions, specifically college major choice. 
 As such, this project is closely tied to the theoretical and empirical literature on education decisions and college major choice.
-\citeposs{A93} seminal work on the role of uncertainty in sequential education decisions provides a theoretical antecedent for this paper. 
+\citeposs{A93} seminal work on the role of uncertainty in sequential education decisions provides an important theoretical antecedent for this paper. 
+The empirical literature on the determinants of educational choices and returns to education is too extensive to fully outline here; as such, I refer the reader to \textcite{PWZ20} for an excellent overview of the determinants of college major choice.\footnote{
+    Additional literature reviews are found in \textcite{ABM12} and \textcite{AAM16-education}.
+    % Following the terminology from \textcite{PWZ20}, the determinants of college major choice can be broadly categorized into six categories: ``expected earnings and ability sorting, learning, subjective expectations, non-pecuniary considerations, peer and family effects, and supply side factors.'' 
+}
+Although major-specific wages are an important determinant of college major choice in this model, non-pecuniary motivations are central to this analysis.
+These include sorting on ability \parencite{A04}, preferences \parencite{Z13}, peer effects, \parencite{PS20}, and beliefs \parencite{AHMR-wp}.
+Of particular relevance is work on how these determinants differ by gender. 
 
-Empirical research on determinants of educational choices and returns to education is too extensive to fully outline here.
-I will focus on several relevant strands of empirical literature that either motivate my analysis or provide relevant context. 
-Of particular relevance is the empirical literature on the nonpecuniary determinants of college major choice \parencite{A04,WZ18,Z13}.
-As noted in \toedit{\textcite{Z13}}, much of the literature on nonpecuniary determinants focus on the primacy of preferences. 
-\nts{What did Titan and I say about preferences}
+
+% This paper related to empirical literature on gender gaps and college choice.
+% Overall, the literature on college major choice often considers differences in specialization decisions by gender. 
+This paper is largely motivated by empirical work documenting the relationship between gender and college major choice.
+The gender convergence in overall college degree attainment is a well-studied phenomenon, and thoroughly reviewed in \textcite{BK17}.
+However, most of this gender convergence ended by the 1980s, well before parity was achieved \parencite{SHB19,EL06}.
+% The literature suggests several reasons for gender differences in college major choice.
+% A number of studies estimate the impact of preferences \parencite{Z13,WZ14}, including preferences over lifetime temporal flexibility \parencite{B15,WZ18}.
+% % Factors such as temporal flexibility may be key in explaining the lifetime gender wage gap \parencite{G14,KLS19}.
+% Though my model can accommodate field-specific preferences, my paper primarily focuses on the role of beliefs and belief formation.
+% This approach is consistent with a number of determinants of gender major choice, including the presence of same-gender role models \parencite{PS20,LM20}, and the role of negative feedback \parencite{KTU17}.
+% % Importantly, wages do not appear to be a driving factor; as noted in \textcite{SHB19}, women often sort into lower paying majors, in addition to sorting into lower paying occupations conditional on their major choice.
+
+
+
+% Differences in major choice by gender has been documented using both administrative data \parencite{D10} and survey results \parencite{Z13}.
+% \textcite{BHST08} use survey data to show that college major choice is closely related to wages broadly and the gender wage gap specifically.
+% The most useful papers suggest a reason for why gender gaps exist.
+
+%\textcite{SHB19} provides a key empirical motivation for this paper.
+%They use American Community Survey data to explore the importance of major choice in explaining labor market outcomes.
+
+
+% As noted in \toedit{\textcite{Z13}}, much of the literature on nonpecuniary determinants focus on the primacy of preferences. 
+% \nts{What did Titan and I say about preferences}
 
 % \begin{blist}
 % \item Some experimentation is optimal in this paper (I think); this is different than what you get from a static choice model like \textcite{Z13} (and, I think, \textcite{A93}).
@@ -79,32 +105,14 @@ As noted in \toedit{\textcite{Z13}}, much of the literature on nonpecuniary dete
 
 % My papers follows the tradition of papers that consider the role of uncertainty in education decisions (Zafar 2013)
 
-
-
-This paper builds on recent literature in human capital specialization.
-In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
-Of particular interest is research on the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
-This paper shares several theoretical commonalities with \textcite{AAMR16-wp}, who build a dynamic model of school and work decisions, though they focus on attrition; as such, major choice is broadly characterized as a choice between STEM fields and non-STEM fields. 
+% This paper builds on recent literature in human capital specialization.
+% In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
+% Of particular interest is research on the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
+% This paper shares several theoretical commonalities with \textcite{AAMR16-wp}, who build a dynamic model of school and work decisions, though they focus on attrition; as such, major choice is broadly characterized as a choice between STEM fields and non-STEM fields. 
 % They also assume students are uncertain about underlying abilities and update these beliefs over time.
 
-% This paper related to empirical literature on gender gaps and college choice.
-This paper is motivated by empirical work on the relationship between gender and college major choice, and how that relationship has changed over time.
-Differences in major choice by gender has been documented using both administrative data \parencite{D10} and survey results \parencite{Z13}.
-It is worth noting that there has been significant improvement in gender ratios across fields compared to the mid-twentieth century.
-However, most of this gender convergence ended by the 1980s, well before parity was achieved \parencite{SHB19,EL06}. 
-% The gender convergence in college degrees is a well-studied phenomenon \parencite{BK17}.
-% \textcite{BHST08} use survey data to show that college major choice is closely related to wages broadly and the gender wage gap specifically.
-% The most useful papers suggest a reason for why gender gaps exist.
 
-%\textcite{SHB19} provides a key empirical motivation for this paper.
-%They use American Community Survey data to explore the importance of major choice in explaining labor market outcomes.
 
-The literature suggests several reasons for gender differences in college major choice.
-A number of studies estimate the impact of preferences \parencite{Z13,WZ14}, including preferences over lifetime temporal flexibility \parencite{B15,WZ18}.
-% Factors such as temporal flexibility may be key in explaining the lifetime gender wage gap \parencite{G14,KLS19}.
-Though my model can accommodate field-specific preferences, my paper primarily focuses on the role of beliefs and belief formation.
-This approach is consistent with a number of determinants of gender major choice, including the presence of same-gender role models \parencite{PS20,LM20}, and the role of negative feedback \parencite{KTU17}.
-% Importantly, wages do not appear to be a driving factor; as noted in \textcite{SHB19}, women often sort into lower paying majors, in addition to sorting into lower paying occupations conditional on their major choice.
 
 % \nts{They also don't focus on how groups influence belief formation, I don't think}
 
@@ -114,23 +122,4 @@ This approach is consistent with a number of determinants of gender major choice
 % \textcite{KLS19} provide strong evidence that children have a significant impact on lifetime earnings for women.
 
 Finally, the results of this paper will be closely tied to statistical discrimination literature. 
-The theory of statistical discrimination, as posited by \textcite{A72} and \textcite{P72}, and then formalized in \textcite{AC77}, assumes discrimination arises out of imperfect information.
-For example, the aforementioned papers consider the case where employer's use a job applicant's race as one variable when inferring potential productivity.
-% However, all of these papers note that discrimination theories apply in alternative contexts.
-The 
-A key concern associated with statistical discrimination in labor markets are self-fulfilling prophecies \parencite{LS83,CL93}. 
-% \toedit{As discussed in section TBD, this model in this paper is closely tied to the theory of statistical discrimination}.
-% From statistical discrimination literature, know that self-fulfilling prophecies matter:
-% \begin{blist}
-% \item \textcite{CL93}
-% \end{blist}
-% Matters from an affirmative action point of view. Estimate inefficiencies across communities (compare to \textcite{AL16})
-% % beliefs and preferences do appear to matter. 
-% % some literature suggests that preferences are key, more so than beliefs.
-% % know from statistical discrimination literature that self-fulfilling prophecies matter.
-% % this paper ties these ideas together
-
-% \nts{Question: is statistical discrimination just Bayesian linear regression?} \nts{How does this fit in with the \textcite{L98} idea that }
-
-% % Here, it's not so much that labor market discrimination leads to inefficient outcomes. 
-% Statistical discrimination runs into conflicts with legal definitions of discrimination, a point noted in \textcite{LS83}.
+The theoretical connection between the model outlined in this paper and the theory of statistical discrimination will be discussed in detail in section \ref{sec:stat_discrim}; relevant literature will be reviewed there.
