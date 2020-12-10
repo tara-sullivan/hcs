@@ -55,17 +55,17 @@ where $\nu_j \geq 0$ is the human capital gain associated with passing the cours
     \nts{Note that it might be better to explicitly state the inequalities that will ensure that people will choose to go to school.}
 }
 
-A student's probability of success in a field $j$ course, $\theta_j$, is an ability parameter; students with high values of $\theta_j$ are more likely to pass any given class in field $j$, whereas students with low values of $\theta_j$ are more likely to fail. 
+A student's probability of success in a field-$j$ course, $\theta_j$, is an ability parameter; students with high values of $\theta_j$ are more likely to pass any given class in field $j$, whereas students with low values of $\theta_j$ are more likely to fail. 
 \nts{This ties in with the statistics discrimination literature in some way.}
 Students do not know their personal value of $\theta_j$, but they have beliefs about what their value of $\theta_j$ might be. 
-Their initial beliefs about their own ability is described by the distribution $P_{j0}$. 
+Their initial beliefs about their own ability are described by the distribution $P_{j0}$. 
 As students take courses in field-$j$, they update their belief about what their value of $\theta_j$ may be, according to some updating rule $\Pi_j$:\footnts{
     What additional assumptions do I need on the updating rule? What rules do I need on the decision rule to ensure that my results hold?
 }
 \begin{equation*}
     P_{j,t+1} = \Pi_j (P_{jt}, \pass_{jt})
 \end{equation*}
-\toedit{Overall, students have two incentives for studying a field $j$:}
+\toedit{Overall, students have two incentives for studying a particular field:}
 first, they can potentially accumulate $j$-specific human capital, which directly increases lifetime utility if they specialize in $j$.
 Second, studying $j$ reveals information about their ability in that field, which is central to the specialization decision.
 
@@ -103,8 +103,8 @@ However, initial beliefs about underlying abilities, $P_{j0}^g$, are different f
 
 \toedit{To make this explicit, consider the following parameterization of a student's belief distribution.}
 Assume the initial beliefs about $\theta_j$ follow a beta distribution with parameters $(\alpha_{j0}^g, \beta_{j0}^g)$, implying $P_{j0}^g = \mathcal{B} (\alpha_{j0}^g, \beta_{j0}^g)$.
-To understand why this is a reasonable assumption, recall that our unknown ability parameter, $\theta_j$, is the probability that a student succeeds ($\pass_{jt}^g = 1$) or fails ($\pass_{jt}^g = 0$) a field $j$ course at time $t$.
-Because the realizations of $\pass_{jt}$ are independent over time, the sequence of successes and failures for some number of total field $j$ courses taken is a binomial random variable.
+To understand why this is a reasonable assumption, recall that our unknown ability parameter, $\theta_j$, is the probability that a student succeeds ($\pass_{jt}^g = 1$) or fails ($\pass_{jt}^g = 0$) a field-$j$ course at time $t$.
+Because the realizations of $\pass_{jt}$ are independent over time, the sequence of successes and failures for some number of total field-$j$ courses taken is a binomial random variable.
 The beta distribution is a conjugate prior for the binomial distribution, and is thus a natural and tractable choice for modeling beliefs about $\theta_j$ \parencite[pg. 325]{CB02}.\footnts{
     Also see \emph{Doing Bayesian Analysis} Chapter 6, as I learned from Wikipedia: \url{https://en.wikipedia.org/wiki/Beta_distribution\#Alternative_parametrizations}.
     For a description of why the Beta distribution can be intuitively understood as a probabilistic distribution of probabilities, see \url{https://stats.stackexchange.com/q/47782}.
@@ -220,7 +220,7 @@ subject to the human capital accumulation and belief transition laws:\footnts{
 This assumption will be discussed in detail in section \ref{sec:initial_condition}.
 In brief, this condition assures that the stopping problem is monotonic, which in turn implies the optimality of the following policy.
 Let $\tau$ denote the optimal stopping rule defined over $\{\pass_{j1}^g, \pass_{j2}^g, \dots\}$. 
-Define the field-$j$ index as the expected lifetime payoff an agent would receive if they commit to studying field-$j$ given their state $(h_{jt}^g, P_{jt}^g)$: \nts{I need to ask Titan about this; I think the conditional should reflect the whole history of the agent, including number of courses taken.}
+Define the field-$j$ index as the expected lifetime payoff an agent would receive if they commit to studying field $j$ given their state $(h_{jt}^g, P_{jt}^g)$: \nts{I need to ask Titan about this; I think the conditional should reflect the whole history of the agent, including number of courses taken.}
 \begin{equation}\label{eq:index_general}
 \mathcal{I}_{jt} (h_{j}^g, P_{j}^g) = \sup_{\tau \geq 0} \mathbb{E}^\tau
 \ce{

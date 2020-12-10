@@ -9,72 +9,131 @@
 \input{intro_ipeds.tex}
 \end{figure}
 
-The gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.
-%\footnote{\toedit{This phenomenon is also documented in \textcite{BHM10}.}} 
-The overall gender convergence in human capital has \toedit{been related to a number of macroeconomic benefits, including a reduction in the gender wage gap \parencite{BK17} and increased aggregate economic productivity \parencite{HHJK19}.} 
-% \toedit{Moreover, improved allocation of talent increases overall economic productivity \parencite{HHJK19}.}
-% However, gender gaps in paritcular fields of study occasionally if we consider specific fields of study, gender convergence becomes much more unclear. 
-However, this pattern is not uniformly observed across fields of study.
-Consider figure \ref{fig:ipeds_a}, which plots the ratio of women to men completing Bachelor's degrees \toedit{in several subjects}.\footnts{
-    I may want to use HEGIS data to emphasize that these are historically male dominated fields.
+The gender gap in postsecondary degree attainment has reversed in the US over the past fifty years, as seen in figure \ref{fig:n_degrees}.\footnote{
+    \toedit{The gender convergence in overall college degree attainment is a well-studied phenomenon, as documented in \textcite{BHM10}.
+    \citeposs{BK17} review of gender wage gap research details the literature on the increase in overall degree attainment amongst women. 
+    }
 }
-While the gender ratios of some fields have increased since 1990, others have remained flat or worsened. 
-More generally, aggregations of college majors can easily mask heterogeneity in gender convergence across fields \parencite{BHST08}.
-This can be seen when comparing the overall Social Sciences gender ratio from Figure \ref{fig:ipeds_a} with those of its subfields in \ref{fig:ipeds_b}.
+This overall gender convergence \toedit{is related to a number of macroeconomic benefits, including the reduction in the gender wage gap \parencite{BK17} and increased aggregate economic productivity \parencite{HHJK19}.}  
+ However, this aggregate pattern is not uniformly observed across fields of study.
+Consider figure \ref{fig:ipeds_a}, which plots the ratio of women to men completing Bachelor's degrees in several historically male-dominated subjects since 1990.\footnote{
+    While figure \ref{fig:ipeds_a} uses IPEDS data, ACS data can also be used for a longer, field-specific timeline of degree completions by gender; see figure 2 in \textcite{SHB19}.
+    \nts{I may want to use HEGIS data to emphasize that these are historically male dominated fields.}
+}
+While gender ratios have increased in some fields, others have remained flat or worsened.\footnote{
+    In general, most of this gender convergence in fields of study ended by the 1980s, well before parity was achieved; see \textcite{EL06} and \textcite{SHB19} for a more detailed analysis. 
+}
+More generally, aggregations of college majors can easily mask underlying heterogeneity in gender convergence across fields \parencite{BHST08}; for example, compare the overall Social Sciences gender ratio from figure \ref{fig:ipeds_a} with those of its subfields in \ref{fig:ipeds_b}.
 % Although these differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, the reasons these differences exist is not well understood. 
 Because differences in major choice across genders appear to matter for labor market outcomes \parencite{SHB19}, it is worth examining why these differences persist.
 
-This paper addresses this heterogeneity using a model of group-based belief formation and gradual human capital specialization. 
-Building on \textcite{AF20}, I assume individuals belonging to a particular group choose to work or study in heterogeneous fields. 
-Returns to education are stochastic, and underlying abilities are unknown.
-Agents form beliefs about their unknown abilities based on existing group outcomes, and update these beliefs as they study. 
-I can use this model to analytically characterize the dynamics of student's belief distribution as their education proceeds. 
+% Theories explaining the differences in college major choice often tastes or preferences, uncertainty..
+A large literature exists to explain the differences in college major choice, a subset of which examines these differences in the context of gender.\footnote{
+    For a broad overview of the determinants of college major choice, see \textcite{PWZ20}.
+    % 
+    % Literature on preferences and norms are often discussed in the context of the subjective expectations literature, which is extensively reviewed in \textcite{PWZ20}.
+}
+Empirical analysis has demonstrated that important factors include uncertainty and learning about abilities; the influence of preferences and societal norms; and the influence of social networks and role models.
+%\footnote{
+    %\toedit{The literature on sequential uncertainty and learning about ability often stems from \textcite{A93}.}
+%}
+However, it is generally beyond the scope of empirical analysis to evaluate how these factors interact with one another.
+For example, how can the presence of role models influence learning about ability?
+Or how might norms dynamically change in the presence of uncertainty?
+A structural model is needed to synthesize these explanations and dynamically characterize the evolution of college major choice over time.
 
-I then use simulations to highlight the different mechanisms of this model.
-% Agent specialization decisions may be motivated by wages, abilities, or beliefs. 
-In particular, I highlight the important role that beliefs play in impacting specialization decisions.\footnts{
+% A key difficulty facing the empirical literature attempting to understand this is that they can collect data, but cannot observe norms. 
+% clever empirical settings, dynamic surveys, and behavioral experiments. 
+% Similarity in reported average expected ability across genders masks any differences in the underlying distribution of beliefs. 
+% Direct questions about expected discrimination cannot account for 
+% Survey questions regarding preferences or norms cannot measure what shapes those norms.
+
+The goal of my dissertation is to build and employ such a model. 
+Specifically, I build on \textcite{AF20} to develop a model of group-based belief formation and gradual human capital specialization. 
+I assume individuals belonging to a particular group choose to work or study in heterogeneous fields. 
+Returns to education are stochastic, and underlying abilities are unknown.
+Agents form beliefs about their unknown abilities based on existing group outcomes, and update these beliefs as they study.
+I can use this model to analytically characterize the dynamics of students' belief distributions as their education proceeds.
+ 
+After outlining the model, I simulate agent behavior to highlight the important role that beliefs play in specialization decisions.\footnts{
     Good to mention here the types of checks I want to do. For example:
     allowing abilities to be correlated. 
 }
-I use these results to motivate how we can view the model through the lens of statistical discrimination. 
-Future work will identify model parameters and conduct counterfactual exercises. 
-This draft will briefly review possible identification methods and data sources. 
-I will then discuss in the conclusion several possible quantitative exercises this model can be used for. 
+I end my discussion of the model by connecting it to theories of statistical discrimination. 
+This is relevant because, in general, gender difference in college major choice do not appear to be driven by expectations about labor market discrimination \parencite{Z13}.
+\toedit{However, if this model correctly characterizes decision making, statistical discrimination may play an important role.}
+% I use these results to motivate how we can view the model through the lens of statistical discrimination. 
+% If we care about the disparate outcomes facing groups, then understanding how these outcomes perpetuate is important.}
 
+This theoretical presentation of agent behavior is, at present, the first chapter of my dissertation. 
+The remainder of this prospectus outlines my future research agenda.
+First, I plan to embed my model in a dynamic learning framework, similar to \textcite{F13}.
+My goal is to examine how group-based beliefs can shift cultural norms over time; in particular, I hope to re-create the heterogeneity in pre-labor market specialization decisions seen in figure \eqref{fig:ipeds_a}.
+I then briefly outline potential identification strategies and data sources. Finally, I conclude with a discussion of different counterfactual exercises this model can be used for.
 
-This paper proceeds as follows. After a brief literature review, I outline the model in section \ref{sec:model}. Analytical results are derived in section \ref{sec:analytic_results}, and implications of the model are explored in section \ref{sec:sims}. The connection between this model and the theory of statistical discrimination are outlined in section \ref{sec:stat_discrim}. Next steps, including identification and quantitative analysis, are discussed in section \ref{sec:identification}.
+This paper proceeds as follows. After a brief literature review, I outline the model in section \ref{sec:model}. Analytical results are derived in section \ref{sec:analytic_results}, and implications of the model are explored in section \ref{sec:sims}. The connection between this model and the theory of statistical discrimination are outlined in section \ref{sec:stat_discrim}. Next steps, including identification and quantitative analysis, are discussed in section \ref{sec:future_work}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection*{Literature}
 
 This paper builds upon the extensive literature on human capital formation \parencite{B62,B67,M74,R83}. 
 I expand on \citeposs{AF20} theoretical model of gradual specialization, a recent contribution to the literature. 
-Their framework closely relates to two classical papers from this field.
-\toedit{The first is the seminal \textcite{M74} model of the returns to education. 
-The second is the \textcite{R51} model of occupational choice and skill heterogeneity.
-% Their paper effectively generalizes the mincerean model to include skill heterogeneity 
-\citeposs{AF20} model, and by extension my own, can be viewed as a generalization of the mincerian model of human capital accumulation to include a dynamic Roy model with unknown heterogeneous abilities and sequential learning.}
+Their framework closely relates to two classical papers from this field:
+the seminal \textcite{M74} model of the returns to education, 
+and the \textcite{R51} model of occupational choice and skill heterogeneity.
+\citeposs{AF20} model, and by extension my own, can be viewed as a generalization of the Mincerian model of human capital accumulation to include a dynamic Roy model with unknown heterogeneous abilities and sequential learning.
 
-This paper focuses on pre-labor market specialization decisions, specifically college major choice. 
-As such, this project is closely tied to the theoretical and empirical literature on education decisions and college major choice.
-\citeposs{A93} seminal work on the role of uncertainty in sequential education decisions provides an important theoretical antecedent for this paper. 
-The empirical literature on the determinants of educational choices and returns to education is too extensive to fully outline here; as such, I refer the reader to \textcite{PWZ20} for an excellent overview of the determinants of college major choice.\footnote{
-    Additional literature reviews are found in \textcite{ABM12} and \textcite{AAM16-education}.
-    % Following the terminology from \textcite{PWZ20}, the determinants of college major choice can be broadly categorized into six categories: ``expected earnings and ability sorting, learning, subjective expectations, non-pecuniary considerations, peer and family effects, and supply side factors.'' 
-}
-Although major-specific wages are an important determinant of college major choice in this model, non-pecuniary motivations are central to this analysis.
-These include sorting on ability \parencite{A04}, preferences \parencite{Z13}, peer effects, \parencite{PS20}, and beliefs \parencite{AHMR-wp}.
-Of particular relevance is work on how these determinants differ by gender. 
-
-
+%\textcite{SHB19} provides a key empirical motivation for this paper.
+%They use American Community Survey data to explore the importance of major choice in explaining labor market outcomes.
 % This paper related to empirical literature on gender gaps and college choice.
 % Overall, the literature on college major choice often considers differences in specialization decisions by gender. 
-This paper is largely motivated by empirical work documenting the relationship between gender and college major choice.
-The gender convergence in overall college degree attainment is a well-studied phenomenon, and thoroughly reviewed in \textcite{BK17}.
-However, most of this gender convergence ended by the 1980s, well before parity was achieved \parencite{SHB19,EL06}.
+% This paper is largely motivated by empirical work documenting the relationship between gender and college major choice.
+
 % The literature suggests several reasons for gender differences in college major choice.
-% A number of studies estimate the impact of preferences \parencite{Z13,WZ14}, including preferences over lifetime temporal flexibility \parencite{B15,WZ18}.
-% % Factors such as temporal flexibility may be key in explaining the lifetime gender wage gap \parencite{G14,KLS19}.
+
+Additionally, this project draws from the large literature on college major choice, a subset of which focuses on differences in college major choice by gender.
+The extensive empirical literature on the determinants of educational choices is reviewed in detail in \textcite{PWZ20}.\footnote{
+    Earlier reviews about college major choice and occupational choice can be found in \textcite{ABM12} and \textcite{AAM16-education}.
+    % In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
+    % Following the terminology from \textcite{PWZ20}, the determinants of college major choice can be broadly categorized into six categories: ``expected earnings and ability sorting, learning, subjective expectations, non-pecuniary considerations, peer and family effects, and supply side factors.'' 
+}
+Note that while expected wages are clearly an important determinant of college major choice \parencite{AHK12}, the literature suggests that non-pecuniary factors also play a key role \parencite{AHMR20,WZ15}.
+In particular, differences in expected wages do not appear to explain the gender gap in major choice \parencite{Z13,WZ18}.\footnts{
+    \toedit{Worth noting that \textcite{Z13} find that men care more about pecuniary outcomes than women do.
+    In \textcite{WZ18}, women have a WTP for certain job characteristics.}
+}
+Therefore, this review focuses on several relevant non-pecuniary determinants of college major choice: first, preferences and norms; second, the influence of social networks and role models; and finally, uncertainty and learning about abilities.
+% Although major-specific wages are an important determinant of college major choice in this model, non-pecuniary motivations are central to this analysis.
+% \textcite{Z13} says his results show that wage discrimination doesn't appear to be driving selection, but I don't see how that's clear. 
+
+Preferences and norms are broadly defined in the college major choice literature;
+the catchall of ``tastes'' includes both the short-term enjoyment of coursework \parencite{Z13}, as well as longer-term occupational preferences, such as those over temporal flexibility \parencite{WZ18}.\footnote{
+    That this long-term taste influences college major choice is consistent with research suggesting that occupational temporal flexibility may be key in explaining the lifetime gender wage gap \parencite{G14,KLS19}.
+    See \textcite{WZ18} for further discussion.
+}
+Recently, research using subjective expectations panel data has focused on unpacking ``the black box of tastes'' \parencite{PWZ20}.
+This evidence suggests that preferences and norms play a central role in pre-labor market specialization decisions \parencite{WZ15,AHMR20}.
+Specifically, tastes in the subjective expectations literature appear to explain differences in major choice by gender \parencite{WZ18}.\footnote{
+    Given the residualized definition of taste \parencite{WZ15}, I need to be careful in my identification strategy; teasing out the differences in tastes and beliefs may be difficult.
+}
+
+Empirical evidence also suggests that social networks and role models can be important determinants of educational decisions.
+Role models can be cultural \parencite{R19}, or drawn from one's own network \parencite{LM20}.
+Relatedly, both peer effects \parencite{DPR10} and family effects \parencite{NAABDK20-wp} appear to influence decisions about college major.
+A particularly relevant experimental study by \textcite{PS20} finds that the presence of same-gender role models has a significant impact on the number of women choosing to major in economics.
+% \parencite{Z13} finds that familial preferences and a desire to please one's parents influences students' decision making.
+
+
+Finally, the role of information and uncertainty in college major choice is an important strand of the literature. 
+\citeposs{A93} seminal work on the role of uncertainty in sequential education decisions provides an important theoretical antecedent for this paper.
+Beliefs about ability appear to drive specialization decisions, and seem relevant for explaining differences in choices between genders \parencite{A04,AHK12,AAM16-education}.
+% A number of studies estimate the evoluation of uncertainty over time \parencite{SS14,AHMR20}.
+Recent experimental evidence from \textcite{O20} isolates the role of belief in college specialization decisions. 
+Her results suggest that beliefs about academic performance partially drive the gender gap in college major decisions.\footnote{
+    Her results isolate the mechanism whereby other types of informational interventions, such as those proffered in \textcite{PS20,BBL19,L18}, impact differences in college major choice by gender.   
+}
+
+
 % Though my model can accommodate field-specific preferences, my paper primarily focuses on the role of beliefs and belief formation.
 % This approach is consistent with a number of determinants of gender major choice, including the presence of same-gender role models \parencite{PS20,LM20}, and the role of negative feedback \parencite{KTU17}.
 % % Importantly, wages do not appear to be a driving factor; as noted in \textcite{SHB19}, women often sort into lower paying majors, in addition to sorting into lower paying occupations conditional on their major choice.
@@ -85,41 +144,31 @@ However, most of this gender convergence ended by the 1980s, well before parity 
 % \textcite{BHST08} use survey data to show that college major choice is closely related to wages broadly and the gender wage gap specifically.
 % The most useful papers suggest a reason for why gender gaps exist.
 
-%\textcite{SHB19} provides a key empirical motivation for this paper.
-%They use American Community Survey data to explore the importance of major choice in explaining labor market outcomes.
+
 
 
 % As noted in \toedit{\textcite{Z13}}, much of the literature on nonpecuniary determinants focus on the primacy of preferences. 
-% \nts{What did Titan and I say about preferences}
 
 % \begin{blist}
 % \item Some experimentation is optimal in this paper (I think); this is different than what you get from a static choice model like \textcite{Z13} (and, I think, \textcite{A93}).
 % \item  Also, as mentioned in \textcite{Z13}, ability is important \toedit{(and may have differential impacts on ex-post payoffs by gender)}
-% \item \textcite{A04}: ability matters; sequential uncertainty
 % \end{blist}
 
-% The role of non-pecuniary job attributes in determining college major choice.
-% These papers focus on the role of preferences.
-% how non-pecuniary job characteristics influence major choice.
 
-
-% My papers follows the tradition of papers that consider the role of uncertainty in education decisions (Zafar 2013)
 
 % This paper builds on recent literature in human capital specialization.
-% In particular, I draw on work about college major choice and occupational choice \parencite{ABM12,AAM16-education}.
-% Of particular interest is research on the role of beliefs in human capital specialization decisions \parencite{AHMR-wp}.
 % This paper shares several theoretical commonalities with \textcite{AAMR16-wp}, who build a dynamic model of school and work decisions, though they focus on attrition; as such, major choice is broadly characterized as a choice between STEM fields and non-STEM fields. 
 % They also assume students are uncertain about underlying abilities and update these beliefs over time.
 
-
+As noted above, this paper is particularly interested in the dynamic evolution of norms. 
+While I have not incorporated my model into one of intergenerational learning, I plan to do that in the near future; see section \ref{sec:dynamic_model} for a discussion.
+While I am not currently aware of a paper that models cultural learning and college major choice, there are several papers that model the transmission of gender norms through time with respect to occupational choice and the gender wage gap \parencite{F13,KLS19}.
+In particular, the framework outlined in \textcite{F13} provides a road map for this goal.
 
 
 % \nts{They also don't focus on how groups influence belief formation, I don't think}
 
-% \textcite{PS20} find experimental evidence that the existence of same-gender role models are an important determinant of major choice.
+Finally, the results of this paper can be closely tied to statistical discrimination literature. 
+The theoretical connection between the model outlined in this paper and the theory of statistical discrimination will be discussed in detail in section \ref{sec:stat_discrim}, at which point relevant literature will be reviewed. 
 
-% It is worth highlighting that my research does not discount the impact of children on the gender wage gap.
-% \textcite{KLS19} provide strong evidence that children have a significant impact on lifetime earnings for women.
 
-Finally, the results of this paper will be closely tied to statistical discrimination literature. 
-The theoretical connection between the model outlined in this paper and the theory of statistical discrimination will be discussed in detail in section \ref{sec:stat_discrim}; relevant literature will be reviewed there.

@@ -6,6 +6,7 @@
 % \ntstrue % uncomment to show 
 \input{preamble-outline.tex}
 
+
 % Bibliography
 \usepackage[authordate,backend=biber]{biblatex-chicago}
 % \addbibresource{../bibliography.bib}
@@ -132,7 +133,8 @@
 Although the overall gender gap in postsecondary degree attainment has reversed over the past forty years, significant heterogeneity persists in terms of which fields men and women choose to study.
 In this paper, I consider the role of group-based beliefs in explaining these differential convergence rates across fields. 
 I assume a student forms their initial belief about their probability of success in a particular field based on past outcomes for their group type. 
-I then incorporate group-based beliefs into the model of gradual human capital specialization from \textcite{AF20} to show how these differences in priors can drive human capital specialization decisions amongst otherwise similar agents. 
+I then incorporate group-based beliefs into the model of gradual human capital specialization from \textcite{AF20} to show how these differences in priors can drive human capital specialization decisions amongst otherwise similar agents.
+I conclude by discussing how I will use this framework in future research.
 %I plan to calibrate this model to match parameters of the US postsecondary education system in order to separately identify the impact of expected lifetime wages and underlying beliefs on specialization decisions.
 
 % skill heterogeneity
@@ -143,7 +145,7 @@ I then incorporate group-based beliefs into the model of gradual human capital s
 \end{abstract}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Introduction}
+\section{Introduction}\label{sec:intro}
 \tikzset{external/figure name={intro_}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -157,1289 +159,14 @@ I then incorporate group-based beliefs into the model of gradual human capital s
 \input{02-model}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Discussion of the model}\label{sec:analytic_results}
+\section{Analytical solution to model}\label{sec:analytic_results}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-The optimal policy outlined in \ref{sec:optimal_policy} is characterized by two objects: the index \eqref{eq:index_general}, which summarizes the expected lifetime payoff associated with studying a field, ignoring all other fields; and the graduation region \eqref{eq:graduation_general}, which defines the states where an agent would choose to stop studying and enter the labor market.
-\toedit{This section derives an analytical solution to these objects under the initial condition assumption \eqref{eq:h_leq_alpha_v}.}
-
-Section \ref{sec:comment_state_vars} begins by introducing alternative notation to characterize state variables.
-In section \ref{sec:initial_condition}, I discuss the intuition behind the initial condition assumption \eqref{eq:h_leq_alpha_v}, and its implications for the optimal stopping problem.
-This motivates a tractable solution to the graduation region. 
-Section \ref{sec:evaluating_index} uses the results from \ref{sec:initial_condition} to derive a simplified version of the index. 
-Fully computing the index involves evaluating agent expectations over possible stopping times. 
-The solution to these expectations are derived in section \ref{sec:solving_index}.
-A concise summary of how to compute this solution is presented in section \ref{sec:computing}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Relation to parametric results from \textcite{AF20}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-A key advantage of \citeposs{AF20} model is its computability under the stronger initial condition assumption $h_{j0} = \alpha_{j0} \nu_j$.
-This assumption is not out of line with the human capital accumulation function \eqref{eq:hc_accumulation}, and may be reasonable for simulation exercises when all parameters of the problem are known.
-However, this assumption presents both theoretical and empirical objections.
-The goal of this paper is to assess how beliefs impact specialization decisions.
-In the context of gender, this may involve considering whether a man and woman with similar initial human capital levels but different beliefs make different specialization choices; in the example outlined in section \ref{sec:group_based_beliefs}, this involves assessing whether men and women with similar $h_{j0}$ make different specialization choices when $\alpha_{j0}^m > \alpha_{j0}^w$.
-However, assuming $h_{j0} = \alpha_{j0}^g \nu_j$ implies that women begin with lower levels of human capital than men in a particular field $j$, complicating this type of counterfactual analysis.
-More practically, when bringing the model to the data,  I want to be able to control for initial human capital levels when agents make initial specialization choices. 
-Assuming $h_{j0} = \alpha_{j0}^g \nu_j$ effectively eliminates the variable $h_{j0}$.
-
-% Below I focus on the more general results when the initial monotonic 
-For this reason, the sections below focus on the more general monotonic initial condition \eqref{eq:h_leq_alpha_v}.
-I present the tractable results outlined in \textcite{AF20} in the context of a more general solution.
-% A detailed treatment of the assumption $h_{j0} = \alpha_{j0}^g \nu_j$ versus the monotonic initial condition $h_{j0} \leq \alpha_{j0}^g \nu_j$ is warranted given the particular application of this paper.
-% To see why, consider the case where $h_{j0} = \alpha_{j0}^g \nu_j$ and $\alpha_{j0}^m > \alpha_{j0}^f$.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Comment on state variables}\label{sec:comment_state_vars}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-State variables in the general formulation of the model are given by an agent's vector of human capital, $h_{jt}$, and their beliefs, $P_{jt}$.
-An alternative characterization of the agent's state's will be more useful for the remainder of this paper.
-
-Define $\tilde{\study}_{jt}$ as the total number of times a student has chosen to matriculate in field $j$ by time $t$, and define $\tilde{s}_{jt}$ as the total number of times a student has passed their field $j$ courses:
-\begin{equation}\label{eq:def_totals}
-     \tilde{\study}_{jt} = \sum_{n=0}^{t-1} \study_{jn}, \quad \quad
-     \tilde{\pass}_{jt} = \sum_{n=0}^{t-1} \pass_{jn}.
-\end{equation} 
-The individual's state variables at time $t$ are $(h_{jt}, \alpha_{jt}, \beta_{jt})$. 
-Using some simple algebraic transformations,\footnote{
-    Specifically, note that (1) $\tilde{\study}_{jt} + \alpha_{j0} + \beta_{j0} = \alpha_{jt} + \beta_{jt}$; (2) $\alpha_{jt} = \tilde{\pass}_{jt} + \alpha_{j0}$; and (3) $h_{jt} = \nu_j \tilde{s}_{jt} + h_{j0}$.
-} we can now characterize the states at time $t$ using $(\alpha_{j0}, \beta_{j0}, h_{j0}, \tilde{\study}_{jt}, \tilde{\pass}_{jt})$.
-In words, the agent's state variables at time $t$ are the initial belief parameters $\alpha_{j0}$ and $\beta_{j0}$, initial human capital $h_{j0}$, the endogenous number of field-$j$ courses $\tilde{\study}_{jt}$, and the stochastic number of times an agent passed their field-$j$ courses, $\ks$.
-Given the structure of the problem, there is no need to directly track the evolution of $(\alpha_{jt}, \beta_{jt}, h_{jt})$ over time, because (1) all information about the evolution of beliefs is captured by initial beliefs $(\alpha_{j0}, \beta_{j0})$, course choices ($\tilde{\study}_{jt}$), and course outcomes ($\tilde{\pass}_{jt}$); and (2) all information about human capital evolution is characterized by initial human capital endowments ($h_{j0}$), course choices ($\tilde{\study}_{jt}$), and course outcomes ($\tilde{\pass}_{jt}$). 
+\input{03-proof}
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Initial condition assumption and optimal stopping time}\label{sec:initial_condition}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-The optimality policy from section \ref{sec:optimal_policy} is contingent on assuming equation \eqref{eq:h_leq_alpha_v} holds, which states that $h_{j0} \leq \nu_j \alpha_{j0}$. 
-% As mentioned above, the optimality of the policy outlined in section \ref{sec:optimal_policy} relies on this condition.
-Assuming that $h_{j0} \leq \nu_j \alpha_{j0}$ ensures that the stopping problem is monotonic, which in turn implies the optimality the policy outlined in section \ref{sec:optimal_policy}.
-As such, I will occasionally refer to \eqref{eq:h_leq_alpha_v} as the \emph{monotonic initial condition} or the \emph{monotonicity assumption}. 
-
-\toedit{It may be helpful to briefly outline why the monotonic initial condition implies optimality of the above policy.}
-Recall that the graduation index, \eqref{eq:graduation_general}, characterizes the states where an individual would stop studying field-$j$ and enter the labor market as a field-$j$ specialist, ignoring all other fields.
-Therefore, this object characterizes the field-specific stopping problem facing an individual.
-Under the monotonic initial condition \eqref{eq:h_leq_alpha_v}, the stopping problem for a given field is monotone.
-Intuitively, monotonicity means that an agent who wants to stop studying $j$ at time $t$ would still want to stop studying $j$ at time $t+1$ if they continued on, independent of stochastic outcomes.
-Therefore, when an agent at time $t$ chooses whether to stop studying $j$ and enter the labor market as a field-$j$ specialist, they compare their current expected lifetime payoff in $j$ with their expected payoff in the next period.
-In other words, monotonicity implies the optimality of a one-step-look-ahead comparison for the field-specific stopping problem.
-
-
-% \toedit{
-The monotonicity condition \eqref{eq:h_leq_alpha_v} ensures that an agent evaluating field $j$ at time $t$ will stop studying $j$ if their expected lifetime payoff in the current $t$ period exceeds their expected lifetime payoff in $t+1$:
-\begin{equation*}
-    \frac{1}{1 - \delta} w_j h_{jt} 
-    \geq 
-    \frac{\delta}{1 - \delta} w_j \EE_t \left[\left. h_{j,t+1} \right\vert h_{jt}, \alpha_{jt}, \beta_{jt} \right]
-    % = \frac{1}{1 - \delta} w_j \EE [h_{jt} + \nu_j \study_{jt}].
-\end{equation*}
-This equation can be simplified using the human capital accumulation function \eqref{eq:hc_accumulation}:
-\begin{equation*}
-    h_{jt} \geq \delta (h_{jt} + \nu_j \EE_t \left[\left. s_{jt} \right\vert h_{jt}, \alpha_{jt}, \beta_{jt}\right]).
-\end{equation*}
-Recalling that the course outcome $s_{jt}$ is a $\text{Bernoulli} (\theta_j)$ random variable, this can be written using an agent's beliefs about $\theta_j$ at time $t$:
-\begin{equation}\label{eq:stop_general}
-    \frac{1 - \delta}{\delta} \geq \frac{\nu_j \alpha_{jt}}{h_{jt} (\alpha_{jt} + \beta_{jt})}
-\end{equation}
-Using the definitions of $\tilde{\study}_{jt}$ and $\tilde{\pass}_{jt}$ from equation \eqref{eq:def_totals}, the stopping condition \eqref{eq:stop_general} becomes:\footnote{
-    To replicate this derivation, note $\nu_j \alpha_{jt} = h_{jt} - h_{j0} + \nu_j \alpha_{j0}$. 
-    Then \eqref{eq:stop_general} implies:
-    \begin{equation*}
-        h_{jt} \pr{\alpha_{jt} + \beta_{jt} - \frac{\delta}{1 - \delta}} 
-        \geq \
-        \frac{\delta}{1 - \delta} \pr{\nu_j \alpha_{j0} - h_{j0}}
-    \end{equation*}
-    Using the fact that $\tilde{\study}_{jt} + \alpha_{j0} + \beta_{j0} = \alpha_{jt} + \beta_{jt}$:
-    \begin{equation*}
-        h_{jt} \tilde{\study_{jt}}
-        + h_{jt} \pr{\alpha_{j0} + \beta_{j0}} 
-        \geq \
-        \frac{\delta}{1 - \delta} \pr{\nu_j \alpha_{j0} - h_{j0} + h_{jt}}
-    \end{equation*}
-    The simplified stopping condition under monotonicity \eqref{eq:stop_montonicity} follows from the fact that $h_{jt} - h_{j0} = \nu_j \tilde{\pass}_{jt}$
-}
-\begin{equation}\label{eq:stop_montonicity}
-    \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
-    \pr{
-        \frac{\nu_j \alpha_{j0} + \nu_j \tilde{\pass}_{jt}}{h_{j0} + \nu_j \tilde{\pass}_{jt}}
-    } - \alpha_{j0} - \beta_{j0}
-\end{equation}
-% We can refer to equation \eqref{eq:stop_montonicity} as the \emph{simplified stopping condition under monotonicity}.
-Intuitively, this stopping condition says that an agent will stop studying a field $j$ once their total number of completed field-$j$ courses exceeds the right-hand-side inequality.
-\toedit{The graduation index \eqref{eq:graduation_general} can now be written to reflect the stopping condition \eqref{eq:stop_montonicity}:}
-\begin{equation}\label{eq:graduation_monotonicity}
-     \mathcal{G}_j = 
-     \left\{ \states \left\vert
-     \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
-    \pr{
-        \frac{\nu_j \alpha_{j0} + \nu_j \tilde{\pass}_{jt}}{h_{j0} + \nu_j \tilde{\pass}_{jt}}
-    } - \alpha_{j0} - \beta_{j0}
-     \right. \right\}
- \end{equation} 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Simplified index}\label{sec:evaluating_index}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-The goal of this section is to derive a simplified version of the index \eqref{eq:index_general}.
-% Recall that the agent's state when evaluating field $j$ at time $t$ is determined by their states, $\pr{\states}$.
-Recall that the index $\mathcal{I}_j$ from equation \eqref{eq:index_general} characterizes the expected lifetime payoffs associated with specializing in $j$, ignoring other fields. 
-If the the simplified stopping condition under monotonicity holds at time $t$ (i.e. $\pr{\states} \in \mathcal{G}_j$), then the agent would expect to enter the labor market (ignoring other fields).
-Their expected lifetime payoff in $j$ equals their expected lifetime earnings given their current levels of human capital:
-\begin{equation*}
-    \frac{1}{1 - \delta} w_j h_{jt} 
-    = 
-    \frac{1}{1 - \delta} w_j 
-    \pr{h_{j0} + \nu_j \tilde{\pass}_{jt}}
-\end{equation*}
-If $\pr{\states} \notin \mathcal{G}_j$, then the agent would plan on continuing their studies in $j$. 
-Their expected lifetime payoff depends on how much human capital they expect to accumulate in $j$. 
-To make this concrete, let $\study_{j}^*$ denote the total number of periods an agent expects to study field $j$ before entering the labor market.
-Then the agent expects to be in school for $\study_j^* - \tilde{\study}_{jt}$ more periods.
-Because the agent is not earning an income while they are in school, their expected lifetime payoff will be discounted by $\delta^{\study_j^* - \tilde{\study}_{jt}}$.
-They then expect to enter the labor market at time $t + \study_j^* - \tilde{\study}_{jt}$ with some level of human capital, given by $h_{j,t + \study_j^* - \tilde{\study}_{jt}}$.
-The index when $(\states) \notin \mathcal{G}_j$ is then given by:
-\begin{equation*}
-    \frac{1}{1 - \delta} w_j \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\pstates} 
-\end{equation*}
-Therefore, the index \eqref{eq:index_general} is characterized by:
-\begin{multline}
-    \label{eq:index_monotonicity_general}
-    \mathcal{I}_j %(\states) 
-    = 
-    \begin{cases}
-    \frac{w_j h_{jt}}{1 - \delta}
-    &\text{if } (\states) \in \mathcal{G}_j,
-    \\
-    \frac{w_j}{1 - \delta} \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\states}
-    &\text{otherwise.}
-    \end{cases} 
-\end{multline}
-The method for evaluation the conditional expectation in equation \eqref{eq:index_monotonicity_general} is described in section \ref{sec:solving_index}.
-A summary of these results are in section \ref{sec:computing}.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Solving the index}\label{sec:solving_index}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-This section discusses the analytical solution to the index \eqref{eq:index_monotonicity_general}.
-Specifically, I describe how to evaluate the expected value of discounted human capital accumulation, conditional on initial states:
-\begin{equation}\label{eq:expected_discounted_hc_accumulation}
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\states}.
-\end{equation}
-To solve this, I first show how this expectation can be re-written as a function of expected time remaining in school.
-Computing the index therefore requires finding the conditional probability distribution of stopping times. 
-The remainder of section is devoted to finding this distribution. 
-This is done by first bounding the stopping times, and then recursively defining the probability distribution. 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Index in terms of expected time in school}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-To simplify notation, let $\psi_{j0}$ denote the initial belief parameters and human capital levels:
-\begin{equation*}
-    \psi_{j0} = \pr{\alpha_{j0}, \beta_{j0}, h_{j0}}.
-\end{equation*}
-the agent's state when evaluating field $j$ at time $t$ is now determined by $\pr{\pstates}$.
-
-Ignoring other fields, an agents expects to study $j$ for $\study_j^* - \tilde{\study}_{jt}$ additional periods before beginning work as a field-$j$ specialist.
-Substituting in the human capital accumulation function \eqref{eq:hc_accumulation} into \eqref{eq:expected_discounted_hc_accumulation}:
-\begin{align*}
-    \EE_t &\ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\pstates}
-    \\
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{
-            h_{j0} 
-            + \nu_j \ks 
-            + \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} 
-            \pass_{j, t + x}}
-    }{\pstates}
-    \\
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}        
-    }{\pstates} \pr{h_{j0} + \nu_j \ks}
-    + 
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
-    }{\pstates}.
-\end{align*}
-Two expectations are key. 
-The first is the expected value of discounting the next $\study_j^* - \tilde{\study}_{jt}$ additional periods. 
-The second is the expected value of the discounted term times the number of of times an agent successfully passes their field-$j$ courses during those $\study_j^* - \tilde{\study}_{jt}$ periods. 
-To simplify the second probability, use the law of iterated expectations:
-\begin{align*}
-    \EE_t &\ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
-    }{\pstates}
-    \\
-    &\quad\quad=
-    \EE_t \ce{
-        \EE_t \ce{
-            \delta^{\study_j^* - \tilde{\study}_{jt}}
-            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
-        }{\study_j^*, \pstates}
-    }{\pstates}
-    \\
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \EE_t \ce{
-            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
-        }{\study_j^*, \pstates}
-    }{\pstates}
-\end{align*}
-The number of times the agent successfully passes their field-$j$ courses over the next $\study_j^* - \tilde{\study}_{jt}$ periods is a series of $\study_j^* - \tilde{\study}_{jt}$ Bernoulli trials with probability $\theta_j$. 
-The agent's expected value of this random variable is given by the sample size multiplied by their ability parameter $\theta_j$. 
-Therefore the previous equation can be written as:
-\begin{align}
-    \nonumber
-    \EE_t &\ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \EE_t \ce{
-            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
-        }{\study_j^*, \pstates}
-    }{\pstates}
-    \\
-    \nonumber
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{\study_j^* - \tilde{\study}_{jt}}
-        \EE_t \ce{
-            \theta_j
-        }{\study_j^*, \pstates}
-    }{\pstates}
-    \\
-    \nonumber
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{\study_j^* - \tilde{\study}_{jt}}
-        \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
-    }{\pstates}    
-    \\
-    \nonumber
-    &\quad\quad=
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{\study_j^* - \tilde{\study}_{jt}}
-    }{\pstates}
-    \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
-\end{align}
-The third line follows from the agent's expected value of $\theta_j$, conditional on their states and their time until completion, $\study_j^*$, according to their belief distribution.
-We can use this result to further simplify \eqref{eq:expected_discounted_hc_accumulation} as:
-\begin{equation*}
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}        
-    }{\pstates} \pr{h_{j0} + \nu_j \ks}
-    + 
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{\study_j^* - \tilde{\study}_{jt}}
-    }{\pstates}
-    \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}.
-\end{equation*}
-Thus, the key expected value \eqref{eq:expected_discounted_hc_accumulation} is really the expected value of a function of time remaining in school.
-
-Before proceeding, it's helpful to introduce some simplifying notation, and to re-scale the problem to start at time $t=0$. 
-To simplify notation, let $N = \study_j^* - \tilde{\study}_{jt}$ denote the time remaining in school after $\tilde{\study}_{jt}$.
-The variable $N$ is capitalized to emphasize the fact that $N$ is a random quantity. 
-Next, note that for any agent evaluating field $j$ at time $t$ with states $\pr{\pstates}$, we can always define:
-\begin{alignat*}{3}
-    \hat{\alpha}_{j0} =& \alpha_{j0} + \tilde{\pass}_{jt},
-    \quad \quad
-    &\hat{\alpha}_{j0} + \hat{\beta}_{j0} 
-    =& \alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt},
-    \\
-    \hat{h}_{j0} 
-    =& h_{j0} + \nu_j \tilde{\pass}_{jt}, 
-    \quad \quad
-    &\hat{\psi}_{j0} 
-    =& 
-    \pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}.
-\end{alignat*}
-Therefore, instead of evaluating how many courses an agent has remaining after completing $\tilde{\study}_{jt}$ courses, we can re-define the agent's states and evaluate the agent's total expected time in school from $t=0$, before the agent has taken any courses in $j$.
-In that vein, I will only condition on the initial states $\psi_{j0} = \pr{\alpha_{j0}, \beta_{j0}, h_{j0}}$, and assume $\tilde{\pass}_{jt} = \tilde{\study}_{jt} = 0$.
-Recall that $\ks[,N]$ is the number of times the student successfully passes their courses after matriculating $N$ times. 
-Using the above notation, the monotonic stopping condition \eqref{eq:stop_montonicity} is given by:
-\begin{equation}\label{eq:stop_monotonicity_re_scaled}
-    N \geq \frac{\delta}{1 - \delta}
-    \pr{
-        \frac{\nu_j \alpha_{j0} + \nu_j \ks[,N]}{h_{j0} + \nu_j \ks[,N]}
-    } - \alpha_{j0} - \beta_{j0},
-\end{equation}
-The goal in subsequent sections is to evaluate the following conditional expectations:
-\begin{align}    
-    \nonumber
-    \EE_0 \ce{\delta^N}{\alpha_{j0}, \beta_{j0}, h_{j0}}
-    =&
-    \sum_{z = 0}^\infty
-    \delta^z
-    \PP
-    \pr{\crs{
-        N = z
-    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-    \\
-    \label{eq:index_ce_n}
-    \EE_0 \ce{\delta^N N}{\alpha_{j0}, \beta_{j0}, h_{j0}}
-    =&
-    \sum_{z = 0}^\infty
-    \delta^z z
-    \PP
-    \pr{\crs{
-        N = z
-    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-\end{align}
-The following section discusses the bounds on stopping times, so the above summation is finite.  
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Bounds on stopping times}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-This section starts by defining a lower bound larger than zero for all stopping times.
-I then discuss stopping times with positive probability, and use this discussion to motivate the upper bound for all stopping times.
-
-\begin{lemma}
-Define the positive integer $\underline{n}$ as:
-\begin{align}\label{eq:lower_n}
-     \underline{n} = \min_N \left\{ 
-     N \geq
-        \frac{\delta}{1 - \delta}
-    - \alpha_{j0} - \beta_{j0}
-     \right\}
-     =
-     \ceil{\frac{\delta}{1 - \delta}} - \alpha_{j0} - \beta_{j0}.
- \end{align}
-Then $\underline{n}$ is a lower bound for stopping times that satisfy the monotonic stopping condition \eqref{eq:stop_monotonicity_re_scaled}.
-\end{lemma}
-\begin{proof}
-For all possible stopping times $N$ and all possible stochastic outcomes $\ks[,N]$, $\frac{\nu_j \alpha_{j0} + \nu_j \ks[N]}{h_{j0} + \nu_j \ks[N]} \geq 1$ under the initial monotonicity condition \eqref{eq:h_leq_alpha_v}.\footnote{
-    Define $f(s) = \frac{\nu_j \alpha_{j0} + \nu_j s}{h_{j0} + \nu_j s} = \frac{\nu_j \alpha_{j0} - h_{j0}}{h_{j0} + \nu_j s} + 1$.
-    Because $\nu_j \alpha_{j0} \geq h_{j0}$ and $s \geq 0$, $f(s) \geq 1$.
-}
-Therefore, $\underline{n}$ is a lower bound.
-\end{proof}
-
-
-
-
-
-\noindent
-Before defining the upper bound of $N$, it is helpful to discuss the stopping condition for different potential values of $N$.
-Given the stopping condition \eqref{eq:stop_monotonicity_re_scaled}, an agent will decide to stop studying in period $\underline{n} + x$ if: 
-\begin{alignat}{3}
-    &&
-    \ddelta - \alpha_{j0} - \beta_{j0} + x
-    \geq&
-    \frac{\delta}{1-\delta}
-    \pr{\frac{\nu_j \alpha_{j0} + \nu_j \ks[,\underline{n} + x]}{h_{j0} + \nu_j \ks[,\underline{n} + x]}}
-    -\alpha_{j0} - \beta_{j0}
-    \nonumber \\
-    &\implies &
-    \frac{\delta}{1 - \delta}
-    + \epsilon_\delta
-    + x
-    \geq&
-    \frac{\delta}{1 - \delta}
-    \pr{
-       \frac{\nu_j \alpha_{j0} + \nu_j \ks[,\underline{n} + x]}{h_{j0} + \nu_j \ks[,\underline{n} + x]}
-    }
-    \nonumber
-    \\
-    &\implies &
-    \epsilon_\delta 
-    + x
-    \geq&
-    \frac{\delta}{1 - \delta}
-    \pr{
-        \frac{\nu_j \alpha_{j0} - h_{j0}}{h_{j0} + \nu_j \ks[,\underline{n} + x]}
-    }
-    \nonumber
-    \\
-    &\implies &
-    \pr{
-        \epsilon_\delta  + x
-    }
-    \pr{h_{j0} + \nu_j \ks[,\underline{n} + x]}
-    \geq&
-    \frac{\delta}{1 - \delta}
-    \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \label{eq:stop_with_error}
-\end{alignat}
-where the rounding error $\epsilon_\delta \in [0, 1)$ equals the difference between the ceiling of the discount factor $\frac{\delta}{1 - \delta}$ and its true value.\footnote{
-    Specifically, if $\frac{\delta}{1 - \delta}$ is not an integer, then $\epsilon_\delta = \cmf{\frac{\delta}{1 - \delta}} - \left\{ \frac{\delta}{1 - \delta} \right\} = 1 - \left\{ \frac{\delta}{1 - \delta} \right\}$ is the difference between the ceiling of $\frac{\delta}{1 - \delta}$ and $\frac{\delta}{1 - \delta}$. 
-    If $\frac{\delta}{1 - \delta}$ is an integer, then $\epsilon = 0$.
-    Recall that the ceiling of any real number $x$, denoted $\ceil{x}$, is the smallest integer greater than or equal to $x$.
-    The floor of a $x$, $\floor{x}$, is the largest integer less than or equal to $x$. 
-    The fractional part of $x$, denoted $\{x\}$, is defined by $\{x\} = x - \floor{x}$.
-}
-% Using set-notation to eliminate the explicit rounding error \eqref{eq:stop_with_error}, an agent will stop studying at time $\underline{n} + x$ if:
-% \begin{equation}
-%     \label{eq:stop_no_error}
-%     \left\{ x \pr{h_{j0} + \nu_j \tilde{\pass}_{\underline{n} + x}} \geq \frac{\delta}{1 - \delta} \pr{\alpha_{j0} \nu_j - h_{j0}} \right\}.
-% \end{equation}
-
-
-Now let's consider cases where agents would only take $N=\underline{n}$ courses, meaning that $x = 0$.
-Using the stopping condition \eqref{eq:stop_with_error} with $x=0$, this only happens if:
-\begin{alignat*}{3}
-    &&
-    \epsilon_\delta
-    \pr{h_{j0} + \nu_j \ks[\underline{n}]} 
-    \geq&
-    \frac{\delta}{1 - \delta} 
-    (\alpha_{j0} \nu_j - h_{j0})
-    \\
-    &\implies&
-    \epsilon_\delta
-    \nu_j \ks[\underline{n}]
-    \geq&
-    \frac{\delta}{1 - \delta} \nu_j \alpha_{j0} - \ddelta h_{j0}.
-\end{alignat*}
-The agent will only study for $\underline{n}$ periods if this inequality is satisfied for all possible stochastic outcomes. 
-The only stochastic part of this inequality is $\ks[\underline{n}]$, which make take on values between 0 and $\underline{n}$.
-Therefore, agents will only study for $\underline{n}$ periods if:
-\begin{alignat*}{3}
-    &&
-    0
-    \geq&
-    \frac{\delta}{1 - \delta} \nu_j \alpha_{j0} - \ddelta h_{j0}.
-    \\
-    &\implies&
-    \ddelta h_{j0} 
-    \geq&
-    \frac{\delta}{1 - \delta} \alpha_{j0} \nu_j.
- \end{alignat*}
- Combining the above with the initial monotonicity condition \eqref{eq:h_leq_alpha_v} implies that an agent will only study for exactly $N = \underline{n}$ periods if:
-\begin{equation*}
-    1 
-    \leq 
-    \frac{\nu_j \alpha_{j0}}{h_{j0}} 
-    \leq
-    \frac{\ddelta}{\frac{\delta}{1 - \delta}}.
-\end{equation*}
-Because the ratio of the ceiling of the discount factor to its true value will be close to 1, this inequality effectively states that the agent will only study for $N = \underline{n}$ periods if $h_{j0} = \nu_j \alpha_{j0}$ (with some adjustment for rounding error). 
-This is the tractable case evaluated in \textcite{AF20}.
-Specifically, assuming the slightly stronger initial condition, $h_{j0} = \nu_j \alpha_{j0}$, implies time spent in school $N$ equals $\underline{n}$; an agent who specializes in field $j$ will take exactly $N$ courses in field $j$.
-Therefore, the the optimal number of field-$j$ courses is a deterministic function of the agent's initial beliefs.
-However, for reasons discussed in the overview of section \ref{sec:analytic_results}, this assumption is not necessarily appropriate for this evaluation. 
-Thus, we now turn to evaluating the upper bound of possible stopping times. 
-
-
-\begin{lemma}
-Define the positive integer $\overline{n}$ as:
-\begin{equation}\label{eq:upper_n}
-    \overline{n} = \ceil{\frac{\delta}{1 - \delta} \frac{\alpha_{j0} \nu_j}{h_{j0}}} - \alpha_{j0} - \beta_{j0}
-\end{equation}
-Then $\overline{n}$ is an upper bound for stopping times.
-\end{lemma}
-
-\begin{proof}
-
-$\overline{n}$ is an upper bound for stopping times if, for all stochastic outcomes $\ks[\overline{n}]$:
-\begin{equation*}
-    \overline{n} \geq 
-    \frac{\delta}{1 - \delta} 
-    \pr{\frac{\alpha_{j0} \nu_j + \nu_j \ks[\overline{n}]}{h_{j0} + \nu_j \ks[\overline{n}]}} - \alpha_{j0} - \beta_{j0}
-\end{equation*}
-Because $\frac{\alpha_{j0} \nu_j + \nu_j \ks[\overline{n}]}{h_{j0} + \nu_j \ks[\overline{n}]}$ is decreasing in $\ks[\overline{n}]$,\footnote{
-    Define $f(s) = \frac{\nu_j \alpha_{j0} + \nu_j s}{h_{j0} + \nu_j s} = \frac{\nu_j\alpha_{j0} - h_{j0}}{h_{j0} + \nu_j s} + 1$. 
-    Note that $f'(s) = -\frac{\nu_j (\nu_j \alpha_{j0} - h_{j0})}{\pr{h_{j0} + \nu_j s}^2}$.
-    This is nonpositive when $\nu_j \alpha_{j0} \geq h_{j0}$. 
-}
-$\overline{n}$ is an upper bound independent of stochastic outcomes only if the above inequality holds for $\ks[\overline{n}] = 0$ (i.e. when the agent has failed all of their field $j$ courses).
-Therefore, $\overline{n}$ is an upper bound if:
-\begin{alignat*}{3}
-    &&
-    \overline{n} 
-    \geq& 
-    \frac{\delta}{1 - \delta} 
-    \pr{\frac{\alpha_{j0} \nu_j}{h_{j0}}} 
-    - \alpha_{j0} - \beta_{j0}
-    \\
-    &\implies&
-    \ceil{\frac{\delta}{1 - \delta} \frac{\alpha_{j0} \nu_j}{h_{j0}}}
-    \geq&
-     \frac{\delta}{1 - \delta} 
-    \pr{\frac{\alpha_{j0} \nu_j}{h_{j0}}}.
-\end{alignat*}
-Therefore, $\overline{n}$ is an upper bound for stopping times.
-\end{proof}
-
-
-
-
-
-
-
-
-The details above can be used to bound the summations in \eqref{eq:index_ce_n}:
-\begin{align*}
-    \EE \ce{\delta^N}{\alpha_{j0}, \beta_{j0}, h_{j0}} 
-    =&
-    \sum_{z=\underline{n}}^{\overline{n}} 
-    \delta^z
-    \PP
-    \pr{\crs{
-        N = z
-    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-    \\
-    \EE \ce{\delta^N N}{\alpha_{j0}, \beta_{j0}, h_{j0}} 
-    =&
-    \sum_{z=\underline{n}}^{\overline{n}} 
-    \delta^z z
-    \PP
-    \pr{\crs{
-        N = z
-    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-\end{align*}
-The next section evaluates the above conditional probabilities.
-
-
-
-\subsubsection*{Conditional probabilities}
-
-Recall that the lower and upper bounds of $N$ are given by $\underline{n}$ and $\overline{n}$, respectively. 
-The conditional probability that $N$ equals some integer $z$ can be evaluated as:
-\begin{align}
-    \PP \pr{\crs{
-        N = z
-    }{\psi_{j0}}}
-    =&
-    \nonumber
-    \PP \pr{\cls{
-        z 
-        \geq 
-        \frac{\delta}{1 - \delta}
-        \frac{\alpha_{j0} \nu_j + \nu_j \ks[z]}{h_{j0} + \nu_j \ks[z]} -\alpha_{j0} - \beta_{j0}
-    }{\psi_{j0}}}
-    \\
-    \nonumber
-    =&
-    \PP \pr{\cls{
-        z - \pr{\underline{n} - \epsilon_\delta}
-        \geq
-        \frac{\delta}{1 - \delta}
-        \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks[z]}
-    }{\psi_{j0}}} 
-    \\
-    =&
-    \PP \pr{\cls{
-        \pr{z - \underline{n} + \epsilon_\delta}
-        \pr{h_{j0} + \nu_j \ks[z]}
-        \geq
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    }{\psi_{j0}}} 
-    % \\
-    % =&
-    % \PP \pr{\cls{
-    %     \pr{z - \underline{n} + \epsilon_\delta}
-    %     \ks
-    %     \geq
-    %     \frac{\delta}{1 - \delta}
-    %     \frac{\alpha_{j0} \nu_j - h_{j0}}{\nu_j}
-    %     -
-    %     \pr{z - \underline{n} + \epsilon_\delta}
-    %     \frac{h_{j0}}{\nu_j}
-    % }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-    % \\
-    % =&
-    % \PP \pr{\cls{
-    %     \pr{z - \underline{n} + \epsilon_\delta}
-    %     \ks[z]
-    %     \geq
-    %     \frac{\delta}{1 - \delta} \alpha_{j0}
-    %     -
-    %     \pr{\frac{\delta}{1 - \delta} + z - \underline{n} + \epsilon_\delta}
-    %     \frac{h_{j0}}{\nu_j}
-    % }{\psi_{j0}}} 
-    \\
-    =&
-    \PP \pr{\cls{
-        \pr{z - \underline{n} + \epsilon_\delta}
-        \ks[z]
-        \geq
-        \frac{\delta}{1 - \delta} \alpha_{j0}
-        -
-        \pr{\ddelta + z - \underline{n}}
-        \frac{h_{j0}}{\nu_j}
-    }{\psi_{j0}}} 
-\end{align}
-First consider the case where $N = \underline{n}$. Let $\PP_0$ denote this probability. Then, as discussed above:
-\begin{align*}
-    \PP_0 = \PP \pr{\crs{
-        N = \underline{n}
-    }{\psi_{j0}}}
-    =&
-    \begin{cases}
-    1 &\text{ if } 1 \leq \frac{\alpha_{j0} \nu_j}{h_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
-    \\
-    0 &\text{otherwise}.
-    \end{cases}
-\end{align*} 
-% Note that if the fraction $\frac{\ddelta}{\frac{\delta}{1 - \delta}} = 1$, then $\epsilon_\delta = 0$, whereas if the fraction is greater than 1, $\epsilon_\delta > 0$. 
-% For ease of notation, all probabilities below assume $\frac{\alpha_{j0} \nu_j}{h_{j0}} > 1$, and will evaluate cases for different values of $\epsilon$.
-
-Before evaluating cases where $N > \underline{n}$, note the probability of stopping at some positive integer $z$ is always given by:
-\begin{align*}
-    \PP \pr{\cls{N = z}{\psi_{j0}}} 
-    &=
-    \PP \pr{\cls{N = z, N \neq z - 1}{\psi_{j0}}}
-    +
-    \PP \pr{\cls{N = z, N = z - 1}{\psi_{j0}}}
-    \\
-    &=
-    \PP \pr{\cls{N = z}{N \neq z - 1, \psi_{j0}}}
-    \PP \pr{\cls{N \neq z - 1}{\psi_{j0}}}
-\end{align*}
-The second line follows from Bayes' Rule, and the fact that an agent would never stop at time $z$ if they already stopped at time $z-1$.
-In words, this states that the probability of stopping at time $z$ is given by the product of (1) the probability of stopping at time $z$ conditional on having not stopped at time $z-1$; and (2) the probability of having not stopped by $z-1$.
-
-To evaluate the probability that $N = \underline{n} + 1$, first evaluate the conditional probability that $N = \underline{n} + 1$, conditional on the stopping time not equaling $\underline{n}$:
-\begin{align*}
-    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
-    =&
-    \PP \pr{\cls{
-        \pr{1 + \epsilon_\delta}
-        \pr{h_{j0} + \nu_j \ks[\underline{n} + 1]}
-        \geq
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    }{\psi_{j0}}}
-    % \\
-    % =&
-    % \PP \pr{\cls{
-    %     \pr{1 + \epsilon_\delta}
-    %     \ks[\underline{n} + 1]
-    %     \geq
-    %     \frac{\delta}{1 - \delta} \alpha_{j0}
-    %     -
-    %     \pr{\ddelta + 1}
-    %     \frac{h_{j0}}{\nu_j}
-    % }{\psi_{j0}}}
-    \\
-    =&
-    \PP \pr{\cls{
-        \ks[\underline{n} + 1]
-        \geq
-        \frac{1}{\nu_j}
-        \pr{        
-            \frac{\delta}{1 - \delta} 
-            \frac{1}{1 + \epsilon_\delta}
-            \pr{\alpha_{j0} \nu_j - h_{j0}}
-            - h_{j0}
-        }
-    }{\psi_{j0}}}
-    \\
-    =&
-    \PP \pr{\cls{
-        \ks[\underline{n} + 1]
-        \geq
-        \hat{k}_1
-    }{\psi_{j0}}}
-\end{align*}
-The RHS of the above inequality is a function of initial parameters and can be treated as a constant.
-The variable $\ks[\underline{n} + 1]$ is a random variable:
-\begin{equation*}
-    \ks[, \underline{n} + 1] = \sum_{t=0}^{\underline{n}} \pass_{jt} \sim \text{Binomial} (\underline{n} + 1, \theta_j)
-\end{equation*}
-Define $k_1$ as:
-\begin{align*}
-    k_1 &= \begin{cases}
-    \hat{k}_1 - 1
-    &\text{ if $\hat{k}_1$ an integer,}
-    \\
-    \floor{\hat{k}_1}
-    &\text{ otherwise.}
-    \end{cases}
-\end{align*}
-The conditional probability can be written as:
-\begin{align*}
-    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
-    =&
-    1 
-    -
-    \PP \pr{\cls{
-        \ks[\underline{n} + 1]
-        <
-        k_1
-    }{\psi_{j0}}} 
-    \\
-    =&
-    1 
-    - 
-    \sum_{i=0}^{k_1}
-    \binom{\underline{n} + 1}{i}
-    \theta^i
-    (1 - \theta)^{\underline{n} + 1 - i}
-\end{align*}
-Now we can fully evaluate the probability that $N = \underline{n} + 1$:
-\begin{align*}
-    \PP_1 
-    = 
-    \PP \pr{\cls{N = \underline{n} + 1}{\psi_{j0}}} 
-    =& 
-    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
-    \PP \pr{\cls{N \neq \underline{n}}{\psi_{j0}}}
-    \\
-    =&
-    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}} 
-    \pr{1 - \PP_0}
-    \\
-    =&
-    \pr{1 
-        - 
-        \sum_{i=0}^{k_1}
-        \binom{\underline{n} + 1}{i}
-        \theta^i
-        (1 - \theta)^{\underline{n} + 1 - i}
-    }
-\pr{1 - \PP_0}.
-\end{align*}
-
-To evaluate the probability that $N = \underline{n} + x$ for some integer $x$, we have to evaluate:
-\begin{align*}
-    \PP_x = \PP \pr{\cls{N = \underline{n} + x}{\psi_{j0}}} 
-    =&
-    \PP  \pr{\crs{
-        N = \underline{n} + x
-    }{
-    \bigcap_{i=0}^{x-1}
-        \pr{N \neq \underline{n} + i}
-    , \psi_{j0}}}
-    \PP \pr{\cls{
-        \bigcap_{i=0}^{x-1}
-        \pr{N \neq \underline{n} + i}
-    }{\psi_{j0}}}  
-\end{align*} 
-First consider the probability that $N$ is not equal any value between the lower bound $\underline{n}$ and $\underline{n} + x - 1$. By De Morgan's law and countability additivity:
-\begin{align*}
-    \PP \pr{\cls{
-        \bigcap_{i=0}^{x-1}
-        \pr{N \neq \underline{n} + i}
-    }{\psi_{j0}}}
-    =&
-    1
-    -
-    \PP
-    \pr{\cls{
-        \bigcup_{i=0}^{x-1}
-        \pr{N = \underline{n} + i}
-    }{\psi_{j0}}}
-    \\
-    =&
-    1
-    -
-    \sum_{i=0}^{x-1}
-    \PP
-    \pr{\cls{
-        N = \underline{n} + i
-    }{\psi_{j0}}}
-    % \\
-    =
-    1
-    -
-    \sum_{i=0}^{x-1}
-    \PP_i.
-\end{align*}
-Now we turn to the conditional probability of interest, which can be written as:
-\begin{align}
-    \nonumber
-    \PP  &\pr{\crs{
-        N = \underline{n} + x
-    }{
-    \bigcap_{i=0}^{x-1}
-        \pr{N \neq \underline{n} + i}
-    , \psi_{j0}}}
-    \\ 
-    \label{eq:prob_n_plus_x_long}
-    &=
-    \PP \left( 
-        (x + \epsilon_\delta)
-        \pr{h_{j0} + \nu_j \ks[, \underline{n} +x]
-        }
-        \geq
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right.
-    \\ \nonumber
-    &\quad\quad\quad\left\vert
-        \bigcap_{k=0}^{x - 1}
-        (k + \epsilon_\delta)
-        \pr{h_{j0} + \nu_j \ks[\underline{n} + k - 1]
-        }
-        <
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right).
-\end{align}
-To simplify this conditional, recall that an agent will decide to keep studying at time $\underline{n} + y$ if:
-\begin{alignat*}{3}
-&&
-\frac{\delta}{1 - \delta}
-\pr{\alpha_{j0} \nu_j - h_{j0}}
->&
-(y + \epsilon_\delta)
-\pr{h_{j0} + \nu_j \ks[, \underline{n} + y]}
-\\
-&&
-=&
-(y - 1 + \epsilon_\delta)
-\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
-+ 
-\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
-+
-(y + \epsilon_\delta)
-\nu_j \pass_{j, \underline{n} + y - 1}
-\\
-&&
->&
-(y - 1 + \epsilon_\delta)
-\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
-\end{alignat*}
-This is simply the monotonicity of the stopping problem in reverse; if an agent would decide to continue on at time $\underline{n} + y$, then they also would have wanted to continue on at time $\underline{n} + y - 1$.
-This simplifies the conditional expression in equation \eqref{eq:prob_n_plus_x_long}:
-\begin{align}
-    \nonumber
-    \PP  &\pr{\crs{
-        N = \underline{n} + x
-    }{
-    \bigcap_{i=0}^{x-1}
-        \pr{N \neq \underline{n} + i}
-    , \psi_{j0}}}
-    \\ 
-    \nonumber
-    &=
-    \PP \left( 
-        (x + \epsilon_\delta)
-        \pr{h_{j0} + \nu_j \ks[, \underline{n} +x]
-        }
-        \geq
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right.
-    \\ \nonumber
-    &\quad\quad\quad\left\vert
-        (x - 1 + \epsilon_\delta)
-        \pr{h_{j0} 
-        + \nu_j \ks[\underline{n} + x - 1]
-        }
-        <
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right)
-\end{align}
-This probability can be re-written to reflect the fact that $\ks[,\underline{n} + x] = \ks[,\underline{n} + x -1] + \pass_{j, \underline{n} + x - 1}$.
-In words, the total number of successes seen by time $\underline{n} + x$ equals the total number of successes seen by time $\underline{n} + x - 1$ plus the course outcome during period $\underline{n} + x - 1$:
-\begin{multline*}
-    \PP \left( 
-        \pr{x + \epsilon_\delta}
-        \pr{h_{j0} 
-        + \nu_j \ks[, \underline{n} + x - 1]}
-        +
-        \pr{x + \epsilon_\delta}
-        \nu_j \pass_{j, \underline{n} + x - 1}
-        \geq
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right.
-    \\
-    \left\vert
-        (x - 1 + \epsilon_\delta)
-        \pr{h_{j0} 
-        + \nu_j \ks[\underline{n} + x - 1]
-        }
-        <
-        \frac{\delta}{1 - \delta}
-        \pr{\alpha_{j0} \nu_j - h_{j0}}
-    \right).
-\end{multline*}
-Define the random variables $Y$ and $Z$ and the constant $c$ as:
-\begin{alignat*}{2}
-    Y &= g(\ks[, \underline{n} + x - 1])  =
-        \pr{x + \epsilon_\delta}
-        \pr{h_{j0} 
-        + \nu_j \ks[, \underline{n} + x - 1]},
-    \quad \quad
-    c &= \frac{\delta}{1 - \delta} \pr{\alpha_{j0} \nu_j - h_{j0}},
-    \\
-    Z &= h(\pass_{j, \underline{n} + x - 1}) = \pr{x + \epsilon_\delta}
-        \nu_j \pass_{j, \underline{n} + x - 1}
-\end{alignat*}
-The conditional probability that $N = \underline{n} + x$ for $x > 1$ can now be written as:
-\begin{align*}
-    \PP \pr{\cls{Y + Z \geq c}{Y < c \frac{x + \epsilon_\delta}{x - 1 + \epsilon_\delta}}},
-\end{align*}
-where $Y$ and $Z$ are independent random variables whose distributions are one-to-one functions of binomial distributions:
-\begin{align*}
-    \PP (Y = y) 
-    =& \PP \pr{ g\pr{\ks[,\underline{n} + x - 1]}= y}
-    = \PP (\ks[,\underline{n} + x - 1] = g^{-1} (y)))
-    \\
-    =&
-    \binom{\underline{n} + x - 2}{g^{-1} (y)}
-    \theta_j^{g^{-1} (y)}
-    (1 - \theta_j)^{\underline{n} + x - 2 - g^{-1} (y)},
-    \\
-    \PP
-    (Z = z)
-    =& \PP \pr{ h\pr{\pass_{j, \underline{n} + x - 1}} = z}
-    = \PP \pr{\pass_{j, \underline{n} + x - 1} = h^{-1} (z)}
-    \\
-    =&
-    \theta_j^{h^{-1}(z)} \pr{1 - \theta_j}^{1 - h^{-1}(z)}.
-\end{align*}
-The joint conditional distribution can be solved using Theorem 20.3 in \textcite[pg. 280]{B61}.
-
-
-% Next, consider the case where $N > \underline{n}$.
-% The probability of stopping at time $z$ becomes:
-% \begin{align*}
-%     \PP \pr{\crs{
-%         n = z
-%     }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
-%     =&
-%     \PP \pr{\cls{
-%         \ks[z]
-%         \geq
-%         \frac{\delta}{1 - \delta}
-%         \frac{1}{z - \underline{n} + \epsilon_\delta}
-%         \frac{\alpha_{j0} \nu_j - h_{j0}}{\nu_j}
-%         -
-%         \frac{h_{j0}}{\nu_j}
-%     }{\alpha_{j0}, \beta_{j0}, h_{j0}}} 
-%     \\
-%     =&
-% \end{align*}
-
-
-
-
-
-
-% The smallest integer $z$ such that the stopping condition holds is given by:
-% \begin{align*}
-%     \min_z
-%     \left\{ 
-%     z
-%     \geq
-%     \frac{\delta}{1 - \delta}
-%     \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
-%     + \frac{\delta}{1 - \delta} - \alpha_{j0} - \beta_{j0}
-%     \right\} 
-%     =&
-%     \ceil{
-%         \frac{\delta}{1 - \delta}
-%         \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
-%         + \frac{\delta}{1 - \delta} - \alpha_{j0} - \beta_{j0}    
-%     }
-%     \\
-%     =&
-%     \ceil{
-%         \frac{\delta}{1 - \delta}
-%         \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
-%         +    
-%         \frac{\delta}{1 - \delta}
-%     }
-%     - \alpha_{j0}
-%     - \beta_{j0}
-% \end{align*}
-
-
-
-
-
-% \subsubsection*{Simplified index}
-
-
-% If we further assume the analytic initial condition \eqref{eq:h_eq_alpha_v}, then \eqref{eq:stop_montonicity} simplifies to:\footnote{
-%     The algebra here is simple, but aided by the following transformations. 
-%     First, the updating rule \eqref{eq:beta_updating} and the human capital accumulation function \eqref{eq:hc_accumulation} imply that $\nu_j (\alpha_{jt} - \alpha_{j0}) = h_{jt} - h_{j0}$. Second, assuming \eqref{eq:h_eq_alpha_v} implies that $\alpha_{jt} \nu_j = h_{jt}$.
-% }
-% \begin{equation}\label{eq:stopping_func}
-%     \frac{1 - \delta}{\delta} \geq 
-%     \frac{
-%         1
-%     }{
-%         \alpha_{jt}^g + \beta_{jt}^g
-%     }.
-% \end{equation}
-
-
-
-% Then the stopping condition \eqref{eq:stopping_func} can be written as:
-% \begin{equation*}
-%     \frac{1 - \delta}{\delta} \geq 
-%     \frac{
-%         1
-%     }{
-%         h_{jt} (c_{jt} + \alpha_{j0}^g + \beta_{j0}^g)
-%     }.
-% \end{equation*}
-% Now, the optimal number of field-$j$ courses is a deterministic function of the agent's initial beliefs:
-%      c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
-% \end{equation*}
-% This means that an agent who specializes in field $j$ will take exactly $c_{j}^*$ courses in field $j$, where $c_{j}^*$ is a function of an agent's initial field-$j$ beliefs.% \begin{equation*}
-
-
-
-
-
-% Therefore, assuming \eqref{eq:h_eq_alpha_v} and linear utility \eqref{eq:linear_utility} implies the optimal field-$j$ graduation region is given by:
-% \begin{equation*}
-%     \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
-%         \alpha_{jt}, \beta_{jt} 
-%         \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
-%     \right.\right\}
-% \end{equation*}
-% In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. 
-% Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$.
-% The index from equation \eqref{eq:index_general} can be simplified to:
-% \begin{align*}
-%     % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
-%     % \begin{cases}
-%     %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
-%     %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
-%     %     \frac{w_{jt}}{1 - \delta} 
-%     %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
-%     % \end{cases}
-% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
-% \begin{cases}
-% \frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
-% \frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
-%    \frac{
-%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
-%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
-%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
-%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
-% \end{cases}
-% \end{align*}
-
-% % } % end \toedit{}
-% % However, this assumption ties together beliefs and initial levels of human capital.
-% \nts{Future versions of this project will relax this assumption.}
-% \nts{May also want to add that using a simple version of this stopping problem highlights other mechanisms.}
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Computing agent behavior}\label{sec:computing}
-
-This section summarizes how to compute an agent's behavior given states $(\states) = (\pstates)$ and assuming the initial monotonicity assumption. 
-Recall that the graduation region under the initial monotonicity assumption is given by \eqref{eq:graduation_monotonicity}: 
-\begin{equation*}
-     \mathcal{G}_j = 
-     \left\{ \states \left\vert
-     \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
-    \pr{
-        \frac{\nu_j \alpha_{j0} + \nu_j \tilde{\pass}_{jt}}{h_{j0} + \nu_j \tilde{\pass}_{jt}}
-    } - \alpha_{j0} - \beta_{j0}
-     \right. \right\}
- \end{equation*} 
-The index \eqref{eq:index_monotonicity_general} under the initial monotonicity assumption \eqref{eq:h_leq_alpha_v} is given by:
-\begin{alignat*}{4}
-    \label{eq:index_monotonicity}
-    &\mathcal{I}_j (\pstates)
-    =&&
-    \begin{cases}
-    \begin{array}{l}
-    \frac{w_j}{1 - \delta} 
-    h_{jt}
-    \end{array}
-    &(\pstates) \in \mathcal{G}_j,
-    \\
-    \begin{array}{l}
-    \frac{w_j}{1 - \delta} 
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\pstates}
-    \end{array}
-    % \begin{array}{l}
-    % \frac{w_j}{1 - \delta}
-    % \left(
-    %     \EE_t \ce{\delta^{\study_j^* - \tilde{\study}_{jt}}}{\pstates} 
-    %     \pr{h_{j0} + \nu_j \tilde{\pass}_{jt}}
-    % \right.
-    % \\
-    % \left.
-    % \ \ 
-    % + \nu_j \EE_t \ce{
-    %     \delta^{\study_j^* - \tilde{\study}_{jt}}
-    %     \pr{\study_j^* - \tilde{\study}_{jt}}
-    % }{\pstates}   
-    % \frac{\alpha_{j0} + \tilde{\pass}_{jt}}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
-    % \right)
-    % \end{array}
-    &\text{otherwise,}
-    \end{cases} 
-\end{alignat*}
-
-
-\begin{outline}
-
-\item To find the index for all fields $j$, first determine whether an agent is in their graduation region \eqref{eq:graduation_monotonicity}. 
-
-\begin{outline}
-    \item If the agent is in their graduation region for field $j$, set the $j$-index equal to $\frac{w_{jt} h_{jt}}{1 - \delta}$. \textbf{Skip to step 6.}
-
-    \item If the agent is not in their graduation region, the index must be calculated using their expected accumulation of human capital, which is a function of expected time remaining in $j$:
-\begin{multline*}
-% Beginning of expected human capital accumulation
-    \EE_t \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
-    }{\pstates}
-    = 
-    \EE_t 
-    \ce{
-        g\pr{\study_j^* - \tilde{\study}_{jt}}
-    }{\pstates}
-    \\
-    =
-    \EE_t 
-    \ce{
-        \delta^{\study_j^* - \tilde{\study}_{jt}}
-        \pr{
-            h_{j0} + \nu_j \ks
-            + \pr{\study_j^* - \tilde{\study}_{jt}}
-            \frac{\alpha_{j0} + \tilde{\pass}_{jt}}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
-        }
-    }{\pstates}
-\end{multline*}
-    Proceed to the next step.
-\end{outline}
-
-\item Re-index the problem to simplify analysis:
-\begin{alignat*}{3}
-    \hat{\alpha}_{j0} =& \alpha_{j0} + \tilde{\pass}_{jt},
-    \quad \quad
-    &\hat{\alpha}_{j0} + \hat{\beta}_{j0} 
-    =& \alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt},
-    \\
-    \hat{h}_{j0} 
-    =& h_{j0} + \nu_j \tilde{\pass}_{jt}, 
-    \quad \quad
-    &\hat{\psi}_{j0} 
-    =& 
-    \pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}},
-\end{alignat*}
-This way, we are considering how many courses an agent is expecting to study from time $t=0$, instead of how many remaining courses an agent expects to study at an arbitrary $t$.
-
-\item Let $N = \study_{jt}^* - \tilde{\study}_{jt}$ denote the number of periods an agent expects to study, and let $\underline{n}$ and $\overline{n}$ denote the lower and upper bound of $N$, respectively. These bounds are given by:
-
-\begin{align*}
-    \underline{n} 
-    = 
-    \underline{\study_{jt}^* - \tilde{\study}_{jt}} 
-    =& \ceil{\frac{\delta}{1 - \delta}} - \hat{\alpha}_{j0} - \hat{\beta}_{j0}
-    \\
-    \overline{n}
-    =
-    \overline{\study_{jt}^* - \tilde{\study}_{jt}}
-    =&
-    \begin{cases}
-        \underline{n}
-        &\text{ if } 1 \leq \frac{\hat{\alpha}_{j0} \nu_j}{\hat{h}_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
-        \\
-        \ceil{\frac{\delta}{1 - \delta} \frac{\hat{\alpha}_{j0} \nu_j}{\hat{h}_{j0}}} - \hat{\alpha}_{j0} - \hat{\beta}_{j0},
-        &\text{ otherwise.}
-    \end{cases}
-\end{align*}
-
-\item Find the probability distribution of stopping between $\underline{n}$ and $\overline{n}$ conditional on $\pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}$.
-First evaluate the probability that $N = \underline{n}$:
-.\begin{align*}
-    \PP_0 = \PP \pr{\crs{
-        N = \underline{n}
-    }{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}}
-    =&
-    \begin{cases}
-    1 &\text{ if } 1 \leq \frac{\alpha_{j0} \nu_j}{h_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
-    \\
-    0 &\text{otherwise}.
-    \end{cases}
-\end{align*}
-Next evaluate the probability of stopping at $N = \underline{n} + 1$:
-\begin{align*}
-    \PP_1 
-    = 
-    \PP \pr{\cls{N = \underline{n} + 1}{\hat{\psi}_{j0}}} 
-    =&
-    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}} 
-    \pr{1 - \PP_0}
-    \\
-    =&
-\end{align*}
-For any integer $x > 1$ such that $\underline{n} + x < \overline{n}$, the probability of stopping at $\underline{n} + x$ is given by:
-\begin{align*}
-    \PP_x
-    =
-    \PP \pr{\cls{N = \underline{n} + x}{\hat{\psi}_{j0}}}
-    =&
-\end{align*}
-Finally, the probability of stopping at the upper bound $\overline{n}$ is given by:
-\begin{align*}
-    \PP_{\overline{n} - \underline{n}} = \PP \pr{\crs{
-        N = \overline{n}
-    }{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}}
-    =&
-    1 - \sum_{n = 0}^{\overline{n} - \underline{n} - 1} \PP_n
-\end{align*}
-
-\item Compute expected discounted accumulation of human capital
-\begin{align*}
-    \EE_t \ce{
-        g\pr{N}
-    }{\hat{\psi}_{j0}} 
-    &=
-    \sum_{n = \underline{n}}^{\overline{n}}
-    g\pr{N}
-    \mathbb{P}
-    \pr{\crs{
-        N = n
-    }{\hat{\psi}_{j0}}
-    }
-\end{align*}
-And set the index equal to $\frac{w_j}{1 - \delta} \EE_t \ce{g\pr{N}}{\hat{\psi}_{j0}} $.
-
-\item Follow the optimal policy outlined in section \ref{sec:optimal_policy}. If the agent chooses to study this period, return to step one in the next period. 
-
-\end{outline}
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Implications of model}\label{sec:sims}
+\section{Implications of the model}\label{sec:sims}
 \tikzset{external/figure name={sims_}}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -1452,51 +179,92 @@ And set the index equal to $\frac{w_j}{1 - \delta} \EE_t \ce{g\pr{N}}{\hat{\psi}
 \input{05-stat_discrim}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Future work: Identification and quantitative exercises}\label{sec:identification}
+\section{Future work: Identification and quantitative exercises}\label{sec:future_work}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-Working identifying model parameters and utilizing the model in counterfactual exercises is ongoing.
-Here, I briefly describe that work.
+I would like to use the remainder of this paper to outline my research agenda. 
+My first research goal is to use this model to explain the evolution of college major choices by gender over time, as seen in figure \ref{fig:ipeds_a}.
+To do that, I first need to embed the above model in a dynamic framework that describes how aggregate group-based beliefs change over time. 
+I detail that goal in section \ref{sec:dynamic_model}.
+To fully characterize the evoluation of major choices, I will need to identify model parameters.
+In section \ref{sec:identification_overview}, I discuss identification concerns, outline my goals for identifying model parameters, and briefly review potential data sources.
+Once I have properly calibrated model parameters, I can test whether my model is effective at re-creating the dynamics in major choice seen in figure \ref{fig:ipeds_a}.
+I will then be able to use my model in additional quantitative exercises.
+In section \ref{sec:extensions}, I briefly discuss potential counterfactual exercises, as well as possible model extensions, before concluding. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Identification overview}
+\subsection{Dynamic model}\label{sec:dynamic_model}
+
+There are several ways in which I plan on expanding my model.
+First, and most importantly, I want to incorporate intergenerational learning into the above framework.
+Additionally, I want to carefully discuss the role of preferences. I elaborate on these extensions below.
+
+In the aggregate, the model presented above is static; while I do model each agent's decision over the course of their education, their initial beliefs are given and unchanging.
+To understand how beliefs change over time, I need to embed this model in a dynamic framework, and specify how group-based beliefs change over time.
+
+\toedit{\textcite{F13} provides a road map for approaching this modeling problem.
+Her paper attempts to ascertain the role that shifting cultural norms played in the expansion of female labor force participation.
+She does this by building a model of labor decisions and intergenerational learning.
+Although the source of uncertainty in her model is disutility from working, not ability, the process of learning from aggregate outcomes is similar. 
+I need to build my model to fit in a model of intergenerational learning and cultural change, similar to \textcite{F13}.}
+
+Relatedly, I plan on better accounting for preferences in future versions of this model, particularly once I have a model of cultural change. 
+As discussed in the literature review in section \ref{sec:intro}, preferences and norms are a key motivator of college major choice.
+Much of the evidence for the primacy of preferences relies on subjective expectations evidence \parencite{WZ18,AHMR20}.
+My results focus on beliefs about ability, a separate factor that determines college major choice.
+Although there is evidence that beliefs about ability are important for college major choice \parencite{O20}, I want to be able to clearly articulate how my results compare to the tastes from the subjective expectations literature; it's not necessarily clear how the ``taste'' residuals from the subjective expectations literature will compare to my belief parameters.
+The interplay of beliefs and preferences in this context can be theoretically important \parencite{BG02}, and I want to remain cognizant of that moving forward.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Identification overview}\label{sec:identification_overview}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+I would now like to return to the static version of the model outlined in section \ref{sec:model} and discuss calibration.\footnote{
+    Thus, for the purpose of this discussion, I want to focus on calibrating a version of the model for a single cohort.
+}
 The parameters driving agent behavior in the model are summarized in table \ref{tab:parameter_descriptions}.
-\begin{table}
+Potential data resources are outlined in section \ref{sec:data_sources}.
+\begin{table}[!ht]
 \centering
-\caption{Model parameters}
+\caption{Model parameters}{}
 \label{tab:parameter_descriptions}
 \begin{tabular}{cl}
-\hline \hline
+\hline \hline{}
 Parameter & Description %& Source
-\\ \hline
+\\ \hline{}
 $J$ & Number of fields %& ACS \& IPEDS
 \\
 $\delta$ & Discount factor
 \\ \hline
 $h_{j0}$ & Initial field-$j$ human capital
-\\
+\\ 
 $(\alpha_{j0}, \beta_{j0})$ & Initial field-$j$ ability beliefs
 \\ \hline \hline
 \end{tabular}
 \end{table}
-The first part of table \ref{tab:parameter_descriptions} lists aggregate parameters that impact all agents. 
-The first key parameter for this analysis are the number of fields of study, $J$. 
-I utilize both IPEDS and ACS data for this analysis, and therefore wanted a classification system that applies across both fields. 
-The discount rate, $\delta$, is currently assumed to equal $0.96$.
+The first part of table \ref{tab:parameter_descriptions} lists aggregate parameters that impact all agents.
+Assuming a standard value is used for the discount rate $\delta$, the key aggregate parameter is the number of fields of study, $J$. 
+I have developed taxonomies of fields using Integrated Postsecondary Education Data System (IPEDS) and American Community Survey (ACS) data; see reviews of these data resources in section \ref{sec:data_sources}.
 
 Parameters that govern individual agent heterogeneity are in the second half of table \ref{tab:parameter_descriptions}.
+To determine initial human capital levels, $h_{j0}$, I need information on students' initial field-specific human capital when they begin college.
+Datasets such as the Beginning Postsecondary Students (BPS) or National Longitudinal Survey of Youth (NLS97) panels are thus ideal, as they are surveys of college performance and major choice that collect information on high school performance. 
+For details on these resources, see section \ref{sec:data_sources}. 
+
 The primary identification problem for this analysis is uncovering the group-based belief parameters $(\alpha_{j0}^g, \beta_{j0}^g)$.
 Assuming we have data on the agent's choice of field at time $t$, we can utilize some type of conditional logit method and find the parameters that maximize the following likelihood:
 \begin{equation*}
-    \log \mathcal{L} = \log \sum_{i = 1}^n \sum_{t=1}^\infty \sum_{j=1}^J m_{ijt} \log P(m_{ijt} = 1 \vert \overline{m}_{ijt}, \overline{s}_{ijt}, \alpha_{j0}, \beta_{j0}, h_{j0}, \theta_{ji})
+    \log \mathcal{L} 
+    = 
+    \log \sum_{i = 1}^n \sum_{t=1}^\infty \sum_{j=1}^J m_{ijt} 
+    \log P(m_{ijt} = 1 \vert \overline{m}_{ijt}, \overline{s}_{ijt}, \alpha_{j0}^{g(i)}, \beta_{j0}^{g(i)}, h_{ij0}, \theta_{ji})
 \end{equation*}
-Thus, identifying the model entails specifying the appropriate choice probability. 
+Thus, identifying the model entails specifying the appropriate choice probability.
 
 One immediate concern associated with this process is time endogeneity; an agent's choice of a field at time $t$ is related to their choice at time $t+1$. A simple way to avoid this endogeneity is to identify model parameters from time $t=0$ (i.e. the beginning of the agent's education).
 More sophisticated methods should take advantage of the problem's recursive structure to utilize more of an agent's panel. 
 
+% Work in section \ref{sec:solving_index} suggests that estimation is possible. 
 Let $G_j (x)$ denote the CDF of the index $j$. Recall from section \ref{sec:solving_index} that the agent's expected lifetime payoff associated with field $j$ is a function of their expected time in school, denoted $N$:
 \begin{alignat*}{3}
     G_j(x) =& \PP \pr{\cls{\mathcal{I}_{jt} < x}{\pstates}} \span \span
@@ -1505,15 +273,15 @@ Let $G_j (x)$ denote the CDF of the index $j$. Recall from section \ref{sec:solv
     \PP \bigg(
         &&\frac{1}{1 - \delta} w_j
         \bigg(
-            \EE \ce{\delta^N}{\cdot} \pr{h_{j0} + \nu_j \ks}
+            \EE \ce{\delta^N}{\cdot} 
+            \pr{h_{j0} + \nu_j + N \ks}
             + 
-            \EE \ce{\delta^N N}{\cdot} \pr{h_{j0} + \nu_j \ks}
+            \EE \ce{\delta^N N}{\cdot} 
             \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{j0}}
         \bigg) \\
     &&&< x \bigg\vert \pstates \bigg)
 \end{alignat*}
 The agent's probability distribution over possible stopping times is solved in section \ref{sec:solving_index}.
-The solution to $G_j(x)$ depends only on the distribution of $h_{j0}$ and the distribution of $\theta_j$. 
 The choice probability can then be written as:
 \begin{align*}
     \PP \pr{\cls{
@@ -1532,57 +300,51 @@ The choice probability can then be written as:
         \crs{x}{\tilde{\study}_{jt}, \tilde{\pass}_{jt}, \psi_{j0}}
     }
 \end{align*}
-My goal is to analytically characterize the CDF $G_j (x)$, and find helpful constraints on the distributions of $h_{j0}$ and $\theta_j$ such that I can identify $(\alpha_{j0}^g, \beta_{j0}^g)$ from the data. 
+The solution to $G_j(x)$ will depend on the distribution of $h_{j0}$ and the distribution of $\theta_j$ in society.
+I'm not certain of the best way to incorporate individual heterogeneity into the model. 
+But that will be key for analytically characterizing the CDF $G_j (x)$ and estimating $(\alpha_{j0}^g, \beta_{j0}^g)$ from the data.  
+% My goal is to analytically characterize the CDF $G_j (x)$, and find helpful constraints on the distributions of $h_{j0}$ and $\theta_j$ such that I can identify $(\alpha_{j0}^g, \beta_{j0}^g)$ from the data. 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection*{Data sources}
-
-Characteristics of all U.S. postsecondary institutions are reported in the Integrated Postsecondary Education Data System (IPEDS) data.
-These data are collected annually by the National Center for Educational Statistics and describe the universe of institutions that participate in federal student financial aid programs. 
-The empirical motivation for this analysis relies on the IPEDS Completion Surveys, which describe all degrees and certificates awarded at postsecondary institutions by field of study, gender, and race.\footnote{
-    For more details on the IPEDS series, please visit \url{https://nces.ed.gov/ipeds/}.
-    IPEDS data are available from 1986 until the present, though I begin empirical analysis in 1990 due to changes in how fields of study are classified.
-    For earlier data, such as those used in Figure \ref{fig:n_degrees}, I supplement the IPEDS series with data from \textcite{S93}.
-    However, it is worth noting that the predecessor to IPEDS series is the Higher Education General Information Survey (HEGIS), available through the International Archive of Education Data at University of Michigan (\url{https://www.icpsr.umich.edu/web/ICPSR/series/00030}). As such, I refer the reader to the HEGIS series for a more detailed portrait of postsecondary education statistics than available in \textcite{S93}.
-}
-University-level graduation rates are estimated using the IPEDS graduation surveys. 
-Details on IPEDS graduation surveys are in the Appendix. 
-
-The 2012/17 Beginning Postsecondary Students Longitudinal Study, conducted by the National Center for Education Statistics, can be used to identify initial levels of human capital and group-level beliefs. 
-This longitudinal study collects education and employment data from a nationally representative sample of first-time beginning postsecondary students.
-Respondents are initially surveyed in 2011-2012, the beginning of their postsecondary studies. 
-Follow-up surveys were conducted three and six years after they began their studies.\footnote{
-    For additional information, see \url{https://nces.ed.gov/pubsearch/pubsinfo.asp?pubid=2020504}.
-    Restricted-use licenses are required for access to BPS microdata. 
-    However, data aggregates and simple regression analysis are available through the NCES PowerStats DataLab. 
-}
-Key for this analysis are the BPS transcript studies, which contain information on first-year major choice, high school performance, and outcomes. 
-An application for restricted-use BPS data is pending. 
-
-% Individual-level data on degree completions are from the American Community Survey (ACS), as accessed using \textcite{IPUMS}.
-% Beginning in 2009, the ACS began recording up to two undergraduate field of study. 
-% I follow the data selection procedure outlined in Appendix A of \textcite{SHB19}.
-
-
-
-% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \subsection{Identification}
-
-
-
-% 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Quantitative exercises}
+\subsection{Future quantitative exercises and concluding remarks}\label{sec:extensions}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+My immediate goal is to see if the model outlined above can re-create the dynamics of gender major choice seen in figure \ref{fig:ipeds_a}.
+Ultimately, I want to utilize this model in counterfactual analysis.
+This section briefly discusses some potential applications.
+
+First, I believe a dynamic version of the above model would shed some light on how long it would take for gender convergence across majors to occur. 
+Assuming that participation in some fields follows an S-shaped pattern, as in \textcite{F13}, would parity across majors ever be achieved as cultural beliefs change?
+Or will there always be a gap without additional interventions?
+Interesting counterfactual analysis would also be possible with a dynamic version of the model. 
+For instance, suppose that women were given men's belief distributions.
+How long would it then take for men and women to then make the same specialization choices?
+
+Relatedly, I believe this model would be valuable for evaluating affirmative action policies.
+Suppose that affirmative action policies can impact group-based beliefs.
+How long would it take for these policies to result in gender convergence?
+And would full gender convergence across fields of study ever occur?
+% Theoretical evaluations of affirmative action policies, beginning with \textcite{CL93}, often consider how long-term beliefs of employers respond to new information.
+% I think this model presents the first part of a framework that allows for beliefs to change over time.
+This may play an important role in explaining the efficacy of affirmative action policies.
+% \toedit{What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?}
+% Discuss the role of affirmative action. Can affirmative action address these biases?
+
+Finally, I am interested in the impact of this model on the aggregate misallocation of talent in the economy. 
+As noted in \textcite{HHJK19}, barriers to human capital accumulation impact aggregate economic productivity.
+As discussed above, if men and women have the different beliefs, they may make different specialization decisions.
+If the underlying true ability distributions are the same across genders, this may represent a misallocation of talent, and have aggregate economic effects. 
+I am interested in applying the framework from \textcite{HHJK19} to estimate what the aggregate effects of this misallocation of talent might be. 
+ % the impact of barriers to human capital accumulation on aggregate productivity using a \textcite{R51} model of occupational choice. 
+% I'm also interested in measuring the productivity impacts of differential group-based beliefs. 
 
 % \toedit{
 % % start of actual section.
 % This model can then be used for counterfactual analysis. Possible quantitative exercises:
 % \begin{outline}
-% \item How much of the dynamics in figure \ref{fig:n_degrees} can I explain? 
 
-% \item Productivity exercise: does the misallocation of talent due to group-based beliefs affect agregate productivity. Modify the approach from \textcite{HHJK19}, who estimate the impact of barriers to human capital accumulation on aggregate productivity using a \textcite{R51} model of occupational choice. 
+% \item Productivity exercise: does the misallocation of talent due to group-based beliefs affect agregate productivity.
 % % There are several key differences between the model outlined below and the one from \textcite{HHJK19} that warrant attention.
 % %
 % % First, they explicitly model barriers to field-specific human capital attainment in monetary terms. 
@@ -1591,22 +353,31 @@ An application for restricted-use BPS data is pending.
 % % Their model allows for sorting on by preferences or ability. 
 % % Their benchmark scenario considers sorting on ability, and thus I assume the same.
 % % 
-% \item What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?
-
-% \item Discuss the role of affirmative action. Can affirmative action address these biases?
+% \item
+% \item 
 % \end{outline}
 
 % } % end \toedit
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% \section*{Appendix}
-% \setcounter{table}{0}
-% \renewcommand{\thetable}{A\arabic{table}}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-% \input{degree_labels.tex}
+Overall, I think the model of group-based beliefs and human capital specialization outlined in this prospectus can address a number of interesting economic questions. 
+I have extensive work to do before I can fully address the topics outlined in this section.
+But I believe this framework will allow me to answer these questions in a novel way.
 
 
 \printbibliography
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section*{Appendix}
+\setcounter{section}{0}
+\setcounter{subsection}{0}
+\renewcommand{\thesubsection}{A.\arabic{subsection}}
+% \setcounter{table}{0}
+% \renewcommand{\thetable}{A\arabic{table}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{a1-solve_index.tex}
+\input{a2-data_resources.tex}
+% \input{degree_labels.tex}
+
 
 \end{document}

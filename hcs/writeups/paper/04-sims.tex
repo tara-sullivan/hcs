@@ -1,5 +1,5 @@
 %!TEX root = outline.tex
-An agent's specialization decision is affected by field, individual, and group characteristics.
+An agent's specialization decision is impacted by individual, group, and field characteristics.
 This section illustrates how these factors motivate an individual's behavior using a simplified version of the model.
 Section \ref{sec:sims_prelims} develops a version of the model where an agent chooses between two completely symmetric fields. 
 Simulations are explored in section \ref{sec:sims_plots} to illustrate how different factors influence decision making.
@@ -14,9 +14,9 @@ Utility in field $j \in \{X, Y\}$ at time $t$ is equal to income:
 \begin{equation}\label{eq:linear_utility}
     U_j(w_j, h_{jt}^g) \ell_{jt}^g = w_j h_{jt}^g \ell_{jt}^g
 \end{equation}
-Wages in fields X and Y are equal and will be normalized to 1 ($w_X = w_Y = 1$), as are returns to successfully studying human capital ($\nu_X = \nu_Y = 1$).
+Wages in fields X and Y are equal and are normalized to 1 ($w_X = w_Y = 1$), as are returns to successfully studying human capital ($\nu_X = \nu_Y = 1$).
 The student's underlying abilities in the two fields, $\theta_X$ and $\theta_Y$, are both equal to 0.5. Therefore, the student has a 50\% chance of passing any given field X or field Y course.
-Finally, I assume the student's beliefs about their own abilities in field X and Y are equal to the uniform prior:\footnote{
+Finally, I assume the student's beliefs about their own abilities in fields X and Y are equal to the uniform prior:\footnote{
     Note that if $(\alpha, \beta) = (1, 1)$, the beta distribution $\mathcal{B} (\alpha, \beta)$ equals the uniform distribution over $[0, 1]$. This distribution can be seen graphically in figure \ref{fig:beta_ex_a}.
         \nts{Intuitively, this implies that the student thinks all values of $\theta_j$ are equally likely. }
 }
@@ -35,14 +35,14 @@ Further, this assumption {}ensures that the number of periods an agent studies i
     This is specifically addressed while finding lower and upper bounds for stopping times in section \ref{sec:solving_index}.
     Assuming $h_{j0} = \nu_j \alpha_{j0}$ implies that all agents specializing in $j$ with initial beliefs $(\alpha_{j0}, \beta_{j0})$ will take exactly $\ddelta - \alpha_{j0} - \beta_{j0}$ courses in $j$ before entering the labor force.  
 }
-The role of beliefs can be more clearly seen in these simulations because all agents who specialize in field $j$ with the same initial beliefs will take the same number of courses in $j$.\footnote{
-    It is worth emphasizing that this assumption ties together initial beliefs and initial human capital in a way that may not be desirable for counterfactual exercises. See the discussion at the start of section \ref{sec:analytic_results} for details. 
-}
+The role of beliefs can be more clearly seen in these simulations because all agents who specialize in field $j$ with the same initial beliefs will take the same number of courses in $j$.%\footnote{
+%     It is worth emphasizing that this assumption ties together initial beliefs and initial human capital in a way that may not be desirable for counterfactual exercises. See the discussion at the start of section \ref{sec:analytic_results} for details. 
+% }
 
 
 The point at which an agent has ``specialized'' in a particular field $j$ is not clearly defined in the model. 
 I intuitively describe what specialization looks like in the simulations below, but it is helpful to provide some concrete definition of specialization. 
-In the figures below, an agent has ``specialized'' in a field $j$ once they could fail all remaining courses in $j$, and would switch fields. 
+In the figures below, an agent has ``specialized'' in a field $j$ if they would choose to continue to specialize in $j$ if they failed all of their remaining courses in that field.
 Mathematically, this is represented by the following condition, letting $\study_j^*$ denote the number of courses an agent with beliefs $(\alpha_{j0}, \beta_{j0})$ would take in $j$ before specializing:
 \begin{equation*}
     \frac{1}{1 - \delta} 
@@ -52,7 +52,7 @@ Mathematically, this is represented by the following condition, letting $\study_
     \mathcal{I}_{k} (\tilde{\study}_{kt}, \tilde{\pass}_{kt}, \alpha_{k0}, \beta_{k0}, h_{k0}), \quad \forall k \neq j.
 \end{equation*}
 The left-hand side of this inequality is the agent's lifetime payoff of specializing in field $j$ if they fail all of their remaining courses in that field.
-This would imply they do not accumulate any more human capital in field $j$, so their lifetime payoff is based on their current levels of human capital, $h_{jt}$. 
+This would imply they do not accumulate any more human capital in field $j$, so their lifetime payoff is based on their current levels of human capital, $h_{jt}$, discounted according to the number of periods they expect to study.
 The right-hand side of this inequality is the expected lifetime payoff associated will all other fields. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -123,7 +123,7 @@ As a result, these agents switch to studying field X, in spite of the lower wage
 This switching leads to more overall time in school; as mentioned above, equation \eqref{eq:h_eq_alpha_v} implies that the number of periods an agents spends studying field X or Y before becoming a specialist is a deterministic function of initial beliefs. 
 Agents' initial beliefs about their abilities in X and Y are the same, and as such, agents specializing in either X or Y will study their chosen discipline for the same number of periods. 
 % In this simple version of the model does not allow for complementaries; therefore, switching fields necessarily increases the amount of time a student is in school. 
-However, because all agents spend their first two periods studying Field Y, those who specialize in Field X will study for a minimum of two more periods.
+However, because all agents spend their first two periods studying field Y, those who specialize in field X will study for a minimum of two more periods.
 
 % % The higher wages in field Y also cause agents specializing in X to spend more time in school. 
 % % The minimum periods a field Y agents spends in school as seen in figure \ref{fig:sim_c}.
@@ -148,7 +148,7 @@ Figure \ref{fig:sim_d} augments the baseline scenario so agents have a higher ab
 Specifically, probability of success in any given field X course, $\theta_X$, equals 0.4, whereas the probability of success in field Y is given by $\theta_Y = 0.6$. 
 Unsurprisingly, a higher ability in field Y drives specialization into that field.
 
-We now turn to the impact of differential priors on specialization dynamics, plotted in Figure \ref{fig:sim_e}.
+We now turn to the impact of differential priors on specialization dynamics, plotted in figure \ref{fig:sim_e}.
 I assume simulated agents are initially more certain about their abilities in field Y relative to field X.
 Specifically, I assume a student's initial prior about their ability in Y is given by $P_{Y0} = \mathcal{B} (2, 2)$; this corresponds to the distribution plotted in figure \ref{fig:beta_ex_e}.
 Their initial prior about their ability in X continues to equal the uniform distribution, $P_{X0} = \mathcal{B} (1, 1)$.
@@ -171,8 +171,8 @@ The prospect of ending their education earlier drives agents to initially study 
     \nts{Note that \textcite{A93} assumes first order stochastic dominance. It might be helpful to be able to communicate why my assumptions are different.}
 }}
 Although agents are equally likely to succeed in fields X and Y, and although the payoffs for specializing in these fields are the same, differential initial beliefs about underlying abilities drives the majority of simulated agents to specialize in field Y.
-Thus, initial beliefs play a key role in specialization decisions. 
-\toedit{I now consider how those beliefs are formed, and the consequences of forming those beliefs based on existing group outcomes.}
+Thus, initial beliefs play a key role in specialization decisions.
+\toedit{I plan on exploring how those beliefs are formed, and the consequences of forming those beliefs based on existing group outcomes.}
 
 
 % Discuss: agents are risk-neutral across fields, but because of discounting they are risk averse across time (or something like that, I really wish I wrote that down!)

@@ -1,0 +1,920 @@
+%!TEX root = outline.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Solving the index}\label{sec:solving_index}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section discusses the analytical solution to the index \eqref{eq:index_monotonicity_general}.
+Specifically, I describe how to evaluate the expected value of discounted human capital accumulation, conditional on initial states:
+\begin{equation}\label{eq:expected_discounted_hc_accumulation}
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\states}.
+\end{equation}
+To solve this, I first show how this expectation can be re-written as a function of expected time remaining in school.
+Computing the index therefore requires finding the conditional probability distribution of stopping times. 
+The remainder of section is devoted to finding this distribution. 
+This is done by first bounding the stopping times, and then recursively defining the probability distribution. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Index in terms of expected time in school}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+To simplify notation, let $\psi_{j0}$ denote the initial belief parameters and human capital levels:
+\begin{equation*}
+    \psi_{j0} = \pr{\alpha_{j0}, \beta_{j0}, h_{j0}}.
+\end{equation*}
+the agent's state when evaluating field $j$ at time $t$ is now determined by $\pr{\pstates}$.
+
+Ignoring other fields, an agents expects to study $j$ for $\study_j^* - \tilde{\study}_{jt}$ additional periods before beginning work as a field-$j$ specialist.
+Substituting in the human capital accumulation function \eqref{eq:hc_accumulation} into \eqref{eq:expected_discounted_hc_accumulation}:
+\begin{align*}
+    \EE_t &\ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\pstates}
+    \\
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{
+            h_{j0} 
+            + \nu_j \ks 
+            + \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} 
+            \pass_{j, t + x}}
+    }{\pstates}
+    \\
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}        
+    }{\pstates} \pr{h_{j0} + \nu_j \ks}
+    + 
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
+    }{\pstates}.
+\end{align*}
+Two expectations are key. 
+The first is the expected value of discounting the next $\study_j^* - \tilde{\study}_{jt}$ additional periods. 
+The second is the expected value of the discounted term times the number of of times an agent successfully passes their field-$j$ courses during those $\study_j^* - \tilde{\study}_{jt}$ periods. 
+To simplify the second probability, use the law of iterated expectations:
+\begin{align*}
+    \EE_t &\ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
+    }{\pstates}
+    \\
+    &\quad\quad=
+    \EE_t \ce{
+        \EE_t \ce{
+            \delta^{\study_j^* - \tilde{\study}_{jt}}
+            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
+        }{\study_j^*, \pstates}
+    }{\pstates}
+    \\
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \EE_t \ce{
+            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
+        }{\study_j^*, \pstates}
+    }{\pstates}
+\end{align*}
+The number of times the agent successfully passes their field-$j$ courses over the next $\study_j^* - \tilde{\study}_{jt}$ periods is a series of $\study_j^* - \tilde{\study}_{jt}$ Bernoulli trials with probability $\theta_j$. 
+The agent's expected value of this random variable is given by the sample size multiplied by their ability parameter $\theta_j$. 
+Therefore the previous equation can be written as:\footnote{
+    At this point, I must note that the following section may contain an error. 
+}
+\begin{align}
+    \nonumber
+    \EE_t &\ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \EE_t \ce{
+            \sum_{x=0}^{\study_j^* - \tilde{\study}_{jt}} \pass_{j, t + x}
+        }{\study_j^*, \pstates}
+    }{\pstates}
+    \\
+    \nonumber
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{\study_j^* - \tilde{\study}_{jt}}
+        \EE_t \ce{
+            \theta_j
+        }{\study_j^*, \pstates}
+    }{\pstates}
+    \\
+    \nonumber
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{\study_j^* - \tilde{\study}_{jt}}
+        \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
+    }{\pstates}    
+    \\
+    \nonumber
+    &\quad\quad=
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{\study_j^* - \tilde{\study}_{jt}}
+    }{\pstates}
+    \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
+\end{align}
+The third line follows from the agent's expected value of $\theta_j$, conditional on their states and their time until completion, $\study_j^*$, according to their belief distribution.
+We can use this result to further simplify \eqref{eq:expected_discounted_hc_accumulation} as:
+\begin{equation*}
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}        
+    }{\pstates} \pr{h_{j0} + \nu_j \ks}
+    + 
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{\study_j^* - \tilde{\study}_{jt}}
+    }{\pstates}
+    \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}.
+\end{equation*}
+Thus, the key expected value \eqref{eq:expected_discounted_hc_accumulation} is really the expected value of a function of time remaining in school.
+
+Before proceeding, it's helpful to introduce some simplifying notation, and to re-scale the problem to start at time $t=0$. 
+To simplify notation, let $N = \study_j^* - \tilde{\study}_{jt}$ denote the time remaining in school after $\tilde{\study}_{jt}$.
+The variable $N$ is capitalized to emphasize the fact that $N$ is a random quantity. 
+Next, note that for any agent evaluating field $j$ at time $t$ with states $\pr{\pstates}$, we can always define:
+\begin{alignat*}{3}
+    \hat{\alpha}_{j0} =& \alpha_{j0} + \tilde{\pass}_{jt},
+    \quad \quad
+    &\hat{\alpha}_{j0} + \hat{\beta}_{j0} 
+    =& \alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt},
+    \\
+    \hat{h}_{j0} 
+    =& h_{j0} + \nu_j \tilde{\pass}_{jt}, 
+    \quad \quad
+    &\hat{\psi}_{j0} 
+    =& 
+    \pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}.
+\end{alignat*}
+Therefore, instead of evaluating how many courses an agent has remaining after completing $\tilde{\study}_{jt}$ courses, we can re-define the agent's states and evaluate the agent's total expected time in school from $t=0$, before the agent has taken any courses in $j$.
+In that vein, I will only condition on the initial states $\psi_{j0} = \pr{\alpha_{j0}, \beta_{j0}, h_{j0}}$, and assume $\tilde{\pass}_{jt} = \tilde{\study}_{jt} = 0$.
+Recall that $\ks[,N]$ is the number of times the student successfully passes their courses after matriculating $N$ times. 
+Using the above notation, the monotonic stopping condition \eqref{eq:stop_montonicity} is given by:
+\begin{equation}\label{eq:stop_monotonicity_re_scaled}
+    N \geq \frac{\delta}{1 - \delta}
+    \pr{
+        \frac{\nu_j \alpha_{j0} + \nu_j \ks[,N]}{h_{j0} + \nu_j \ks[,N]}
+    } - \alpha_{j0} - \beta_{j0},
+\end{equation}
+The goal in subsequent sections is to evaluate the following conditional expectations:
+\begin{align}    
+    \nonumber
+    \EE_0 \ce{\delta^N}{\alpha_{j0}, \beta_{j0}, h_{j0}}
+    =&
+    \sum_{z = 0}^\infty
+    \delta^z
+    \PP
+    \pr{\crs{
+        N = z
+    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+    \\
+    \label{eq:index_ce_n}
+    \EE_0 \ce{\delta^N N}{\alpha_{j0}, \beta_{j0}, h_{j0}}
+    =&
+    \sum_{z = 0}^\infty
+    \delta^z z
+    \PP
+    \pr{\crs{
+        N = z
+    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+\end{align}
+The following section discusses the bounds on stopping times, so the above summation is finite.  
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Bounds on stopping times}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+This section starts by defining a lower bound larger than zero for all stopping times.
+I then discuss stopping times with positive probability, and use this discussion to motivate the upper bound for all stopping times.
+
+\begin{lemma}
+Define the positive integer $\underline{n}$ as:
+\begin{align}\label{eq:lower_n}
+     \underline{n} = \min_N \left\{ 
+     N \geq
+        \frac{\delta}{1 - \delta}
+    - \alpha_{j0} - \beta_{j0}
+     \right\}
+     =
+     \ceil{\frac{\delta}{1 - \delta}} - \alpha_{j0} - \beta_{j0}.
+ \end{align}
+Then $\underline{n}$ is a lower bound for stopping times that satisfy the monotonic stopping condition \eqref{eq:stop_monotonicity_re_scaled}.
+\end{lemma}
+\begin{proof}
+For all possible stopping times $N$ and all possible stochastic outcomes $\ks[,N]$, $\frac{\nu_j \alpha_{j0} + \nu_j \ks[N]}{h_{j0} + \nu_j \ks[N]} \geq 1$ under the initial monotonicity condition \eqref{eq:h_leq_alpha_v}.\footnote{
+    Define $f(s) = \frac{\nu_j \alpha_{j0} + \nu_j s}{h_{j0} + \nu_j s} = \frac{\nu_j \alpha_{j0} - h_{j0}}{h_{j0} + \nu_j s} + 1$.
+    Because $\nu_j \alpha_{j0} \geq h_{j0}$ and $s \geq 0$, $f(s) \geq 1$.
+}
+Therefore, $\underline{n}$ is a lower bound.
+\end{proof}
+
+
+
+
+
+\noindent
+Before defining the upper bound of $N$, it is helpful to discuss the stopping condition for different potential values of $N$.
+Given the stopping condition \eqref{eq:stop_monotonicity_re_scaled}, an agent will decide to stop studying in period $\underline{n} + x$ if: 
+\begin{alignat}{3}
+    &&
+    \ddelta - \alpha_{j0} - \beta_{j0} + x
+    \geq&
+    \frac{\delta}{1-\delta}
+    \pr{\frac{\nu_j \alpha_{j0} + \nu_j \ks[,\underline{n} + x]}{h_{j0} + \nu_j \ks[,\underline{n} + x]}}
+    -\alpha_{j0} - \beta_{j0}
+    \nonumber \\
+    &\implies &
+    \frac{\delta}{1 - \delta}
+    + \epsilon_\delta
+    + x
+    \geq&
+    \frac{\delta}{1 - \delta}
+    \pr{
+       \frac{\nu_j \alpha_{j0} + \nu_j \ks[,\underline{n} + x]}{h_{j0} + \nu_j \ks[,\underline{n} + x]}
+    }
+    \nonumber
+    \\
+    &\implies &
+    \epsilon_\delta 
+    + x
+    \geq&
+    \frac{\delta}{1 - \delta}
+    \pr{
+        \frac{\nu_j \alpha_{j0} - h_{j0}}{h_{j0} + \nu_j \ks[,\underline{n} + x]}
+    }
+    \nonumber
+    \\
+    &\implies &
+    \pr{
+        \epsilon_\delta  + x
+    }
+    \pr{h_{j0} + \nu_j \ks[,\underline{n} + x]}
+    \geq&
+    \frac{\delta}{1 - \delta}
+    \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \label{eq:stop_with_error}
+\end{alignat}
+where the rounding error $\epsilon_\delta \in [0, 1)$ equals the difference between the ceiling of the discount factor $\frac{\delta}{1 - \delta}$ and its true value.\footnote{
+    Specifically, if $\frac{\delta}{1 - \delta}$ is not an integer, then $\epsilon_\delta = \cmf{\frac{\delta}{1 - \delta}} - \left\{ \frac{\delta}{1 - \delta} \right\} = 1 - \left\{ \frac{\delta}{1 - \delta} \right\}$ is the difference between the ceiling of $\frac{\delta}{1 - \delta}$ and $\frac{\delta}{1 - \delta}$. 
+    If $\frac{\delta}{1 - \delta}$ is an integer, then $\epsilon = 0$.
+    Recall that the ceiling of any real number $x$, denoted $\ceil{x}$, is the smallest integer greater than or equal to $x$.
+    The floor of a $x$, $\floor{x}$, is the largest integer less than or equal to $x$. 
+    The fractional part of $x$, denoted $\{x\}$, is defined by $\{x\} = x - \floor{x}$.
+}
+% Using set-notation to eliminate the explicit rounding error \eqref{eq:stop_with_error}, an agent will stop studying at time $\underline{n} + x$ if:
+% \begin{equation}
+%     \label{eq:stop_no_error}
+%     \left\{ x \pr{h_{j0} + \nu_j \tilde{\pass}_{\underline{n} + x}} \geq \frac{\delta}{1 - \delta} \pr{\alpha_{j0} \nu_j - h_{j0}} \right\}.
+% \end{equation}
+
+
+Now let's consider cases where agents would only take $N=\underline{n}$ courses, meaning that $x = 0$.
+Using the stopping condition \eqref{eq:stop_with_error} with $x=0$, this only happens if:
+\begin{alignat*}{3}
+    &&
+    \epsilon_\delta
+    \pr{h_{j0} + \nu_j \ks[\underline{n}]} 
+    \geq&
+    \frac{\delta}{1 - \delta} 
+    (\alpha_{j0} \nu_j - h_{j0})
+    \\
+    &\implies&
+    \epsilon_\delta
+    \nu_j \ks[\underline{n}]
+    \geq&
+    \frac{\delta}{1 - \delta} \nu_j \alpha_{j0} - \ddelta h_{j0}.
+\end{alignat*}
+The agent will only study for $\underline{n}$ periods if this inequality is satisfied for all possible stochastic outcomes. 
+The only stochastic part of this inequality is $\ks[\underline{n}]$, which make take on values between 0 and $\underline{n}$.
+Therefore, agents will only study for $\underline{n}$ periods if:
+\begin{alignat*}{3}
+    &&
+    0
+    \geq&
+    \frac{\delta}{1 - \delta} \nu_j \alpha_{j0} - \ddelta h_{j0}.
+    \\
+    &\implies&
+    \ddelta h_{j0} 
+    \geq&
+    \frac{\delta}{1 - \delta} \alpha_{j0} \nu_j.
+ \end{alignat*}
+ Combining the above with the initial monotonicity condition \eqref{eq:h_leq_alpha_v} implies that an agent will only study for exactly $N = \underline{n}$ periods if:
+\begin{equation*}
+    1 
+    \leq 
+    \frac{\nu_j \alpha_{j0}}{h_{j0}} 
+    \leq
+    \frac{\ddelta}{\frac{\delta}{1 - \delta}}.
+\end{equation*}
+Because the ratio of the ceiling of the discount factor to its true value will be close to 1, this inequality effectively states that the agent will only study for $N = \underline{n}$ periods if $h_{j0} = \nu_j \alpha_{j0}$ (with some adjustment for rounding error). 
+This is the tractable case evaluated in \textcite{AF20}.
+Specifically, assuming the slightly stronger initial condition, $h_{j0} = \nu_j \alpha_{j0}$, implies time spent in school $N$ equals $\underline{n}$; an agent who specializes in field $j$ will take exactly $N$ courses in field $j$.
+Therefore, the the optimal number of field-$j$ courses is a deterministic function of the agent's initial beliefs.
+However, for reasons discussed in the overview of section \ref{sec:analytic_results}, this assumption is not necessarily appropriate for this evaluation. 
+Thus, we now turn to evaluating the upper bound of possible stopping times. 
+
+
+\begin{lemma}
+Define the positive integer $\overline{n}$ as:
+\begin{equation}\label{eq:upper_n}
+    \overline{n} = \ceil{\frac{\delta}{1 - \delta} \frac{\alpha_{j0} \nu_j}{h_{j0}}} - \alpha_{j0} - \beta_{j0}
+\end{equation}
+Then $\overline{n}$ is an upper bound for stopping times.
+\end{lemma}
+
+\begin{proof}
+
+$\overline{n}$ is an upper bound for stopping times if, for all stochastic outcomes $\ks[\overline{n}]$:
+\begin{equation*}
+    \overline{n} \geq 
+    \frac{\delta}{1 - \delta} 
+    \pr{\frac{\alpha_{j0} \nu_j + \nu_j \ks[\overline{n}]}{h_{j0} + \nu_j \ks[\overline{n}]}} - \alpha_{j0} - \beta_{j0}
+\end{equation*}
+Because $\frac{\alpha_{j0} \nu_j + \nu_j \ks[\overline{n}]}{h_{j0} + \nu_j \ks[\overline{n}]}$ is decreasing in $\ks[\overline{n}]$,\footnote{
+    Define $f(s) = \frac{\nu_j \alpha_{j0} + \nu_j s}{h_{j0} + \nu_j s} = \frac{\nu_j\alpha_{j0} - h_{j0}}{h_{j0} + \nu_j s} + 1$. 
+    Note that $f'(s) = -\frac{\nu_j (\nu_j \alpha_{j0} - h_{j0})}{\pr{h_{j0} + \nu_j s}^2}$.
+    This is nonpositive when $\nu_j \alpha_{j0} \geq h_{j0}$. 
+}
+$\overline{n}$ is an upper bound independent of stochastic outcomes only if the above inequality holds for $\ks[\overline{n}] = 0$ (i.e. when the agent has failed all of their field $j$ courses).
+Therefore, $\overline{n}$ is an upper bound if:
+\begin{alignat*}{3}
+    &&
+    \overline{n} 
+    \geq& 
+    \frac{\delta}{1 - \delta} 
+    \pr{\frac{\alpha_{j0} \nu_j}{h_{j0}}} 
+    - \alpha_{j0} - \beta_{j0}
+    \\
+    &\implies&
+    \ceil{\frac{\delta}{1 - \delta} \frac{\alpha_{j0} \nu_j}{h_{j0}}}
+    \geq&
+     \frac{\delta}{1 - \delta} 
+    \pr{\frac{\alpha_{j0} \nu_j}{h_{j0}}}.
+\end{alignat*}
+Therefore, $\overline{n}$ is an upper bound for stopping times.
+\end{proof}
+
+
+
+
+
+
+
+
+The details above can be used to bound the summations in \eqref{eq:index_ce_n}:
+\begin{align*}
+    \EE \ce{\delta^N}{\alpha_{j0}, \beta_{j0}, h_{j0}} 
+    =&
+    \sum_{z=\underline{n}}^{\overline{n}} 
+    \delta^z
+    \PP
+    \pr{\crs{
+        N = z
+    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+    \\
+    \EE \ce{\delta^N N}{\alpha_{j0}, \beta_{j0}, h_{j0}} 
+    =&
+    \sum_{z=\underline{n}}^{\overline{n}} 
+    \delta^z z
+    \PP
+    \pr{\crs{
+        N = z
+    }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+\end{align*}
+The next section evaluates the above conditional probabilities.
+
+
+
+\subsubsection*{Conditional probabilities}
+
+Recall that the lower and upper bounds of $N$ are given by $\underline{n}$ and $\overline{n}$, respectively. 
+The conditional probability that $N$ equals some integer $z$ can be evaluated as:
+\begin{align}
+    \PP \pr{\crs{
+        N = z
+    }{\psi_{j0}}}
+    =&
+    \nonumber
+    \PP \pr{\cls{
+        z 
+        \geq 
+        \frac{\delta}{1 - \delta}
+        \frac{\alpha_{j0} \nu_j + \nu_j \ks[z]}{h_{j0} + \nu_j \ks[z]} -\alpha_{j0} - \beta_{j0}
+    }{\psi_{j0}}}
+    \\
+    \nonumber
+    =&
+    \PP \pr{\cls{
+        z - \pr{\underline{n} - \epsilon_\delta}
+        \geq
+        \frac{\delta}{1 - \delta}
+        \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks[z]}
+    }{\psi_{j0}}} 
+    \\
+    =&
+    \PP \pr{\cls{
+        \pr{z - \underline{n} + \epsilon_\delta}
+        \pr{h_{j0} + \nu_j \ks[z]}
+        \geq
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    }{\psi_{j0}}} 
+    % \\
+    % =&
+    % \PP \pr{\cls{
+    %     \pr{z - \underline{n} + \epsilon_\delta}
+    %     \ks
+    %     \geq
+    %     \frac{\delta}{1 - \delta}
+    %     \frac{\alpha_{j0} \nu_j - h_{j0}}{\nu_j}
+    %     -
+    %     \pr{z - \underline{n} + \epsilon_\delta}
+    %     \frac{h_{j0}}{\nu_j}
+    % }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+    % \\
+    % =&
+    % \PP \pr{\cls{
+    %     \pr{z - \underline{n} + \epsilon_\delta}
+    %     \ks[z]
+    %     \geq
+    %     \frac{\delta}{1 - \delta} \alpha_{j0}
+    %     -
+    %     \pr{\frac{\delta}{1 - \delta} + z - \underline{n} + \epsilon_\delta}
+    %     \frac{h_{j0}}{\nu_j}
+    % }{\psi_{j0}}} 
+    \\
+    =&
+    \PP \pr{\cls{
+        \pr{z - \underline{n} + \epsilon_\delta}
+        \ks[z]
+        \geq
+        \frac{\delta}{1 - \delta} \alpha_{j0}
+        -
+        \pr{\ddelta + z - \underline{n}}
+        \frac{h_{j0}}{\nu_j}
+    }{\psi_{j0}}} 
+\end{align}
+First consider the case where $N = \underline{n}$. Let $\PP_0$ denote this probability. Then, as discussed above:
+\begin{align*}
+    \PP_0 = \PP \pr{\crs{
+        N = \underline{n}
+    }{\psi_{j0}}}
+    =&
+    \begin{cases}
+    1 &\text{ if } 1 \leq \frac{\alpha_{j0} \nu_j}{h_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
+    \\
+    0 &\text{otherwise}.
+    \end{cases}
+\end{align*} 
+% Note that if the fraction $\frac{\ddelta}{\frac{\delta}{1 - \delta}} = 1$, then $\epsilon_\delta = 0$, whereas if the fraction is greater than 1, $\epsilon_\delta > 0$. 
+% For ease of notation, all probabilities below assume $\frac{\alpha_{j0} \nu_j}{h_{j0}} > 1$, and will evaluate cases for different values of $\epsilon$.
+
+Before evaluating cases where $N > \underline{n}$, note the probability of stopping at some positive integer $z$ is always given by:
+\begin{align*}
+    \PP \pr{\cls{N = z}{\psi_{j0}}} 
+    &=
+    \PP \pr{\cls{N = z, N \neq z - 1}{\psi_{j0}}}
+    +
+    \PP \pr{\cls{N = z, N = z - 1}{\psi_{j0}}}
+    \\
+    &=
+    \PP \pr{\cls{N = z}{N \neq z - 1, \psi_{j0}}}
+    \PP \pr{\cls{N \neq z - 1}{\psi_{j0}}}
+\end{align*}
+The second line follows from Bayes' Rule, and the fact that an agent would never stop at time $z$ if they already stopped at time $z-1$.
+In words, this states that the probability of stopping at time $z$ is given by the product of (1) the probability of stopping at time $z$ conditional on having not stopped at time $z-1$; and (2) the probability of having not stopped by $z-1$.
+
+To evaluate the probability that $N = \underline{n} + 1$, first evaluate the conditional probability that $N = \underline{n} + 1$, conditional on the stopping time not equaling $\underline{n}$:
+\begin{align*}
+    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
+    =&
+    \PP \pr{\cls{
+        \pr{1 + \epsilon_\delta}
+        \pr{h_{j0} + \nu_j \ks[\underline{n} + 1]}
+        \geq
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    }{\psi_{j0}}}
+    % \\
+    % =&
+    % \PP \pr{\cls{
+    %     \pr{1 + \epsilon_\delta}
+    %     \ks[\underline{n} + 1]
+    %     \geq
+    %     \frac{\delta}{1 - \delta} \alpha_{j0}
+    %     -
+    %     \pr{\ddelta + 1}
+    %     \frac{h_{j0}}{\nu_j}
+    % }{\psi_{j0}}}
+    \\
+    =&
+    \PP \pr{\cls{
+        \ks[\underline{n} + 1]
+        \geq
+        \frac{1}{\nu_j}
+        \pr{        
+            \frac{\delta}{1 - \delta} 
+            \frac{1}{1 + \epsilon_\delta}
+            \pr{\alpha_{j0} \nu_j - h_{j0}}
+            - h_{j0}
+        }
+    }{\psi_{j0}}}
+    \\
+    =&
+    \PP \pr{\cls{
+        \ks[\underline{n} + 1]
+        \geq
+        \hat{k}_1
+    }{\psi_{j0}}}
+\end{align*}
+The RHS of the above inequality is a function of initial parameters and can be treated as a constant.
+The variable $\ks[\underline{n} + 1]$ is a random variable:
+\begin{equation*}
+    \ks[, \underline{n} + 1] = \sum_{t=0}^{\underline{n}} \pass_{jt} \sim \text{Binomial} (\underline{n} + 1, \theta_j)
+\end{equation*}
+Define $k_1$ as:
+\begin{align*}
+    k_1 &= \begin{cases}
+    \hat{k}_1 - 1
+    &\text{ if $\hat{k}_1$ an integer,}
+    \\
+    \floor{\hat{k}_1}
+    &\text{ otherwise.}
+    \end{cases}
+\end{align*}
+The conditional probability can be written as:
+\begin{align*}
+    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
+    =&
+    1 
+    -
+    \PP \pr{\cls{
+        \ks[\underline{n} + 1]
+        <
+        k_1
+    }{\psi_{j0}}} 
+    \\
+    =&
+    1 
+    - 
+    \sum_{i=0}^{k_1}
+    \binom{\underline{n} + 1}{i}
+    \theta^i
+    (1 - \theta)^{\underline{n} + 1 - i}
+\end{align*}
+Now we can fully evaluate the probability that $N = \underline{n} + 1$:
+\begin{align*}
+    \PP_1 
+    = 
+    \PP \pr{\cls{N = \underline{n} + 1}{\psi_{j0}}} 
+    =& 
+    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}
+    \PP \pr{\cls{N \neq \underline{n}}{\psi_{j0}}}
+    \\
+    =&
+    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}} 
+    \pr{1 - \PP_0}
+    \\
+    =&
+    \pr{1 
+        - 
+        \sum_{i=0}^{k_1}
+        \binom{\underline{n} + 1}{i}
+        \theta^i
+        (1 - \theta)^{\underline{n} + 1 - i}
+    }
+\pr{1 - \PP_0}.
+\end{align*}
+
+To evaluate the probability that $N = \underline{n} + x$ for some integer $x$, we have to evaluate:
+\begin{align*}
+    \PP_x = \PP \pr{\cls{N = \underline{n} + x}{\psi_{j0}}} 
+    =&
+    \PP  \pr{\crs{
+        N = \underline{n} + x
+    }{
+    \bigcap_{i=0}^{x-1}
+        \pr{N \neq \underline{n} + i}
+    , \psi_{j0}}}
+    \PP \pr{\cls{
+        \bigcap_{i=0}^{x-1}
+        \pr{N \neq \underline{n} + i}
+    }{\psi_{j0}}}  
+\end{align*} 
+First consider the probability that $N$ is not equal any value between the lower bound $\underline{n}$ and $\underline{n} + x - 1$. By De Morgan's law and countability additivity:
+\begin{align*}
+    \PP \pr{\cls{
+        \bigcap_{i=0}^{x-1}
+        \pr{N \neq \underline{n} + i}
+    }{\psi_{j0}}}
+    =&
+    1
+    -
+    \PP
+    \pr{\cls{
+        \bigcup_{i=0}^{x-1}
+        \pr{N = \underline{n} + i}
+    }{\psi_{j0}}}
+    \\
+    =&
+    1
+    -
+    \sum_{i=0}^{x-1}
+    \PP
+    \pr{\cls{
+        N = \underline{n} + i
+    }{\psi_{j0}}}
+    % \\
+    =
+    1
+    -
+    \sum_{i=0}^{x-1}
+    \PP_i.
+\end{align*}
+Now we turn to the conditional probability of interest, which can be written as:
+\begin{align}
+    \nonumber
+    \PP  &\pr{\crs{
+        N = \underline{n} + x
+    }{
+    \bigcap_{i=0}^{x-1}
+        \pr{N \neq \underline{n} + i}
+    , \psi_{j0}}}
+    \\ 
+    \label{eq:prob_n_plus_x_long}
+    &=
+    \PP \left( 
+        (x + \epsilon_\delta)
+        \pr{h_{j0} + \nu_j \ks[, \underline{n} +x]
+        }
+        \geq
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right.
+    \\ \nonumber
+    &\quad\quad\quad\left\vert
+        \bigcap_{k=0}^{x - 1}
+        (k + \epsilon_\delta)
+        \pr{h_{j0} + \nu_j \ks[\underline{n} + k - 1]
+        }
+        <
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right).
+\end{align}
+To simplify this conditional, recall that an agent will decide to keep studying at time $\underline{n} + y$ if:
+\begin{alignat*}{3}
+&&
+\frac{\delta}{1 - \delta}
+\pr{\alpha_{j0} \nu_j - h_{j0}}
+>&
+(y + \epsilon_\delta)
+\pr{h_{j0} + \nu_j \ks[, \underline{n} + y]}
+\\
+&&
+=&
+(y - 1 + \epsilon_\delta)
+\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
++ 
+\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
++
+(y + \epsilon_\delta)
+\nu_j \pass_{j, \underline{n} + y - 1}
+\\
+&&
+>&
+(y - 1 + \epsilon_\delta)
+\pr{h_{j0} + \nu_j \ks[, \underline{n} + y -1]}
+\end{alignat*}
+This is simply the monotonicity of the stopping problem in reverse; if an agent would decide to continue on at time $\underline{n} + y$, then they also would have wanted to continue on at time $\underline{n} + y - 1$.
+This simplifies the conditional expression in equation \eqref{eq:prob_n_plus_x_long}:
+\begin{align}
+    \nonumber
+    \PP  &\pr{\crs{
+        N = \underline{n} + x
+    }{
+    \bigcap_{i=0}^{x-1}
+        \pr{N \neq \underline{n} + i}
+    , \psi_{j0}}}
+    \\ 
+    \nonumber
+    &=
+    \PP \left( 
+        (x + \epsilon_\delta)
+        \pr{h_{j0} + \nu_j \ks[, \underline{n} +x]
+        }
+        \geq
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right.
+    \\ \nonumber
+    &\quad\quad\quad\left\vert
+        (x - 1 + \epsilon_\delta)
+        \pr{h_{j0} 
+        + \nu_j \ks[\underline{n} + x - 1]
+        }
+        <
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right)
+\end{align}
+This probability can be re-written to reflect the fact that $\ks[,\underline{n} + x] = \ks[,\underline{n} + x -1] + \pass_{j, \underline{n} + x - 1}$.
+In words, the total number of successes seen by time $\underline{n} + x$ equals the total number of successes seen by time $\underline{n} + x - 1$ plus the course outcome during period $\underline{n} + x - 1$:
+\begin{multline*}
+    \PP \left( 
+        \pr{x + \epsilon_\delta}
+        \pr{h_{j0} 
+        + \nu_j \ks[, \underline{n} + x - 1]}
+        +
+        \pr{x + \epsilon_\delta}
+        \nu_j \pass_{j, \underline{n} + x - 1}
+        \geq
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right.
+    \\
+    \left\vert
+        (x - 1 + \epsilon_\delta)
+        \pr{h_{j0} 
+        + \nu_j \ks[\underline{n} + x - 1]
+        }
+        <
+        \frac{\delta}{1 - \delta}
+        \pr{\alpha_{j0} \nu_j - h_{j0}}
+    \right).
+\end{multline*}
+Define the random variables $Y$ and $Z$ and the constant $c$ as:
+\begin{alignat*}{2}
+    Y &= g(\ks[, \underline{n} + x - 1])  =
+        \pr{x + \epsilon_\delta}
+        \pr{h_{j0} 
+        + \nu_j \ks[, \underline{n} + x - 1]},
+    \quad \quad
+    c &= \frac{\delta}{1 - \delta} \pr{\alpha_{j0} \nu_j - h_{j0}},
+    \\
+    Z &= h(\pass_{j, \underline{n} + x - 1}) = \pr{x + \epsilon_\delta}
+        \nu_j \pass_{j, \underline{n} + x - 1}
+\end{alignat*}
+The conditional probability that $N = \underline{n} + x$ for $x > 1$ can now be written as:
+\begin{align*}
+    \PP \pr{\cls{Y + Z \geq c}{Y < c \frac{x + \epsilon_\delta}{x - 1 + \epsilon_\delta}}},
+\end{align*}
+where $Y$ and $Z$ are independent random variables whose distributions are one-to-one functions of binomial distributions:
+\begin{align*}
+    \PP (Y = y) 
+    =& \PP \pr{ g\pr{\ks[,\underline{n} + x - 1]}= y}
+    = \PP (\ks[,\underline{n} + x - 1] = g^{-1} (y)))
+    \\
+    =&
+    \binom{\underline{n} + x - 2}{g^{-1} (y)}
+    \theta_j^{g^{-1} (y)}
+    (1 - \theta_j)^{\underline{n} + x - 2 - g^{-1} (y)},
+    \\
+    \PP
+    (Z = z)
+    =& \PP \pr{ h\pr{\pass_{j, \underline{n} + x - 1}} = z}
+    = \PP \pr{\pass_{j, \underline{n} + x - 1} = h^{-1} (z)}
+    \\
+    =&
+    \theta_j^{h^{-1}(z)} \pr{1 - \theta_j}^{1 - h^{-1}(z)}.
+\end{align*}
+The joint conditional distribution can be solved using Theorem 20.3 in \textcite[pg. 280]{B61}.
+
+
+% Next, consider the case where $N > \underline{n}$.
+% The probability of stopping at time $z$ becomes:
+% \begin{align*}
+%     \PP \pr{\crs{
+%         n = z
+%     }{\alpha_{j0}, \beta_{j0}, h_{j0}}}
+%     =&
+%     \PP \pr{\cls{
+%         \ks[z]
+%         \geq
+%         \frac{\delta}{1 - \delta}
+%         \frac{1}{z - \underline{n} + \epsilon_\delta}
+%         \frac{\alpha_{j0} \nu_j - h_{j0}}{\nu_j}
+%         -
+%         \frac{h_{j0}}{\nu_j}
+%     }{\alpha_{j0}, \beta_{j0}, h_{j0}}} 
+%     \\
+%     =&
+% \end{align*}
+
+
+
+
+
+
+% The smallest integer $z$ such that the stopping condition holds is given by:
+% \begin{align*}
+%     \min_z
+%     \left\{ 
+%     z
+%     \geq
+%     \frac{\delta}{1 - \delta}
+%     \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
+%     + \frac{\delta}{1 - \delta} - \alpha_{j0} - \beta_{j0}
+%     \right\} 
+%     =&
+%     \ceil{
+%         \frac{\delta}{1 - \delta}
+%         \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
+%         + \frac{\delta}{1 - \delta} - \alpha_{j0} - \beta_{j0}    
+%     }
+%     \\
+%     =&
+%     \ceil{
+%         \frac{\delta}{1 - \delta}
+%         \frac{\alpha_{j0} \nu_j - h_{j0}}{h_{j0} + \nu_j \ks}
+%         +    
+%         \frac{\delta}{1 - \delta}
+%     }
+%     - \alpha_{j0}
+%     - \beta_{j0}
+% \end{align*}
+
+
+
+
+
+% \subsubsection*{Simplified index}
+
+
+% If we further assume the analytic initial condition \eqref{eq:h_eq_alpha_v}, then \eqref{eq:stop_montonicity} simplifies to:\footnote{
+%     The algebra here is simple, but aided by the following transformations. 
+%     First, the updating rule \eqref{eq:beta_updating} and the human capital accumulation function \eqref{eq:hc_accumulation} imply that $\nu_j (\alpha_{jt} - \alpha_{j0}) = h_{jt} - h_{j0}$. Second, assuming \eqref{eq:h_eq_alpha_v} implies that $\alpha_{jt} \nu_j = h_{jt}$.
+% }
+% \begin{equation}\label{eq:stopping_func}
+%     \frac{1 - \delta}{\delta} \geq 
+%     \frac{
+%         1
+%     }{
+%         \alpha_{jt}^g + \beta_{jt}^g
+%     }.
+% \end{equation}
+
+
+
+% Then the stopping condition \eqref{eq:stopping_func} can be written as:
+% \begin{equation*}
+%     \frac{1 - \delta}{\delta} \geq 
+%     \frac{
+%         1
+%     }{
+%         h_{jt} (c_{jt} + \alpha_{j0}^g + \beta_{j0}^g)
+%     }.
+% \end{equation*}
+% Now, the optimal number of field-$j$ courses is a deterministic function of the agent's initial beliefs:
+%      c_j^* = \left\lceil \frac{\delta}{1 - \delta} \right\rceil - (\alpha_{j0} + \beta_{j0})
+% \end{equation*}
+% This means that an agent who specializes in field $j$ will take exactly $c_{j}^*$ courses in field $j$, where $c_{j}^*$ is a function of an agent's initial field-$j$ beliefs.% \begin{equation*}
+
+
+
+
+
+% Therefore, assuming \eqref{eq:h_eq_alpha_v} and linear utility \eqref{eq:linear_utility} implies the optimal field-$j$ graduation region is given by:
+% \begin{equation*}
+%     \mathcal{G}_j (\alpha_{jt}, \beta_{jt}) = \left\{ 
+%         \alpha_{jt}, \beta_{jt} 
+%         \left\vert \frac{\delta}{1 - \delta} \leq \alpha_{jt} + \beta_{jt}
+%     \right.\right\}
+% \end{equation*}
+% In this example, note that $\mathcal{G}_Y = \mathcal{G}_X$. Index in the graduation region given by $\frac{h_{jt}}{1 - \delta}$. 
+% Index when not in graduation region given by Binomial distribution with parameters $\left(c_j^* - c_j, \frac{h_{jt}}{\nu(c_{jt} + \alpha_{j0} + \beta{j0})}\right)$.
+% The index from equation \eqref{eq:index_general} can be simplified to:
+% \begin{align*}
+%     % \mathcal{I}_j (\alpha_{jt}, \beta_{jt}) = 
+%     % \begin{cases}
+%     %     \frac{w_{jt}}{1 - \delta} h_{jt} &\text{ if } 
+%     %         \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_j \\ 
+%     %     \frac{w_{jt}}{1 - \delta} 
+%     %         \left(h_{jt} + \nu \mathbb{E}[\theta_j \vert \alpha_{jt}, \beta_{jt}]\right) &\text{ if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_j
+%     % \end{cases}
+% \mathcal{I}_{jt} (h_{jt}, \alpha_{jt}, \beta_{jt}) = 
+% \begin{cases}
+% \frac{w_{jt} h_{jt}}{1 - \delta} & \text{if } \{\alpha_{jt}, \beta_{jt}\} \in \mathcal{G}_{j}, \\
+% \frac{w_{jt} h_{jt}}{1 - \delta} \sbr{
+%    \frac{
+%       \left\lceil \frac{\delta}{1 - \delta} \right\rceil
+%       \delta^{\left\lceil \frac{\delta}{1 - \delta} \right\rceil - c_{jt} - \alpha_{j0} - \beta_{j0}}}
+%    {c_{jt} + \alpha_{j0} + \beta_{j0}}
+%    } & \text{if } \{\alpha_{jt}, \beta_{jt}\} \notin \mathcal{G}_{j} \\
+% \end{cases}
+% \end{align*}
+
+% % } % end \toedit{}
+% % However, this assumption ties together beliefs and initial levels of human capital.
+% \nts{Future versions of this project will relax this assumption.}
+% \nts{May also want to add that using a simple version of this stopping problem highlights other mechanisms.}

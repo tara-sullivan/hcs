@@ -1,0 +1,369 @@
+%!TEX root = outline.tex
+The optimal policy outlined in \ref{sec:optimal_policy} is characterized by two objects: the index \eqref{eq:index_general}, which summarizes the agent's expected lifetime payoff if they commit to one field and ignore all others; and the graduation region \eqref{eq:graduation_general}, which defines the states where an agent would choose to stop studying a particular field and enter the labor market.
+\toedit{This section derives an analytical solution to these objects under the initial condition assumption \eqref{eq:h_leq_alpha_v}.}
+
+Section \ref{sec:comment_state_vars} begins by introducing alternative notation to characterize state variables.
+In section \ref{sec:initial_condition}, I discuss the intuition behind the initial condition assumption \eqref{eq:h_leq_alpha_v}, and its implications for the optimal stopping problem.
+This motivates a tractable solution to the graduation region. 
+Section \ref{sec:evaluating_index} uses the results from \ref{sec:initial_condition} to derive a simplified version of the index. 
+Fully computing the index involves evaluating agent expectations over possible stopping times. 
+The solution to these expectations are derived in section \ref{sec:solving_index}.
+A concise summary of how to compute this solution is presented in section \ref{sec:computing}.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection*{Relation to parametric results from \textcite{AF20}}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+A key advantage of \citeposs{AF20} model is its computability under the stronger initial condition assumption $h_{j0} = \alpha_{j0} \nu_j$.
+This assumption is not out of line with the human capital accumulation function \eqref{eq:hc_accumulation}, and may be reasonable for simulation exercises when all parameters of the problem are known.
+However, this assumption presents both theoretical and empirical objections.
+The goal of this paper is to assess how beliefs impact specialization decisions.
+In the context of gender, this may involve considering whether a man and woman with similar initial human capital levels but different beliefs make different specialization choices; in the example outlined in section \ref{sec:group_based_beliefs}, this involves assessing whether men and women with similar $h_{j0}$ make different specialization choices when $\alpha_{j0}^m > \alpha_{j0}^w$.
+However, assuming $h_{j0} = \alpha_{j0}^g \nu_j$ implies that women begin with lower levels of human capital than men in a particular field $j$, complicating this type of counterfactual analysis.
+More practically, when bringing the model to the data,  I want to be able to control for initial human capital levels when agents make initial specialization choices. 
+Assuming $h_{j0} = \alpha_{j0}^g \nu_j$ effectively eliminates the variable $h_{j0}$.
+% Below I focus on the more general results when the initial monotonic 
+For this reason, the sections below focus on the more general monotonic initial condition \eqref{eq:h_leq_alpha_v}.
+I present the tractable results outlined in \textcite{AF20} in the context of a more general solution.
+% A detailed treatment of the assumption $h_{j0} = \alpha_{j0}^g \nu_j$ versus the monotonic initial condition $h_{j0} \leq \alpha_{j0}^g \nu_j$ is warranted given the particular application of this paper.
+% To see why, consider the case where $h_{j0} = \alpha_{j0}^g \nu_j$ and $\alpha_{j0}^m > \alpha_{j0}^f$.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Comment on state variables}\label{sec:comment_state_vars}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+State variables in this model are given by an agent's vector of human capital, $h_{jt}$, and their beliefs, $P_{jt}$.
+This section presents an alternative characterization of the agent's state variables that simplifies the analytical solution.
+
+Define $\tilde{\study}_{jt}$ as the total number of times a student has chosen to matriculate in field $j$ by time $t$, and define $\tilde{s}_{jt}$ as the total number of times a student has passed their field $j$ courses:
+\begin{equation}\label{eq:def_totals}
+     \tilde{\study}_{jt} = \sum_{n=0}^{t-1} \study_{jn}, \quad \quad
+     \tilde{\pass}_{jt} = \sum_{n=0}^{t-1} \pass_{jn}.
+\end{equation} 
+The individual's state variables at time $t$ are $(h_{jt}, \alpha_{jt}, \beta_{jt})$. 
+Using some simple algebraic transformations,\footnote{
+    Specifically, note that (1) $\tilde{\study}_{jt} + \alpha_{j0} + \beta_{j0} = \alpha_{jt} + \beta_{jt}$; (2) $\alpha_{jt} = \tilde{\pass}_{jt} + \alpha_{j0}$; and (3) $h_{jt} = \nu_j \tilde{s}_{jt} + h_{j0}$.
+} we can now characterize the states at time $t$ using $(\alpha_{j0}, \beta_{j0}, h_{j0}, \tilde{\study}_{jt}, \tilde{\pass}_{jt})$.
+In words, the agent's state variables at time $t$ are the initial belief parameters $\alpha_{j0}$ and $\beta_{j0}$, initial human capital $h_{j0}$, the endogenous number of field-$j$ courses $\tilde{\study}_{jt}$, and the stochastic number of times an agent passed their field-$j$ courses, $\ks$.
+Given the structure of the problem, there is no need to directly track the evolution of $(\alpha_{jt}, \beta_{jt}, h_{jt})$ over time, because (1) all information about the evolution of beliefs is captured by initial beliefs $(\alpha_{j0}, \beta_{j0})$, course choices ($\tilde{\study}_{jt}$), and course outcomes ($\tilde{\pass}_{jt}$); and (2) all information about human capital evolution is characterized by initial human capital endowments ($h_{j0}$), course choices ($\tilde{\study}_{jt}$), and course outcomes ($\tilde{\pass}_{jt}$). 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Initial condition assumption and optimal stopping time}\label{sec:initial_condition}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+The optimal policy from section \ref{sec:optimal_policy} is contingent on assuming equation \eqref{eq:h_leq_alpha_v}, which states that $h_{j0} \leq \nu_j \alpha_{j0}$. 
+% As mentioned above, the optimality of the policy outlined in section \ref{sec:optimal_policy} relies on this condition.
+Assuming that $h_{j0} \leq \nu_j \alpha_{j0}$ ensures that the stopping problem is monotonic, which in turn implies the optimality the policy outlined in section \ref{sec:optimal_policy}.
+As such, I will occasionally refer to \eqref{eq:h_leq_alpha_v} as the \emph{monotonic initial condition} or the \emph{monotonicity assumption}. 
+
+\toedit{It may be helpful to briefly outline why the monotonic initial condition implies optimality of the above policy.}
+Recall that the graduation index, \eqref{eq:graduation_general}, characterizes the states where an individual would stop studying field-$j$ and enter the labor market as a field-$j$ specialist, ignoring all other fields.
+Therefore, this object characterizes the field-specific stopping problem facing an individual.
+Under the monotonic initial condition \eqref{eq:h_leq_alpha_v}, the stopping problem for a given field is monotone.
+Intuitively, monotonicity of the stopping problem means that an agent who wants to stop studying $j$ at time $t$ would also want to stop studying $j$ at time $t+1$ if they continued on, independent of stochastic outcomes.
+Therefore, an agent's stopping decision can be reduced to a comparison between their current expected lifetime payoff in $j$ and their expected payoff the following period.
+In other words, monotonicity implies the optimality of a one-step-look-ahead comparison for the field-specific stopping problem.
+
+
+% \toedit{
+Therefore, the monotonicity condition \eqref{eq:h_leq_alpha_v} ensures that an agent evaluating field $j$ at time $t$ will stop studying $j$ if their expected lifetime payoff in the current period exceeds their expected lifetime payoff in $t+1$:
+\begin{equation*}
+    \frac{1}{1 - \delta} w_j h_{jt} 
+    \geq 
+    \frac{\delta}{1 - \delta} w_j \EE_t \left[\left. h_{j,t+1} \right\vert h_{jt}, \alpha_{jt}, \beta_{jt} \right]
+    % = \frac{1}{1 - \delta} w_j \EE [h_{jt} + \nu_j \study_{jt}].
+\end{equation*}
+This equation can be simplified using the human capital accumulation function \eqref{eq:hc_accumulation}:
+\begin{equation*}
+    h_{jt} \geq \delta (h_{jt} + \nu_j \EE_t \left[\left. s_{jt} \right\vert h_{jt}, \alpha_{jt}, \beta_{jt}\right]).
+\end{equation*}
+Recalling that the course outcome $s_{jt}$ is a $\text{Bernoulli} (\theta_j)$ random variable, this can be written using an agent's beliefs about $\theta_j$ at time $t$:
+\begin{equation}\label{eq:stop_general}
+    \frac{1 - \delta}{\delta} \geq \frac{\nu_j \alpha_{jt}}{h_{jt} (\alpha_{jt} + \beta_{jt})}
+\end{equation}
+Using the definitions of $\tilde{\study}_{jt}$ and $\tilde{\pass}_{jt}$ from equation \eqref{eq:def_totals}, the stopping condition \eqref{eq:stop_general} becomes:\footnote{
+    To replicate this derivation, note $\nu_j \alpha_{jt} = h_{jt} - h_{j0} + \nu_j \alpha_{j0}$. 
+    Then \eqref{eq:stop_general} implies:
+    \begin{equation*}
+        h_{jt} \pr{\alpha_{jt} + \beta_{jt} - \frac{\delta}{1 - \delta}} 
+        \geq \
+        \frac{\delta}{1 - \delta} \pr{\nu_j \alpha_{j0} - h_{j0}}
+    \end{equation*}
+    Using the fact that $\tilde{\study}_{jt} + \alpha_{j0} + \beta_{j0} = \alpha_{jt} + \beta_{jt}$:
+    \begin{equation*}
+        h_{jt} \tilde{\study_{jt}}
+        + h_{jt} \pr{\alpha_{j0} + \beta_{j0}} 
+        \geq \
+        \frac{\delta}{1 - \delta} \pr{\nu_j \alpha_{j0} - h_{j0} + h_{jt}}
+    \end{equation*}
+    The simplified stopping condition under monotonicity \eqref{eq:stop_montonicity} follows from the fact that $h_{jt} - h_{j0} = \nu_j \tilde{\pass}_{jt}$
+}
+\begin{equation}\label{eq:stop_montonicity}
+    \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
+    \pr{
+        \frac{\nu_j \alpha_{j0} + \nu_j \tilde{\pass}_{jt}}{h_{j0} + \nu_j \tilde{\pass}_{jt}}
+    } - \alpha_{j0} - \beta_{j0}
+\end{equation}
+% We can refer to equation \eqref{eq:stop_montonicity} as the \emph{simplified stopping condition under monotonicity}.
+Intuitively, this stopping condition says that an agent will stop studying a field $j$ once their total number of completed field-$j$ courses exceeds the right-hand-side inequality.
+\toedit{The graduation index \eqref{eq:graduation_general} can now be written to reflect the stopping condition \eqref{eq:stop_montonicity}:}
+\begin{equation}\label{eq:graduation_monotonicity}
+     \mathcal{G}_j = 
+     \left\{ \states \left\vert
+     \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
+    \pr{
+        \frac{\nu_j \alpha_{j0} + \nu_j \ks}{h_{j0} + \nu_j \ks}
+    } - \alpha_{j0} - \beta_{j0}
+     \right. \right\}
+ \end{equation} 
+\toedit{Before proceeding, it is helpful to discuss some properties of this object.}
+An agent in this model begins with the initial states $(h_{j0}, \alpha_{j0}, \beta_{j0})$. They have taken zero courses in $j$, implying $\tilde{\study}_{j0} = 0$, and thus have passed zero courses in $j$, meaning $\ks = 0$.
+Under the initial monotonicity condition \eqref{eq:h_leq_alpha_v}, the fraction $\frac{\nu_j \alpha_{j0} + \nu_j \ks}{h_{j0} + \nu_j \ks}$ is always greater than or equal to 1, and approaches 1 as $\ks$ increases.
+This fact is important for bounding the number of periods an agent spends in school.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Simplified index}\label{sec:evaluating_index}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+The goal of this section is to derive a simplified version of the index \eqref{eq:index_general}.
+% Recall that the agent's state when evaluating field $j$ at time $t$ is determined by their states, $\pr{\states}$.
+Recall that the index $\mathcal{I}_j$ from equation \eqref{eq:index_general} characterizes the expected lifetime payoffs associated with specializing in $j$, ignoring other fields. 
+If the the simplified stopping condition under monotonicity holds at time $t$ (i.e. $\pr{\states} \in \mathcal{G}_j$), then the agent would expect to enter the labor market (ignoring other fields).
+Their expected lifetime payoff in $j$ equals their expected lifetime earnings given their current levels of human capital:
+\begin{equation*}
+    \frac{1}{1 - \delta} w_j h_{jt} 
+    = 
+    \frac{1}{1 - \delta} w_j 
+    \pr{h_{j0} + \nu_j \tilde{\pass}_{jt}}
+\end{equation*}
+If $\pr{\states} \notin \mathcal{G}_j$, then the agent would plan on continuing their studies in $j$. 
+Their expected lifetime payoff depends on how much human capital they expect to accumulate in $j$. 
+To make this concrete, let $\study_{j}^*$ denote the total number of periods an agent expects to study field $j$ before entering the labor market.
+Then the agent expects to be in school for $\study_j^* - \tilde{\study}_{jt}$ more periods.
+Because the agent is not earning an income while they are in school, their expected lifetime payoff will be discounted by $\delta^{\study_j^* - \tilde{\study}_{jt}}$.
+They then expect to enter the labor market at time $t + \study_j^* - \tilde{\study}_{jt}$ with some level of human capital, given by $h_{j,t + \study_j^* - \tilde{\study}_{jt}}$.
+The index when $(\states) \notin \mathcal{G}_j$ is then given by:
+\begin{equation*}
+    \frac{1}{1 - \delta} w_j \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\pstates} 
+\end{equation*}
+Therefore, the index \eqref{eq:index_general} is characterized by:
+\begin{multline}
+    \label{eq:index_monotonicity_general}
+    \mathcal{I}_j %(\states) 
+    = 
+    \begin{cases}
+    \frac{w_j h_{jt}}{1 - \delta}
+    &\text{if } (\states) \in \mathcal{G}_j,
+    \\
+    \frac{w_j}{1 - \delta} \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\states}
+    &\text{otherwise.}
+    \end{cases} 
+\end{multline}
+The method for evaluation the conditional expectation in equation \eqref{eq:index_monotonicity_general} is described in section \ref{sec:solving_index}.
+A summary of these results are in section \ref{sec:computing}.
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Computing agent behavior}\label{sec:computing}
+
+This section summarizes how to compute an agent's behavior given states $(\states) = (\pstates)$ and assuming the initial monotonicity assumption. 
+Recall that the graduation region under the initial monotonicity assumption is given by \eqref{eq:graduation_monotonicity}: 
+\begin{equation*}
+     \mathcal{G}_j = 
+     \left\{ \states \left\vert
+     \tilde{\study}_{jt} \geq \frac{\delta}{1 - \delta}
+    \pr{
+        \frac{\nu_j \alpha_{j0} + \nu_j \tilde{\pass}_{jt}}{h_{j0} + \nu_j \tilde{\pass}_{jt}}
+    } - \alpha_{j0} - \beta_{j0}
+     \right. \right\}
+ \end{equation*} 
+The index \eqref{eq:index_monotonicity_general} under the initial monotonicity assumption \eqref{eq:h_leq_alpha_v} is given by:
+\begin{alignat*}{4}
+    \label{eq:index_monotonicity}
+    &\mathcal{I}_j (\pstates)
+    =&&
+    \begin{cases}
+    \begin{array}{l}
+    \frac{w_j}{1 - \delta} 
+    h_{jt}
+    \end{array}
+    &(\pstates) \in \mathcal{G}_j,
+    \\
+    \begin{array}{l}
+    \frac{w_j}{1 - \delta} 
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\pstates}
+    \end{array}
+    % \begin{array}{l}
+    % \frac{w_j}{1 - \delta}
+    % \left(
+    %     \EE_t \ce{\delta^{\study_j^* - \tilde{\study}_{jt}}}{\pstates} 
+    %     \pr{h_{j0} + \nu_j \tilde{\pass}_{jt}}
+    % \right.
+    % \\
+    % \left.
+    % \ \ 
+    % + \nu_j \EE_t \ce{
+    %     \delta^{\study_j^* - \tilde{\study}_{jt}}
+    %     \pr{\study_j^* - \tilde{\study}_{jt}}
+    % }{\pstates}   
+    % \frac{\alpha_{j0} + \tilde{\pass}_{jt}}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
+    % \right)
+    % \end{array}
+    &\text{otherwise,}
+    \end{cases} 
+\end{alignat*}
+
+
+\begin{outline}
+
+\item To find the index for all fields $j$, first determine whether an agent is in their graduation region \eqref{eq:graduation_monotonicity}. 
+
+\begin{outline}
+    \item If the agent is in their graduation region for field $j$, set the $j$-index equal to $\frac{w_{jt} h_{jt}}{1 - \delta}$. \textbf{Skip to step 6.}
+
+    \item If the agent is not in their graduation region, the index must be calculated using their expected accumulation of human capital, which is a function of expected time remaining in $j$:
+\begin{multline*}
+% Beginning of expected human capital accumulation
+    \EE_t \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        h_{j,t + (\study_j^* - \tilde{\study}_{jt})}
+    }{\pstates}
+    = 
+    \EE_t 
+    \ce{
+        g\pr{\study_j^* - \tilde{\study}_{jt}}
+    }{\pstates}
+    \\
+    =
+    \EE_t 
+    \ce{
+        \delta^{\study_j^* - \tilde{\study}_{jt}}
+        \pr{
+            h_{j0} + \nu_j \ks
+            + \pr{\study_j^* - \tilde{\study}_{jt}}
+            \frac{\alpha_{j0} + \tilde{\pass}_{jt}}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt}}
+        }
+    }{\pstates}
+\end{multline*}
+    Proceed to the next step.
+\end{outline}
+
+\item Re-index the problem to simplify analysis:
+\begin{alignat*}{3}
+    \hat{\alpha}_{j0} =& \alpha_{j0} + \tilde{\pass}_{jt},
+    \quad \quad
+    &\hat{\alpha}_{j0} + \hat{\beta}_{j0} 
+    =& \alpha_{j0} + \beta_{j0} + \tilde{\study}_{jt},
+    \\
+    \hat{h}_{j0} 
+    =& h_{j0} + \nu_j \tilde{\pass}_{jt}, 
+    \quad \quad
+    &\hat{\psi}_{j0} 
+    =& 
+    \pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}},
+\end{alignat*}
+This way, we are considering how many courses an agent is expecting to study from time $t=0$, instead of how many remaining courses an agent expects to study at an arbitrary $t$.
+
+\item Let $N = \study_{jt}^* - \tilde{\study}_{jt}$ denote the number of periods an agent expects to study, and let $\underline{n}$ and $\overline{n}$ denote the lower and upper bound of $N$, respectively. As described in section \ref{sec:solving_index}, these bounds are given by:
+
+\begin{align*}
+    \underline{n} 
+    = 
+    \underline{\study_{jt}^* - \tilde{\study}_{jt}} 
+    =& \ceil{\frac{\delta}{1 - \delta}} - \hat{\alpha}_{j0} - \hat{\beta}_{j0}
+    \\
+    \overline{n}
+    =
+    \overline{\study_{jt}^* - \tilde{\study}_{jt}}
+    =&
+    \begin{cases}
+        \underline{n}
+        &\text{ if } 1 \leq \frac{\hat{\alpha}_{j0} \nu_j}{\hat{h}_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
+        \\
+        \ceil{\frac{\delta}{1 - \delta} \frac{\hat{\alpha}_{j0} \nu_j}{\hat{h}_{j0}}} - \hat{\alpha}_{j0} - \hat{\beta}_{j0},
+        &\text{ otherwise.}
+    \end{cases}
+\end{align*}
+
+\item Find the probability distribution of stopping between $\underline{n}$ and $\overline{n}$ conditional on $\pr{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}$.
+First evaluate the probability that $N = \underline{n}$:
+.\begin{align*}
+    \PP_0 = \PP \pr{\crs{
+        N = \underline{n}
+    }{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}}
+    =&
+    \begin{cases}
+    1 &\text{ if } 1 \leq \frac{\alpha_{j0} \nu_j}{h_{j0}} \leq \frac{\ddelta}{\frac{\delta}{1 - \delta}}
+    \\
+    0 &\text{otherwise}.
+    \end{cases}
+\end{align*}
+Next evaluate the probability of stopping at $N = \underline{n} + 1$.
+\begin{align*}
+    \PP_1 
+    =&
+    \PP \pr{\cls{N = \underline{n} + 1}{\hat{\psi}_{j0}}}
+    \\
+    =&
+    \PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}} 
+    \pr{1 - \PP_0},
+    % \\
+    % =&
+\end{align*}
+where $\PP \pr{\cls{N = \underline{n} + 1}{N \neq \underline{n}, \psi_{j0}}}$ is the probability of a binomial random variable.
+% This value is an expectation of a 
+For any integer $x > 1$ such that $\underline{n} + x < \overline{n}$, the probability of stopping at $\underline{n} + x$ is given by:
+\begin{align*}
+    \PP_x
+    =&
+    \PP \pr{\cls{N = \underline{n} + x}{\hat{\psi}_{j0}}}
+    \\
+    =&
+    \PP \pr{\cls{N = \underline{n} + x}{N \neq \underline{n} + x - 1, \hat{\psi}_{j0}}}
+    \pr{1 - \sum_{n = 0}^{x - 1} \PP_n},
+\end{align*}
+where $\PP \pr{\cls{N = \underline{n} + x}{N \neq \underline{n} + x - 1, \hat{\psi}_{j0}}}$
+is a conditional sum of one-to-one functions of a Bernoulli and a binomial random variable. 
+Finally, the probability of stopping at the upper bound $\overline{n}$ is given by:
+\begin{align*}
+    \PP_{\overline{n} - \underline{n}} = \PP \pr{\crs{
+        N = \overline{n}
+    }{\hat{\alpha}_{j0}, \hat{\beta}_{j0}, \hat{h}_{j0}}}
+    =&
+    1 - \sum_{n = 0}^{\overline{n} - \underline{n} - 1} \PP_n
+\end{align*}
+See section \ref{sec:solving_index} for details and proofs. 
+
+\item Compute expected discounted accumulation of human capital
+\begin{align*}
+    \EE_t \ce{
+        g\pr{N}
+    }{\hat{\psi}_{j0}} 
+    &=
+    \sum_{n = \underline{n}}^{\overline{n}}
+    g\pr{N}
+    \mathbb{P}
+    \pr{\crs{
+        N = n
+    }{\hat{\psi}_{j0}}
+    }
+\end{align*}
+And set the index equal to $\frac{w_j}{1 - \delta} \EE_t \ce{g\pr{N}}{\hat{\psi}_{j0}} $.
+
+\item Follow the optimal policy outlined in section \ref{sec:optimal_policy}. If the agent chooses to study this period, return to step one in the next period. 
+
+\end{outline}

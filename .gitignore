@@ -13,6 +13,9 @@ hcs/writeups/notes-06-01/
 hcs/writeups/notes-01-03/
 hcs/writeups/mrg/
 hcs/writeups/slides-09-04/
+hcs/writeups/slides-cphil/
+hcs/writeups/slides-econ138/
+
 hcs/data/acs/archive/
 hcs/data/ipeds/c/archive/
 hcs/model/archive/
@@ -33,6 +36,8 @@ hcs/data/ipeds/c/clean_data/historical_data/hegis/ICPSR_02138/DS0001/02138-0001-
 hcs/writeups/from_titan/
 hcs/writeups/paper/outline-edits.pdf
 hcs/writeups/paper/outline_proof.pdf
+hcs/writeups/paper/outline-will.pdf
+hcs/writeups/paper/sullivan_cphil.pdf
 
 # Replication code
 hcs/hhjk19/*

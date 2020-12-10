@@ -1,6 +1,7 @@
 %!TEX root = outline.tex
-This model can be viewed through the lens of statistical discrimination.
-To see this, I first briefly review the definition of statistical discrimination, and discuss some relevant literature.
+This section discusses the above model through the lens of statistical discrimination.
+I first briefly review the definition of statistical discrimination, and discuss some relevant literature.
+I then connect the theory of statistical discrimination to the above model.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Statistical discrimination literature}
@@ -27,9 +28,9 @@ The classical analysis formulated in \textcite{AC77} assumes that a job applican
 If groups have different aggregate characteristics, and these characteristics are controlled for by the employer-as-statistician, then individuals with the same ability from different group may have different expected productivities.
 Statistical discrimination therefore presents a different view of inequality than the Becker model; unequal outcomes may not be the result of prejudice or distaste for certain group types, but rather the result of rational decision making.
 
-Whether or not an unequal outcome arises from taste-based or statistical discrimination matters from a policy perspective.
+\nts{Whether or not an unequal outcome arises from taste-based or statistical discrimination matters from a policy perspective.
 It is worth emphasizing that whether a discriminatory outcome arises from explicit prejudice or statistical inference is often irrelevant in a legal sense.
-As emphasized in \textcite{LS83}, statistical discrimination is still discrimination, and is often illegal.
+As emphasized in \textcite{LS83}, statistical discrimination is still discrimination, and is often illegal.}
 
 % For example, the aforementioned papers consider the case where employer's use a job applicant's race as one variable when inferring potential productivity.
 % However, all of these papers note that discrimination theories apply in alternative contexts.
@@ -53,18 +54,31 @@ As emphasized in \textcite{LS83}, statistical discrimination is still discrimina
 \subsection{Connection to model}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-As discussed above, statistical discrimination is often discussed through the lens of labor market discrimination. In this case, employers do not know the true productivity of their potential employee. Unequal outcomes arise from employers-as-statisticians using group-based information for inference.
+Statistical discrimination is often discussed through the lens of labor market discrimination. In the labor market example, employers do not know the true productivity of their potential employee. Unequal outcomes arise from employers-as-statisticians using group-based information about prospective employees for inference.
 
 Fundamentally, the model outlined in sections \ref{sec:model} and \ref{sec:analytic_results} is a model of statistical discrimination. 
-Rational beliefs may be formed based existing aggregate group outcomes.
-Section \ref{sec:sims} demonstrates how differences in beliefs can lead to unequal results.
-In this model, individual's do not know their true productivity. Students-as-statisticians use group-based information for inference. 
-The resulting inequality of outcomes can be classified as statistical discrimination. 
-
-To convince the reader this inequality of outcomes should indeed be classified as statistical discrimination, consider the definition set forth in \textcite{LS83}:
+To convince the reader that this inequality of outcomes should indeed be classified as statistical discrimination, consider the definition set forth in \textcite{LS83}:
 \begin{quote}
 Economic discrimination exists when groups with equal average initial endowments of productive ability do not receive equal average compensation in equilibrium.
 \end{quote}
 This definition is employed to explicitly account for the fact that the existence of unequal outcomes may impact pre-labor market human capital investment decisions. 
 % \item Discriminatory outcome: agents with the same outcome sort into different fields
 % Human capital investment decisions endogenously respond to heterogeneous outcomes. 
+In the model outlined above, agents with equal levels of initial human capital may not make the same specialization decisions because of differences in initial beliefs, as shown in section \ref{sec:sims}.
+% rational beliefs may be formed based existing aggregate group outcomes.
+Students-as-statisticians do not know their true productivity, and they use group-based information for inference. 
+The resulting inequality of outcomes can thus be classified as statistical discrimination. 
+
+Connecting the above model to statistical discrimination is conceptually beneficial.
+Recent discrimination literature presents variants of traditional statistical discrimination models, such as dynamic discrimination \parencite{BIR19}, or inaccurate statistical discrimination \parencite{BHIP19-wp}. 
+Dynamic belief formation, or the influence of inaccurate belief formation, are both extremely relevant to my model.
+Thinking about my model as statistical discrimination allows me to draw from this nascent literature. 
+Additionally, thinking about this model as statistical discrimination lays the groundwork to connect this model to the literature on affirmative action. 
+Traditional theoretical literature on affirmative action, such as \textcite{CL93}, begin with a model of statistical discrimination.
+The belief updating mechanism in my model still allows for self-fulfilling prophecies, but using a different framework.
+Thus, this model presents an alternative framework for evaluating affirmative action policies, a goal I elaborate on in section \ref{sec:future_work}.
+
+Although there seems to be an intuitive connection between the model outlined above and theories of statistical discrimination, I have not formalized it yet.
+This is because my model does not currently consider how these beliefs dynamically change over time. 
+Understanding this is key for, say, understanding how this model connects to theories of self-fulfilling prophecies.
+Thus, my next goal is to build a dynamic version of the above model, a step I outline in section \ref{sec:dynamic_model}.
