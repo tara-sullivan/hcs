@@ -18,7 +18,7 @@
 \title{Group-based beliefs and human capital specialization}
 \author[]{Tara Sullivan}
 \institute{
-Macro Lunch Presentation \\
+% Macro Lunch Presentation \\
 Tara Sullivan \\
 \textit{tasulliv@ucsd.edu}
 }
@@ -58,6 +58,19 @@ Notes/comments are in gray and will be excluded from the presentation.
 \newcommand{\study}{m} % I think i could change this to r if the fact that I use m as an index (in gender) is a problem
 \newcommand{\pass}{s}
 
+% For animations using underbrace 
+% Source: https://tex.stackexchange.com/a/565866
+\usepackage{xparse, letltxmacro}
+\LetLtxMacro{\oldunderbrace}{\underbrace}
+\DeclareDocumentCommand{\underbrace}{d<> m e{_}}{%
+  \IfValueTF{#1}{% IF <overlay-specification> given
+    % using global onlside flag, cf. p82 beamer manual v3.59
+    \oldunderbrace{#2\onslide<#1>}_{#3}\onslide%
+  }{% ELSE
+    \oldunderbrace{#2}_{#3}
+  }%
+}%
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \begin{document}    
 %\beamertemplatenavigationsymbolsempty
@@ -87,7 +100,7 @@ Notes/comments are in gray and will be excluded from the presentation.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gender ratio in different fields}
+\begin{frame}{Gender ratio in different fields}\label{intro_male_fields}
 
 % When we consider gender convergence across different fields
 
@@ -97,6 +110,7 @@ Notes/comments are in gray and will be excluded from the presentation.
 \end{figure}
 % In 1970, females were 30% of biology majors
 
+\hyperlink{next_steps_overview}{\beamerbutton{Return: Next steps}}
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -121,30 +135,40 @@ Notes/comments are in gray and will be excluded from the presentation.
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Gender convergence across fields}
+\begin{frame}{What drives differences in gender convergence across fields?}
 
-Do differences in gender convergence across fields represent misallocation of talent?
+% What drives these differences in gender convergence across field?
+% We can look to the literature on the determinants of college major choice for guidance
+
+Why might we see these differences?
 \begin{itemize}
-    \item If yes, this has macroeconomic consequences 
-    
-
-    % \item College major choice matters for future income \ccdoi{10.1146/annurev-economics-080511-110908}{(Altonji, Blom, and Meghir 2012)}
+    \item Differences in wages
+    \item Differences in preferences or norms
+    \item Social networks and role models
+    \item Uncertainty about abilities
 \end{itemize}
 
+\vspace{2ex}
+Problem: how do these things interact?
+\begin{itemize}
+    \item How can your network influence your beliefs about your abilities?
+    \item How can shared uncertainty influence norms? 
+\end{itemize}
+
+% \pause
 % \vspace{2ex}
-% Common explanations for why convergence might not occur:
+% \textbf{This paper}: builds a model of \blue{human capital specialization} (i.e. major choice)
 % \begin{itemize}
-%     \item Preferences
-%     \item Abilities
-%     \item Discrimination in labor market
-%     \item <2-> Beliefs
+%     \item Students don't know their true ability in different majors
+%     \item Initial beliefs about their abilities are shaped by existing outcome for their group (i.e. gender)
 % \end{itemize}
+% \textbf{Question:} How does this impact major choice?
 
 \pause
-\vspace{3ex} 
-\textbf{This paper:} the role of group-based beliefs in human capital specialization decisions
+\vspace{2ex}
+\textbf{My research:} the role of group-based beliefs in human capital specialization decisions
 
-\vspace{3ex}
+\vspace{2ex}
 Model of gradual human capital specialization:
 \begin{itemize}
     \item Unknown heterogeneous abilities 
@@ -152,13 +176,32 @@ Model of gradual human capital specialization:
     \item Sequential learning and human capital accumulation
     \item [$\implies$] Group-based beliefs play an important role in specialization decisions
 \end{itemize}
-% present a model of human capital and learning ability
-% beliefs result in different course taking characterisitcs
 
-\vspace{3ex}
-What are the productivity costs associated with misallocation of talent implied by the model? 
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Dissertation road map}
+
+\textbf{Chapter 1:} Introduction to model
 \begin{itemize}
-    \item Estimate impact of misallocation on aggregate productivity growth in line with \ccdoi{10.3982/ECTA11427}{Hsieh, Hurst, Jones, and Klenow (2019)} 
+    \item Incorporate group-base beliefs into Alon and Fershtman (2019)
+    \item Simulate decisions given different beliefs
+    \item Connection to statistical discrimination
+\end{itemize}
+
+
+\vspace{4ex}
+\textbf{Chapter 2:} Re-create dynamics of major choice across gender
+\begin{itemize}
+    \item Incorporate intergenerational learning into model
+    \item Identify model parameters
+\end{itemize}
+
+\vspace{4ex}
+\textbf{Chapter 3:} Quantitative exercises
+\begin{itemize}
+    \item Implications of group-based beliefs for aggregate productivity
+    \item Policy analysis: affirmative action
 \end{itemize}
 
 \end{frame}
@@ -229,7 +272,7 @@ What are the productivity costs associated with misallocation of talent implied 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \miniframesoff
-\section[Calibration]{Calibration}
+\section[Discrimination]{Discrimination in the model}
 \begin{frame}
     \tableofcontents[currentsection]
 \end{frame}
@@ -237,71 +280,246 @@ What are the productivity costs associated with misallocation of talent implied 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Identification problem}\label{identification}
-
-Identification problem: how to identify $(\alpha_{j0}^g, \beta_{j0}^g)$?
-\begin{itemize}
-    \item Parameters that characterize prior beliefs about probability of success ($\theta_j$)
-\end{itemize}
-
-% \vspace{2ex} 
-% Transcript data available via BPS surveys or NLSY97
-% \begin{itemize}
-%     \item 
-% \end{itemize}
+\begin{frame}{Discrimination in model}
 
 \vspace{2ex}
-The following state variables are observable using transcript data (BPS or NLSY97):
-\begin{align*}
-    \overline{m}_{jt} &= \sum_{r=0}^{t-1} m_{jr}, \quad \quad \overline{s}_{jt} = \sum_{r=0}^{t-1} s_{jr}
-\end{align*}
-Goal: find likelihood function to estimate ($\alpha_{j0}^g, \beta_{j0}^g$).
+Definition of statistical discrimination \ccurl{https://www.jstor.org/stable/1808117}{(Lundberg and Startz, 1983)}
+\begin{quote}
+Economic discrimination exists when groups with equal average initial endowments of productive ability do not receive equal average compensation in equilibrium.
+\end{quote}
+
+\vspace{3ex}
+Consider if agents begin with
 \begin{itemize}
-    \item Determine the best way to incorporate population heterogeneity (random utility? Semi-nonparametric approaches?)
-    \item Balance endogeneity concerns with taking advantage of the recursive structure
+    \item The same levels of initial human capital, $h_{j0}$, and abilities, $\theta_j$
+    \item Different levels of beliefs, $(\alpha_{j0}, \beta_{j0})$
 \end{itemize}
 
-\vspace{2ex}
-Possible example: conditional logit approach:
-\begin{equation*}
-    \log \mathcal{L} = \log \sum_{i = 1}^n \sum_{j=1}^J m_{ijt} \log P(m_{ijt} = 1 \vert \overline{m}_{ijt}, \overline{s}_{ijt}, \alpha_{j0}, \beta_{j0}, \theta_{ji})
-\end{equation*}
+\vspace{3ex}
+Simulations above show this leads to different specialization decisions
+\begin{itemize}
+    \item [$\implies$] This is connected to statistical discrimination
+\end{itemize}
+
+\vspace{3ex}
+Large statistical discrimination literature to draw on:
+\begin{itemize}
+    \item Inaccurate statistical discrimination
+    \item Dynamic discrimination
+\end{itemize}
+
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\miniframesoff
+\section[Next steps]{Next steps and conclusion}
+\begin{frame}
+    \tableofcontents[currentsection]
+\end{frame}
+\miniframeson
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Next steps}\label{next_steps_overview}
+
+\textbf{Chapter 2:} Re-create dynamics of major choice across gender
+\ \hyperlink{intro_male_fields}{\beamerbutton{Dynamics}}
+\begin{itemize}
+    \item Incorporate intergenerational learning into model
+    \item Identify model parameters
+\end{itemize}
+
+\vspace{4ex}
+\textbf{Chapter 3:} Additional quantitative exercises
+\begin{itemize}
+    \item Implications of group-based beliefs for aggregate productivity
+    \item Policy analysis: affirmative action
+\end{itemize}
 
 \end{frame}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Useful model notes}\label{id_model_notes}
+\begin{frame}{Identification problem for a single cohort}
 
-Under the parametric assumption, agents study a field for a deterministic number of periods: \ \hyperlink{sim_parameterization}{\beamerbutton{Details}}
-\begin{equation*}
-    m_{j}^* = \left\lceil{\frac{\delta}{1 - \delta}}\right\rceil - \alpha_{j0} - \beta_{j0}
-\end{equation*}
-Can analytically characterize Index in field $j$:
-\begin{equation*}
-    \mathcal{I}_{jt} (\alpha_{j0}, \beta_{j0}, \overline{m}_{jt}, \overline{s}_{jt}) = \begin{cases}
-    \frac{w_j h_{jt}}{1 - \delta} &\text{ if } (\alpha_{j0}, \beta_{j0}) \in \mathcal{G}_j \\
-    \frac{w_j}{1 - \delta} \delta^{m_j^* - \overline{m}_{jt}} \mathbb{E}_t \sbr{h_{j, t + m_j^* - \overline{m}_{jt}}} &\text{ otherwise}.
-    \end{cases}
-\end{equation*}
-Probability an agent chooses $j$ at time $t$ depends on the index:
-\begin{align*}
-    G_j (x) = P \pr{\mathcal{I}_{jt} < x \vert \cdot} 
-    &= P \pr{\condl{
-        \delta^{-(\alpha_{j0} + \beta_{j0})} 
-        \frac{\alpha_{j0} + \overline{s}_{jt}}{\alpha_{j0} + \beta_{j0} + \overline{m}_{jt}}
-        < c_j x
-    }
-    \overline{m}_{jt}, \overline{s}_{jt}, \alpha_{j0}, \beta_{j0}
-    }
-\end{align*}
-Under conditional independence given all states:
-\begin{align*}
-    P(m_{jt} = 1 \vert \cdot) &= P(\mathcal{I}_{jt} > \mathcal{I}_{kt} \forall k \neq j \vert \cdot) \\
-    &= \int \prod_{k \neq j} G_k (x) d G_j (x)
-\end{align*}
-\hyperlink{model_optimal_rule}{\beamerbutton{Index definition}}
+Suppose I can access:
+\begin{itemize}
+    \item Data on college major choice by gender at different points in time
+    \item Transcript data
+    \item Estimates of $w_j$, $\delta$, and $v_j$
+    \item [$\implies$] \textbf{Question:} How to recover estimates of $\pr{h_{ij0}, \alpha_{j0}^{g(i)}, \beta_{j0}^{g(i)}}$?
+\end{itemize}
+
+\vspace{3ex}
+\textbf{Problem \#1:} Endogeneity of major choice
+\begin{itemize}
+    \item Solution: Focus on estimating parameters at the beginning of college 
+\end{itemize}
 
 \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Likelihood for a single cohort}\label{likelihood}
+
+\textbf{Problem \#2:} Defining likelihood function for agent $i$ at time $t=0$
+\begin{align*}
+    \mathcal{L} =& \sum_{j=1}^J m_{ijt} \PP \pr{\crs{m_{ijt} = 1}{h_{j0}, \alpha_{j0}^{g(i)}, \beta_{j0}^{g(i)}}}
+    \\
+    =& 
+    \sum_{j=1}^J
+    m_{ijt} \PP \pr{ \cls{
+    \mathcal{I}_{j0} > \mathcal{I}_{k0} \ \forall k \neq j
+    }{h_{j0}, \alpha_{j0}^{g(i)}, \beta_{j0}^{g(i)}}},
+\end{align*}
+where $\mathcal{I}_{jt}$ is the agent's expected payoff if they graduate in $j$ after studying $N_j$ periods:
+\hyperlink{model_optimal_rule}{\beamerbutton{Optimal Policy}}
+\begin{equation*}
+    \mathcal{I}_{jt} 
+    = 
+    \frac{1}{1 - \delta} 
+    \delta^{\EE_0 \sbr{\crs{N_j^{g(i)}}{\cdot}}}
+    w_j
+    \pr{
+        h_{ij0} + \nu_j \EE_0 \sbr{\crs{N_j^{g(i)} \theta_j^{g(i)}}{\cdot}}
+    }
+\end{equation*}
+\begin{itemize}
+    \item How can I recover $(\alpha_{j0}, \beta_{j0}, h_{j0})$?
+    \item What assumptions do I need on individual heterogeneity $h_{j0}$?
+\end{itemize}
+
+\vspace{2ex}
+\textbf{Question:} If I could run an experiment to recover my parameters for a single cohort, what would that experiment look like? 
+\begin{itemize}
+    \item Do I need to use a different belief structure? Or human capital accumulation function?
+\end{itemize}
+
+\end{frame}
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Identification problem}\label{identification}
+
+% Identification problem: how to identify $(\alpha_{j0}^g, \beta_{j0}^g)$?
+% \begin{itemize}
+%     \item Parameters that characterize prior beliefs about probability of success ($\theta_j$)
+% \end{itemize}
+
+% % \vspace{2ex} 
+% % Transcript data available via BPS surveys or NLSY97
+% % \begin{itemize}
+% %     \item 
+% % \end{itemize}
+
+% \vspace{2ex}
+% The following state variables are observable using transcript data (BPS or NLSY97):
+% \begin{align*}
+%     \overline{m}_{jt} &= \sum_{r=0}^{t-1} m_{jr}, \quad \quad \overline{s}_{jt} = \sum_{r=0}^{t-1} s_{jr}
+% \end{align*}
+% Goal: find likelihood function to estimate ($\alpha_{j0}^g, \beta_{j0}^g$).
+% \begin{itemize}
+%     \item Determine the best way to incorporate population heterogeneity (random utility? Semi-nonparametric approaches?)
+%     \item Balance endogeneity concerns with taking advantage of the recursive structure
+% \end{itemize}
+
+% \vspace{2ex}
+% Possible example: conditional logit approach:
+% \begin{equation*}
+%     \log \mathcal{L} = \log \sum_{i = 1}^n \sum_{j=1}^J m_{ijt} \log P(m_{ijt} = 1 \vert \overline{m}_{ijt}, \overline{s}_{ijt}, \alpha_{j0}, \beta_{j0}, \theta_{ji})
+% \end{equation*}
+
+% \end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Beliefs over time}
+
+
+
+\textbf{Question:} How are beliefs $(\alpha_{j0}^g, \beta_{j0}^g)$ changing over time? 
+\begin{itemize}
+    \item Answering this depends on how I develop a dynamic version of the model
+\end{itemize}
+
+\vspace{3ex}
+\textbf{Goal:} Build dynamic version of the model
+\begin{itemize}
+    \item Replicate dynamics of major choice \ \hyperlink{intro_male_fields}{\beamerbutton{Dynamics}}
+    \item Possible resources: Fernandez (2013) model of cultural learning and labor force participation
+\end{itemize}
+
+\end{frame}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Cultural norms and female labor force participation (Fernandez 2013)}
+
+\begin{figure}
+\includegraphics[width=.9\textwidth]{fernandez_fig7.pdf}
+\caption{Source: Fernandez (2013)}
+\end{figure}
+
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{frame}{Fernandez (2013)}
+
+Women making labor decisions:
+\begin{itemize}
+    \item Have unknown disutility form working
+    \item Have beliefs about their disutility
+\end{itemize}
+
+\vspace{3ex}
+Beliefs are updated according to:
+\begin{itemize}
+     \item A private signal inherited from their mother
+     \item The previous generation's participation in the labor force
+ \end{itemize} 
+
+\vspace{3ex}
+$\implies$ Re-creates S-shaped participation rate
+\begin{itemize}
+    \item Theoretical concept: information cascade
+\end{itemize}
+\end{frame}
+
+
+
+
+% %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \begin{frame}{Useful model notes}\label{id_model_notes}
+
+% Under the parametric assumption, agents study a field for a deterministic number of periods: \ \hyperlink{sim_parameterization}{\beamerbutton{Details}}
+% \begin{equation*}
+%     m_{j}^* = \left\lceil{\frac{\delta}{1 - \delta}}\right\rceil - \alpha_{j0} - \beta_{j0}
+% \end{equation*}
+% Can analytically characterize Index in field $j$:
+% \begin{equation*}
+%     \mathcal{I}_{jt} (\alpha_{j0}, \beta_{j0}, \overline{m}_{jt}, \overline{s}_{jt}) = \begin{cases}
+%     \frac{w_j h_{jt}}{1 - \delta} &\text{ if } (\alpha_{j0}, \beta_{j0}) \in \mathcal{G}_j \\
+%     \frac{w_j}{1 - \delta} \delta^{m_j^* - \overline{m}_{jt}} \mathbb{E}_t \sbr{h_{j, t + m_j^* - \overline{m}_{jt}}} &\text{ otherwise}.
+%     \end{cases}
+% \end{equation*}
+% Probability an agent chooses $j$ at time $t$ depends on the index:
+% \begin{align*}
+%     G_j (x) = P \pr{\mathcal{I}_{jt} < x \vert \cdot} 
+%     &= P \pr{\condl{
+%         \delta^{-(\alpha_{j0} + \beta_{j0})} 
+%         \frac{\alpha_{j0} + \overline{s}_{jt}}{\alpha_{j0} + \beta_{j0} + \overline{m}_{jt}}
+%         < c_j x
+%     }
+%     \overline{m}_{jt}, \overline{s}_{jt}, \alpha_{j0}, \beta_{j0}
+%     }
+% \end{align*}
+% Under conditional independence given all states:
+% \begin{align*}
+%     P(m_{jt} = 1 \vert \cdot) &= P(\mathcal{I}_{jt} > \mathcal{I}_{kt} \forall k \neq j \vert \cdot) \\
+%     &= \int \prod_{k \neq j} G_k (x) d G_j (x)
+% \end{align*}
+% \hyperlink{model_optimal_rule}{\beamerbutton{Index definition}}
+
+% \end{frame}
 
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -333,32 +551,38 @@ Under conditional independence given all states:
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \miniframesoff
-\section[Conclusion]{Conclusion and next steps}
+\section[Conclusion]{Conclusion}
 \begin{frame}
     \tableofcontents[currentsection]
 \end{frame}
 \miniframeson
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\begin{frame}{Conclusion and next steps}
+\begin{frame}{Conclusion}
 
-Model suggests that group-based beliefs play an important role in specialization decisions
-
-\vspace{4ex}
-Next steps:
+Presented a model of how group-based beliefs can influence specialization
 \begin{itemize}
-    \item Identification of model parameters
-    \item Explore counterfactuals: productivity differences if we remove misallocation of talent?
+    \item How realistic is this model?
 \end{itemize}
 
-\vspace{4ex}
-Additional counterfactual exercise: affirmative action 
+\vspace{3ex}
+\textbf{Next goal:} re-create dynamics of major choice over time
 \begin{itemize}
-    \item If we remove discrimination, how long would it take for women's beliefs to converge?
-    \item Can affirmative action address these biases?
+    \item Building a dynamic model of major choice
+    \item Identifying model parameters
 \end{itemize}
 
+\vspace{3ex}
+Plan to do this:
+\begin{itemize}
+    \item Determine the diffusion process first to build the dynamic model 
+    \item Think about identification in terms of an experiment
+    \begin{itemize}
+         \item What experiment could I run to recover my parameters of interest?
+         \item Should I change some model fundamentals?
+     \end{itemize} 
+\end{itemize}
+Feedback on the best way to proceed more than welcome!
 \end{frame}
 
 

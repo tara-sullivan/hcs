@@ -104,7 +104,8 @@
 \newcommand<>{\green}[1]{\textbf{\color#2{Green}#1}}
 \newcommand<>{\mgreen}[1]{{\color#2{Green}#1}}
 
-\newcommand{\EE}[1]{\mathbb{E} \left[ #1 \right]}
+\newcommand{\EE}{\mathbb{E}}
+\newcommand{\PP}{\mathbb{P}}
 \newcommand{\llog}[1]{\log \left( #1 \right)}
 \newcommand{\Cov}[1]{\text{Cov} \left( #1 \right)}
 
@@ -112,7 +113,9 @@
 \newcommand{\sbr}[1]{\left[ #1 \right]}
 \newcommand{\pr}[1]{\left( #1 \right)}
 \newcommand{\ce}[2]{\left[\left. #1 \right\vert #2 \right]}
-\newcommand{\condl}[1]{\left. #1 \right\vert}
+\newcommand{\cls}[2]{\left. #1 \right\vert #2}
+\newcommand{\crs}[2]{#1 \left\vert #2 \right.}
+\newcommand{\ceil}[1]{\left\lceil #1 \right\rceil}
 
 % Beamer buttons
 % bottom buttom: \bbutton{name_of_link}{Text to print}
@@ -129,6 +132,7 @@
 % Cite command: cc
 \newcommand{\nn}[2][DarkGray]{{\small \color{#1} #2}}
 \newcommand{\ccdoi}[2]{\href{https://doi.org/#1}{\nn{#2}}}
+\newcommand{\ccurl}[2]{\href{#1}{\nn{#2}}}
 
 % change slide width on a single slide
 % source: https://tex.stackexchange.com/questions/160825/modifying-margins-for-one-slide/242073

@@ -1,3 +1,4 @@
+%!TEX root = slides.tex
 % begin with an Alon-Fershtman slide; review as quicly as possible ``because many people here are familar with this paper, I'll try to keep this short'' Maybe check with david that this is a good idea
 % Then jump into my key contribution: how do we think about the priors
 
@@ -35,7 +36,7 @@ If an agent chooses to study field $j$ ($m_{jt} = 1$):
   \end{itemize}
 If an agent chooses to work in field $j$ ($\ell_{jt} = 1$):
   \begin{itemize}
-    \item Earn wage $w_j$
+    \item Earn $w_j h_{jt}$
   \end{itemize}
 
 % \vspace{-2.5ex}
@@ -128,8 +129,8 @@ Update according to Bayes Rule $\implies$ posterior drawn from Beta distribution
     \mgreen{P_{j,t+1}} = \mathcal{B} (\alpha_{j,t+1}, \beta_{j,t+1}), \quad \quad 
     (\alpha_{j,t+1}, \beta_{j,t+1}) = 
     \begin{cases} 
-        (\alpha_{jt} + 1, \beta_{jt}) &\text{ if } a_{jt} = 1 \\
-        (\alpha_{jt}, \beta_{jt} + 1) &\text{ if } a_{jt} = 0
+        (\alpha_{jt} + 1, \beta_{jt}) &\text{ if } \pass_{jt} = 1 \\
+        (\alpha_{jt}, \beta_{jt} + 1) &\text{ if } \pass_{jt} = 0
     \end{cases}
 \end{equation*}
 
@@ -315,7 +316,7 @@ The following policy $\pi: (h_t, P_t^g) \to (s_t, \ell_t)$ is optimal:
     \item If $(h_{j^*}, P_{j^*}^g) \in \mathcal{G}_{j}$, then enter the labor market as a $j^*$ specialist. Otherwise, study $j^*$ for an additional period.  
 \end{enumerate}
 
-\hyperlink{id_model_notes}{\beamerbutton{Return: Identification}}
+\hyperlink{likelihood}{\beamerbutton{Return: Likelihood}}
 
 \end{frame}
 
