@@ -1,0 +1,70 @@
+%!TEX root = outline.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Bibliography
+
+% Import biblatex
+\usepackage[authordate,backend=biber]{biblatex-chicago}
+% \addbibresource{../bibliography.bib}
+\addbibresource{bibliography.bib}
+% Ensure that the cite year command includes a hyperlink
+% https://tex.stackexchange.com/a/476849
+\DeclareCiteCommand{\citeyear}
+    {\usebibmacro{prenote}}
+    {\bibhyperref{\printfield{year}}\bibhyperref{\printfield{extrayear}}}
+    {\multicitedelim}
+    {\usebibmacro{postnote}}
+
+% possessive citation command
+\newcommand{\citeposs}[1]{{\citeauthor{#1}'s (\citeyear{#1})}}
+
+% remove space 
+% \usepackage[font=small,skip=0pt]{caption}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% plot graphs with pgfplots
+\usepackage{pgfplots}
+\pgfplotsset{compat=newest}
+\usepgfplotslibrary{groupplots}
+\usepgfplotslibrary{dateplot}
+\pgfplotsset{compat=newest,
+    every axis/.style={
+        axis y line*=left,
+        axis x line*=bottom,
+        % allows for multi-line legend entries
+        legend style={cells={align=left}},
+        % allows for multi-line titles
+        title style={align=center},
+    },
+}
+
+% Include subcaptiongs in groupplots
+\usepackage{subcaption}
+
+% for \toprule or \bottomrule in tables
+\usepackage{booktabs}
+% for long tables
+\usepackage{longtable}
+
+% path to tex images
+\makeatletter
+\def\input@path{{../../img/}}
+\makeatother
+
+% Externalize pgf plots
+% Note: will need to do something like: https://tex.stackexchange.com/questions/40652/references-in-externalized-pgfplots
+\usetikzlibrary{external}
+\tikzexternalize[prefix=figures/]
+
+\usepackage{subcaption}
+
+% Prevents placing floats after a new section
+% Comment out for most versions
+% \usepackage[section]{placeins}
+
+% Find text width; comment out when not using to avoid warning
+% \usepackage{layouts}
+
+% Find text width
+% textwidth in cm: \printinunitsof{cm}\prntlen{\textwidth}. 
+% textheight in cm: \printinunitsof{cm}\prntlen{\textheight}
+% outcome: 6.50127in, 16.50746cm, 469.75502pt

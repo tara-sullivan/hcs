@@ -1,0 +1,185 @@
+%!TEX root = outline.tex
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Future work: Identification and quantitative exercises}\label{sec:future_work}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+I would like to use the remainder of this paper to outline my research agenda. 
+My first research goal is to use this model to explain the evolution of college major choices by gender over time, as seen in figure \ref{fig:ipeds_a}.
+To do that, I first need to embed the above model in a dynamic framework that describes how aggregate group-based beliefs change over time. 
+I detail that goal in section \ref{sec:dynamic_model}.
+To fully characterize the evoluation of major choices, I will need to identify model parameters.
+In section \ref{sec:identification_overview}, I discuss identification concerns, outline my goals for identifying model parameters, and briefly review potential data sources.
+Once I have properly calibrated model parameters, I can test whether my model is effective at re-creating the dynamics in major choice seen in figure \ref{fig:ipeds_a}.
+I will then be able to use my model in additional quantitative exercises.
+In section \ref{sec:extensions}, I briefly discuss potential counterfactual exercises, as well as possible model extensions, before concluding. 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Dynamic model}\label{sec:dynamic_model}
+
+There are several ways in which I plan on expanding my model.
+First, and most importantly, I want to incorporate intergenerational learning into the above framework.
+Additionally, I want to carefully discuss the role of preferences. I elaborate on these extensions below.
+
+In the aggregate, the model presented above is static; while I do model each agent's decision over the course of their education, their initial beliefs are given and unchanging.
+To understand how beliefs change over time, I need to embed this model in a dynamic framework, and specify how group-based beliefs change over time.
+
+\toedit{\textcite{F13} provides a road map for approaching this modeling problem.
+Her paper attempts to ascertain the role that shifting cultural norms played in the expansion of female labor force participation.
+She does this by building a model of labor decisions and intergenerational learning.
+Although the source of uncertainty in her model is disutility from working, not ability, the process of learning from aggregate outcomes is similar. 
+I need to build my model to fit in a model of intergenerational learning and cultural change, similar to \textcite{F13}.}
+
+Relatedly, I plan on better accounting for preferences in future versions of this model, particularly once I have a model of cultural change. 
+As discussed in the literature review in section \ref{sec:intro}, preferences and norms are a key motivator of college major choice.
+Much of the evidence for the primacy of preferences relies on subjective expectations evidence \parencite{WZ18,AHMR20}.
+My results focus on beliefs about ability, a separate factor that determines college major choice.
+Although there is evidence that beliefs about ability are important for college major choice \parencite{O20}, I want to be able to clearly articulate how my results compare to the tastes from the subjective expectations literature; it's not necessarily clear how the ``taste'' residuals from the subjective expectations literature will compare to my belief parameters.
+The interplay of beliefs and preferences in this context can be theoretically important \parencite{BG02}, and I want to remain cognizant of that moving forward.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Identification overview}\label{sec:identification_overview}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+I would now like to return to the static version of the model outlined in section \ref{sec:model} and discuss calibration.\footnote{
+    Thus, for the purpose of this discussion, I want to focus on calibrating a version of the model for a single cohort.
+}
+The parameters driving agent behavior in the model are summarized in table \ref{tab:parameter_descriptions}.
+Potential data resources are outlined in section \ref{sec:data_sources}.
+\begin{table}[!ht]
+\centering
+\caption{Model parameters}{}
+\label{tab:parameter_descriptions}
+\begin{tabular}{cl}
+\hline \hline{}
+Parameter & Description %& Source
+\\ \hline{}
+$J$ & Number of fields %& ACS \& IPEDS
+\\
+$\delta$ & Discount factor
+\\ \hline
+$h_{j0}$ & Initial field-$j$ human capital
+\\ 
+$(\alpha_{j0}, \beta_{j0})$ & Initial field-$j$ ability beliefs
+\\ \hline \hline
+\end{tabular}
+\end{table}
+The first part of table \ref{tab:parameter_descriptions} lists aggregate parameters that impact all agents.
+Assuming a standard value is used for the discount rate $\delta$, the key aggregate parameter is the number of fields of study, $J$. 
+I have developed taxonomies of fields using Integrated Postsecondary Education Data System (IPEDS) and American Community Survey (ACS) data; see reviews of these data resources in section \ref{sec:data_sources}.
+
+Parameters that govern individual agent heterogeneity are in the second half of table \ref{tab:parameter_descriptions}.
+To determine initial human capital levels, $h_{j0}$, I need information on students' initial field-specific human capital when they begin college.
+Datasets such as the Beginning Postsecondary Students (BPS) or National Longitudinal Survey of Youth (NLS97) panels are thus ideal, as they are surveys of college performance and major choice that collect information on high school performance. 
+For details on these resources, see section \ref{sec:data_sources}. 
+
+The primary identification problem for this analysis is uncovering the group-based belief parameters $(\alpha_{j0}^g, \beta_{j0}^g)$.
+Assuming we have data on the agent's choice of field at time $t$, we can utilize some type of conditional logit method and find the parameters that maximize the following likelihood:
+\begin{equation*}
+    \log \mathcal{L} 
+    = 
+    \log \sum_{i = 1}^n \sum_{t=1}^\infty \sum_{j=1}^J m_{ijt} 
+    \log P(m_{ijt} = 1 \vert \overline{m}_{ijt}, \overline{s}_{ijt}, \alpha_{j0}^{g(i)}, \beta_{j0}^{g(i)}, h_{ij0}, \theta_{ji})
+\end{equation*}
+Thus, identifying the model entails specifying the appropriate choice probability.
+
+One immediate concern associated with this process is time endogeneity; an agent's choice of a field at time $t$ is related to their choice at time $t+1$. A simple way to avoid this endogeneity is to identify model parameters from time $t=0$ (i.e. the beginning of the agent's education).
+More sophisticated methods should take advantage of the problem's recursive structure to utilize more of an agent's panel. 
+
+% Work in section \ref{sec:solving_index} suggests that estimation is possible. 
+Let $G_j (x)$ denote the CDF of the index $j$. Recall from section \ref{sec:solving_index} that the agent's expected lifetime payoff associated with field $j$ is a function of their expected time in school, denoted $N$:
+\begin{alignat*}{3}
+    G_j(x) =& \PP \pr{\cls{\mathcal{I}_{jt} < x}{\pstates}} \span \span
+    \\
+    =&
+    \PP \bigg(
+        &&\frac{1}{1 - \delta} w_j
+        \bigg(
+            \EE \ce{\delta^N}{\cdot} 
+            \pr{h_{j0} + \nu_j + N \ks}
+            + 
+            \EE \ce{\delta^N N}{\cdot} 
+            \frac{\alpha_{j0} + \ks}{\alpha_{j0} + \beta_{j0} + \tilde{\study}_{j0}}
+        \bigg) \\
+    &&&< x \bigg\vert \pstates \bigg)
+\end{alignat*}
+The agent's probability distribution over possible stopping times is solved in section \ref{sec:solving_index}.
+The choice probability can then be written as:
+\begin{align*}
+    \PP \pr{\cls{
+        m_{jt} = 1
+    }{\tilde{\study}_t, \tilde{\pass}_t, \psi_0}}
+    =& 
+    \PP \pr{\cls{
+        \mathcal{I}_{jt} > \mathcal{I}_{kj}
+    }{\tilde{\study}_t, \tilde{\pass}_t, \psi_0, \forall k \neq j}}
+    \\
+    =& 
+    \int \prod_{k \neq j} 
+    G_k \pr{
+        \crs{x}{\tilde{\study}_{kt}, \tilde{\pass}_{kt}, \psi_{k0}}
+    } d G_j \pr{
+        \crs{x}{\tilde{\study}_{jt}, \tilde{\pass}_{jt}, \psi_{j0}}
+    }
+\end{align*}
+The solution to $G_j(x)$ will depend on the distribution of $h_{j0}$ and the distribution of $\theta_j$ in society.
+I'm not certain of the best way to incorporate individual heterogeneity into the model. 
+But that will be key for analytically characterizing the CDF $G_j (x)$ and estimating $(\alpha_{j0}^g, \beta_{j0}^g)$ from the data.  
+% My goal is to analytically characterize the CDF $G_j (x)$, and find helpful constraints on the distributions of $h_{j0}$ and $\theta_j$ such that I can identify $(\alpha_{j0}^g, \beta_{j0}^g)$ from the data. 
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Future quantitative exercises and concluding remarks}\label{sec:extensions}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+My immediate goal is to see if the model outlined above can re-create the dynamics of gender major choice seen in figure \ref{fig:ipeds_a}.
+Ultimately, I want to utilize this model in counterfactual analysis.
+This section briefly discusses some potential applications.
+
+First, I believe a dynamic version of the above model would shed some light on how long it would take for gender convergence across majors to occur. 
+Assuming that participation in some fields follows an S-shaped pattern, as in \textcite{F13}, would parity across majors ever be achieved as cultural beliefs change?
+Or will there always be a gap without additional interventions?
+Interesting counterfactual analysis would also be possible with a dynamic version of the model. 
+For instance, suppose that women were given men's belief distributions.
+How long would it then take for men and women to then make the same specialization choices?
+
+Relatedly, I believe this model would be valuable for evaluating affirmative action policies.
+Suppose that affirmative action policies can impact group-based beliefs.
+How long would it take for these policies to result in gender convergence?
+And would full gender convergence across fields of study ever occur?
+% Theoretical evaluations of affirmative action policies, beginning with \textcite{CL93}, often consider how long-term beliefs of employers respond to new information.
+% I think this model presents the first part of a framework that allows for beliefs to change over time.
+This may play an important role in explaining the efficacy of affirmative action policies.
+% \toedit{What happens if I remove discrimination; how long would it take for women's beliefs to converge to the truth?}
+% Discuss the role of affirmative action. Can affirmative action address these biases?
+
+Finally, I am interested in the impact of this model on the aggregate misallocation of talent in the economy. 
+As noted in \textcite{HHJK19}, barriers to human capital accumulation impact aggregate economic productivity.
+As discussed above, if men and women have the different beliefs, they may make different specialization decisions.
+If the underlying true ability distributions are the same across genders, this may represent a misallocation of talent, and have aggregate economic effects. 
+I am interested in applying the framework from \textcite{HHJK19} to estimate what the aggregate effects of this misallocation of talent might be. 
+ % the impact of barriers to human capital accumulation on aggregate productivity using a \textcite{R51} model of occupational choice. 
+% I'm also interested in measuring the productivity impacts of differential group-based beliefs. 
+
+% \toedit{
+% % start of actual section.
+% This model can then be used for counterfactual analysis. Possible quantitative exercises:
+% \begin{outline}
+
+% \item Productivity exercise: does the misallocation of talent due to group-based beliefs affect agregate productivity.
+% % There are several key differences between the model outlined below and the one from \textcite{HHJK19} that warrant attention.
+% %
+% % First, they explicitly model barriers to field-specific human capital attainment in monetary terms. 
+% % As such, field specialization in their model is reduced to picking the occupation with the highest indirect expected utility.
+% %
+% % Their model allows for sorting on by preferences or ability. 
+% % Their benchmark scenario considers sorting on ability, and thus I assume the same.
+% % 
+% \item
+% \item 
+% \end{outline}
+
+% } % end \toedit
+
+Overall, I think the model of group-based beliefs and human capital specialization outlined in this prospectus can address a number of interesting economic questions. 
+I have extensive work to do before I can fully address the topics outlined in this section.
+But I believe this framework will allow me to answer these questions in a novel way.
