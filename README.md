@@ -47,6 +47,21 @@ To run a program like `plot_line_labels.py` (located in `hcs/hcs/img/code`), I c
     * SublimeREPL
     * iPython: `%run plot_line_labels.py`
 
+I do this using the following code:
+```python
+# Handle file paths; set root directory
+import os
+import sys
+import inspect
+try:
+    currpath = os.path.abspath(__file__)
+except NameError:
+    currpath = os.path.abspath(inspect.getfile(inspect.currentframe()))
+rootdir = os.path.dirname(os.path.dirname(currpath))
+sys.path.append(rootdir)
+```
+Note that I might need to edit the `rootdir` variable, depending on the location of this particular program (this particular program is located in (`hcs/hcs/model/'.
+
 There are other ways to do this, but this works best for my workflow. 
 My preferred text editor is [Sublime Text 3](https://www.sublimetext.com/3). 
 When developing code, I often run an interpreter inside Sublime Text using the [SublimeREPL package](https://packagecontrol.io/packages/SublimeREPL).
