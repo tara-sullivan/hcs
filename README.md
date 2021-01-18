@@ -1,6 +1,8 @@
 # Group-based beliefs and Human Capital Specialization 
 
 This folder contains replication code for my job market paper. 
+The primary output for this project are PDFs generated in TeX, specifically my slides (`hcs/writeups/slides/slides.pdf`) and my paper (`hcs/writeups/paper/outline.pdf`). 
+To generate these PDFs, I compile  `hcs/writeups/slides/slides.tex` and `hcs/writeups/paper/outline.tex`, respectively.
 
 ## Replication notes
 
