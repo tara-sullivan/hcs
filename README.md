@@ -60,7 +60,7 @@ except NameError:
 rootdir = os.path.dirname(os.path.dirname(currpath))
 sys.path.append(rootdir)
 ```
-Note that I might need to edit the `rootdir` variable, depending on the location of this particular program (this particular program is located in (`hcs/hcs/model/'.
+Note that I might need to edit the `rootdir` variable, depending on the location of this particular program (this one is located in `hcs/hcs/model/').
 
 There are other ways to do this, but this works best for my workflow. 
 My preferred text editor is [Sublime Text 3](https://www.sublimetext.com/3). 
