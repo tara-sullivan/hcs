@@ -155,7 +155,7 @@ def plot_df(df, ax=None, cols=None, col_labels=None, title='',
 
 if __name__ == '__main__':
 
-    from ipeds.make_df import df
+    from data.ipeds.c.clean_data.make_df import df
     import tikzplotlib
 
     # Create grouped dataset
@@ -175,7 +175,8 @@ if __name__ == '__main__':
             )
 
 
-    # tikzplotlib.clean_figure()
-    # tikzplotlib.save('testfig.pgf')
+    tikzplotlib.clean_figure()
+    tikzplotlib.save('testfig.tex')
+    # tikzplotlib.save('testfig.tex', standalone=True)
     fig = plt.gca()
     plt.show()
