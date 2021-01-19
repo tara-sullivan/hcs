@@ -14,6 +14,10 @@ Two IPEDS surveys are used: completion surveys and graduation surveys.
 Replication instructions for the completion surveys can be found in the `data/ipeds/c/`; see the readme in that folder for more information.
 Replication instructions for graduation surveys can be found in `data/ipeds/gr/`; see the readme in that folder for more information.
 
+The IPEDS graduation survey (in `ipeds/gr/`) and ACS data (in `acs/`) are sparse.
+I may not use these data in the final version of this project.
+For a detailed example of how I structure complete data projects, see the IPEDS completion surveys, located in `ipeds/c/`)
+
 ### img/
     * code/
     * PGF plots code 
@@ -25,6 +29,13 @@ The `img/` directory does not contain PDF images, only the code.
 To see standalone PDFs used in a particular writeup (either the slides or the paper), navigate to the relevant writeup folder, and click on the figures subfolder. 
 
 ### model/
+   * afmodel.py
+   * beta_distribution_example.py
+   * model_plots.py
+   * sim_agents.py
+   * sim_plots.py
+
+Contains python code for finding optimal policy of agents in a simple version of my model; for simulating agent behavior; and for generating plots about agent characteristics and agent behavior. 
 
 ### writeups/
     * paper/
