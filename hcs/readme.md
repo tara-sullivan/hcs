@@ -29,11 +29,11 @@ The `img/` directory does not contain PDF images, only the code.
 To see standalone PDFs used in a particular writeup (either the slides or the paper), navigate to the relevant writeup folder, and click on the figures subfolder. 
 
 ### model/
-   * afmodel.py
-   * beta_distribution_example.py
-   * model_plots.py
-   * sim_agents.py
-   * sim_plots.py
+    * afmodel.py
+    * beta_distribution_example.py
+    * model_plots.py
+    * sim_agents.py
+    * sim_plots.py
 
 Contains python code for finding optimal policy of agents in a simple version of my model; for simulating agent behavior; and for generating plots about agent characteristics and agent behavior. 
 
