@@ -27,8 +27,8 @@ After generating the images in Python using matplotlib, I use the [tikzplotlib](
 
 To actually see standalone PDFs of these images, you can either:
 
-	1. Generate standalone versions of these images. This can be done using the `img/code/standalone.tex` file.
-	2. Compile the full TeX document (`slides.tex` or `outline.tex`) and externalize the PGF plots.
+1. Generate standalone versions of these images. This can be done using the `img/code/standalone.tex` file.
+2. Compile the full TeX document (`slides.tex` or `outline.tex`) and externalize the PGF plots.
 
 Details on both of these methods are below.  To determine exactly which program in `model/` or `data/` created each .tex file here, I generally just search GitHub. 
 
