@@ -21,8 +21,8 @@ I know there may be better ways of doing this, but this method has worked for me
 
 I often create plots where each line has a separate color and:
 
-    * Each line is labeled at its approximate endpoint
-    * The line label is the same color as the line
+* Each line is labeled at its approximate endpoint
+* The line label is the same color as the line
    
 This program defines a simple program for doing that.
 The function `plot_line_labels.plot_df()` can then be imported and run as follows:
