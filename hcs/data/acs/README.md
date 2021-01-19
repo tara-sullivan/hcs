@@ -10,6 +10,8 @@ For detailed information on using ACS data, [Ruggles et al. (2020)](https://doi.
 
 ## Using this directory
 
+In order for this code to be run locally,  the path to raw ACS data in `data/acs/make_acs_df.py needs to be updated. 
+
 Note: this area is under development. 
 
 ### Directory structure

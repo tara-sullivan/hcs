@@ -10,6 +10,8 @@ For more details on the IPEDS series, please visit https://nces.ed.gov/ipeds/.
 
 ## Using this directory
 
+In order for this code to be run locally, the path to raw IPEDS graduation surveys in `data/ipeds/gr/ipeds_gr_clean.py` needs to be updated.
+
 The file `ipeds_gr_clean.py` performs basic checks and aggregations of the data, to check for understanding. It also creates a useable dataframe of IPEDS graduation data. 
 I'm unsure if I will use these data in my final project; ideally I need graduation rates by institution by field of study. 
-But I'll keep this here for future documentation.
+

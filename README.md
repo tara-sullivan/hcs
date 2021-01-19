@@ -22,11 +22,11 @@ I use [tikzplotlib](https://github.com/nschloe/tikzplotlib) to generate [PGFPlot
 Therefore, you must run TeX to generate PDF figures. 
 To generate standalone versions of figures (and to make my TeX code compile faster), externalize the PGFPlots figures.
 This means that when I compile my tex, code, I run the following commands:
-```shell session
+```shell
 cd witeups/paper
-pdflatex -shell-escape sullivan[2020]-jmp
+pdflatex -shell-escape outline
 ```
-The resulting pdfs can be found in the relevant `figures/` subfoler. 
+The resulting pdfs can be found in the relevant `figures/` subfolder. 
 
 ### System path and imports
 
@@ -60,7 +60,7 @@ except NameError:
 rootdir = os.path.dirname(os.path.dirname(currpath))
 sys.path.append(rootdir)
 ```
-Note that I might need to edit the `rootdir` variable, depending on the location of this particular program (this one is located in `hcs/hcs/model/').
+Note that I might need to edit the `rootdir` variable, depending on the location of this particular program (this one is located in `hcs/hcs/model/`).
 
 There are other ways to do this, but this works best for my workflow. 
 My preferred text editor is [Sublime Text 3](https://www.sublimetext.com/3). 

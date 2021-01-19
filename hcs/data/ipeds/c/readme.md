@@ -8,6 +8,8 @@ For more details on the IPEDS series, please visit https://nces.ed.gov/ipeds/.
 
 ## Using this directory
 
+In order for this code to be run locally, the path to raw IPEDs completion surveys in `data/ipeds/c/clean_data/ipeds_cip_merge.do` and `data/ipeds/c/clean_data/ipeds_c_clean.do` needs to be updated.
+
 ### Directory structure
 
 Project tree: 
