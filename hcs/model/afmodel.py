@@ -17,10 +17,32 @@ init_spec = [
 
 class ModelParams:
     '''
-    Initialize model parameters
+    Initialize model parameters:
+
+        * ab_0: initial beliefs about abilities (J x 2)
+        * h_0: initial human capital (J x 1)
+        * delta: discount rate
+        * v: human capital updating amount (J x 1)
+        * w: wages (J x 1)
+
+    Details:
+
+    ab_0: each row j contains the agent's belief parameters (alpha_j0, beta_j0)
+    describing the agent's beliefs about their abilities in field j, where 
+    alpha and beta correspond to the parameters of a beta distribution. 
+
+    h_0: an agent's initial human capital levels in each of the J fields
+
+    delta: discount rate; default is 0.96
+
+    v: each row j contains the amount an agent's field-j human capital
+    increases if they successfully pass a field-j course.
+
+    w: wages in all fields
+
     '''
     def __init__(self,
-                 ab_0,        # initial abilities
+                 ab_0,        # initial beliefs about abilities
                  h_0=None,    # initial human capital
                  delta=0.96,  # discount rate
                  v=None,      # human capital update amount
@@ -107,6 +129,7 @@ class AgentHistory(ModelParams):
         '''
         Find course history of agent i
 
+            * true_theta: an agent's true ability theta (J x 1)
             * choose_first: choose course j first
             * fail_first: fail first n number of courses
 
@@ -217,6 +240,7 @@ if __name__ == '__main__':
     # Number of fields
     N_j = np.size(ab_0, axis=0)
 
+    # Agent's true ability theta
     true_ability = np.random.beta(ab_0[:, 0], ab_0[:, 1], size=(N, N_j))
 
     # call instance of AFModel
