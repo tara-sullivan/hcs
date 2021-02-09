@@ -57,10 +57,20 @@ history_spec = init_spec + [
 ]
 
 
+# Weird numba note! Numba jitclass does not work with numpy random seeding.
+# When I want to seed my simulations, I need to comment out this decorator.
+# I also need to comment out the numba decorator if I want to use some of my
+# testing flags when simulating agent history (i.e. if I want agents to fail
+# their first N courses, or if I want to force them to choose a particular
+# course first). There may be a better way to do this, but numba jitclass is 
+# super buggy. But if I need to run 10,000 simulations, it speeds up my code 
+# x10, so it's staying. Would recommend sticking to numba function decorators
+# in the future.
 @nb.experimental.jitclass(history_spec)
 class AgentHistory(ModelParams):
     '''
-    Simulates agent's course history, given prior ab_0
+    Simulates agent's course history and specialization decision, given 
+    their prior beliefs about their abilities, ab_0.
     '''
     # Work around: https://github.com/numba/numba/issues/1694
     __init__ModelParams = ModelParams.__init__
@@ -72,7 +82,8 @@ class AgentHistory(ModelParams):
 
     def get_index(self, ab_t):
         '''
-        Evaluate the index function given the current state ab_t
+        Evaluate the index function (i.e. expected lifetime payoff) given the
+        current state ab_t. Note that ab_t is a J x 2 matrix
         '''
         # simplify terms
         delta, v = self.delta, self.v
@@ -162,9 +173,6 @@ class AgentHistory(ModelParams):
                 I_specialize[choose_j] = fail_index
                 max_specialize = np.argwhere(I_specialize == np.max(I_specialize))
                 if max_specialize[0, 0] == choose_j:
-                    # worth double checking this is the correct index;
-                    # subtract by 1 because of python 0 index
-                    # pdb.set_trace()
                     specialize_idx = len(c_t) - 1
 
             # Graduate if in graduation region
@@ -201,7 +209,7 @@ class AgentHistory(ModelParams):
 if __name__ == '__main__':
 
     np.random.seed(10)
-    N = 1
+    N = 10
     # Initial human capital levels
     ab_0 = np.array([[1, 1], [1, 1]], dtype=np.float64)
     wages = np.array([1, 1.25], dtype=np.float64)
@@ -225,6 +233,7 @@ if __name__ == '__main__':
     course_history_list = []
 
     timing.tic()
+    # Simulate course history for N agents
     for i in range(N):
         # afm.find_history_i(true_ability[i], fail_first=1)
         afm.find_history_i(true_ability[i])
@@ -243,6 +252,7 @@ if __name__ == '__main__':
                                names=['student', 't'])
 
     def print_i(idx):
+        # Create a nice dataframe that summarizes the above output
         print('True ability: ' + str(true_ability[idx]))
         print('Course History: ')
         print(course_history.loc[idx])
@@ -252,4 +262,5 @@ if __name__ == '__main__':
         print('Number switches: ' + str(n_switch[idx]))
         print('Specialize index: ' + str(specialize_idx[idx]))
 
+    # Print agent i's history
     print_i(0)
